@@ -1,0 +1,102 @@
+﻿using System;
+using System.Diagnostics;
+using FFLoader.Helpers;
+
+namespace FFLoader
+{
+    public class ProcessWorker : IDisposable
+    {
+        internal Process _process;
+
+        /// <summary>
+        /// The process at which to execute.
+        /// </summary>
+        internal enum ExeName
+        {
+            FFMpeg
+            //More to come? (TODO)
+        }
+
+        /// <summary>
+        /// Determines if a process is currently running.
+        /// </summary>
+        /// <param name="process"></param>
+        /// <returns></returns>
+        internal static bool IsProcessRunning(Process process)
+        {
+            bool processClosed;
+
+            try
+            {
+                processClosed = process.HasExited;
+            }
+            catch
+            {
+                processClosed = true;
+            }
+
+            return !processClosed;
+        }
+
+        /// <summary>
+        /// Starts a new process and defines StartInfo.
+        /// </summary>
+        /// <param name="exeName">The name of exe to launch.</param>
+        /// <param name="exePath">The path to the exe to launch</param>
+        /// <param name="cmdArgs">The arguments to pass to the exe</param>
+        internal IDisposable NewProcess(ExeName exeName, string exePath, string cmdArgs)
+        {
+            _process = new Process();
+
+            if (IsProcessRunning(_process))
+            {
+                FFHelper.ProcessAlreadyRunning(exeName.ToString());
+            }
+
+            _process.StartInfo.FileName = exePath;
+            _process.StartInfo.Arguments = cmdArgs;
+            _process.StartInfo.UseShellExecute = false;
+            _process.StartInfo.CreateNoWindow = true;
+            _process.StartInfo.RedirectStandardInput = true;
+            _process.StartInfo.RedirectStandardError = true;
+
+            return _process;
+        }
+
+        /// <summary>
+        /// Stops the running FFMpeg process using a soft kill.
+        /// </summary>
+        public void StopFFMpegProcess()
+        {
+            if (IsProcessRunning(_process))
+            {
+                _process.StandardInput.Write('q');
+                CloseProcess();
+            }
+            else
+            {
+                FFHelper.NoProcessRunning();
+            }
+        }
+
+        /// <summary>
+        /// Closes the running process.
+        /// </summary>
+        internal void CloseProcess()
+        {
+            if (_process != null)
+            {
+                _process.Close();
+                Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Frees all resources used by the process.
+        /// </summary>
+        public void Dispose()
+        {
+            _process?.Dispose();
+        }
+    }
+}
