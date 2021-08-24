@@ -1,2 +1,2 @@
 *.cs linguist-language=C#
-*.json linguist-language=JSON
+*.json linguist-language=JavaScript
