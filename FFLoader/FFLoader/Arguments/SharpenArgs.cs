@@ -10,9 +10,9 @@ namespace FFLoader.Arguments
         /// <param name="sharpen">The sharpening strength.</param>
         /// <param name="resEnabeled">Determins if resultion is also being changed for the purposes of correct formatting; bool format.</param>
         /// <returns>String representation of the argument.</returns>
-        internal static string SharpenResEnabled(float sharpen, bool resEnabeled)
+        internal static string SharpenResEnabled(float sharpen, bool resEnabeled, bool fps)
         {
-            if (resEnabeled)
+            if (resEnabeled || fps)
             {
                 return string.Format($@" , unsharp=5:5:{sharpen}""", CultureInfo.InvariantCulture);
             }

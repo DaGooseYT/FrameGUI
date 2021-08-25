@@ -34,15 +34,6 @@ namespace FFLoader.Arguments
         }
 
         /// <summary>
-        /// Copies the output audio bitrate from the input audio bitrate if aBitrate == "copy"
-        /// </summary>
-        /// <returns>String representation of the argument.</returns>
-        internal static string AudioBitrateCopy()
-        {
-            return string.Format(" -b:a copy", CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
         /// The constant rate factor value of the output video.
         /// </summary>
         /// <param name="crf">The constant rate factor value.</param>

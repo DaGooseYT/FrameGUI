@@ -11,7 +11,7 @@ namespace FFLoader.Arguments
         /// <returns>String representation of the argument.</returns>
         internal static string Fps(double fps)
         {
-            return string.Format($" -filter:v fps={fps}", CultureInfo.InvariantCulture);
+            return string.Format($@" -vf ""fps={fps}", CultureInfo.InvariantCulture);
         }
 
         /// <summary>

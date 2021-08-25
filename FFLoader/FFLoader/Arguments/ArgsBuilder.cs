@@ -48,23 +48,16 @@ namespace FFLoader.Arguments
             {
                 _args.Append(MapArgs.MapVideo());
             }
-
-            if (!string.IsNullOrEmpty(vCodec))
-            {
-                _args.Append(CodecArgs.VideoCodecs(vCodec));
-            }
-
-            if (string.IsNullOrEmpty(preset))
-            {
-                _args.Append(PresetArgs.VideoPreset(preset));
-            }
+           
+            _args.Append(CodecArgs.VideoCodecs(vCodec));
+            _args.Append(PresetArgs.VideoPreset(preset));
 
             if (tune != "none")
             {
                 _args.Append(TuneArgs.VideoTunes(tune));
             }
 
-            if (vBitrate > 0 && mode.Contains("OnePass"))
+            if (vBitrate > 0 && mode.Contains("1 Pass"))
             {
                 _args.Append(BitrateArgs.VideoBitrate(vBitrate));
             }
@@ -76,19 +69,26 @@ namespace FFLoader.Arguments
             {
                 _args.Append(BitrateArgs.RateFactor(crf));
             }
-            
+
             _args.Append(FrameArgs.BFrame(bFrame));
+
+            bool fpsEnabled;
             
             if (fps != 0)
             {
                 _args.Append(FrameArgs.Fps(fps));
+                fpsEnabled = true;
+            }
+            else
+            {
+                fpsEnabled = false;
             }
 
             bool resEnabeled;
 
             if (vheight != 0 && vWidth != 0)
             {
-                _args.Append(ResolutionArgs.VideoResolution(vheight, vWidth));
+                _args.Append(ResolutionArgs.VideoResolution(vheight, vWidth, fpsEnabled));
                 resEnabeled = true;
             }
             else
@@ -103,7 +103,7 @@ namespace FFLoader.Arguments
 
             if (sharpen != 0.0)
             {
-                _args.Append(SharpenArgs.SharpenResEnabled(sharpen, resEnabeled));
+                _args.Append(SharpenArgs.SharpenResEnabled(sharpen, resEnabeled, fpsEnabled));
             }
             else
             {
@@ -111,16 +111,7 @@ namespace FFLoader.Arguments
             }
             
             _args.Append(CodecArgs.AudioCodecs(aCodec));
-
-            if (aBitrate != "copy")
-            {
-                _args.Append(BitrateArgs.AudioBitrate(aBitrate));
-            }
-            else
-            {
-                _args.Append(BitrateArgs.AudioBitrateCopy());
-            }
-
+            _args.Append(BitrateArgs.AudioBitrate(aBitrate));
             _args.Append(SampleRateArgs.SampleRate(sampleRate));
 
             _args.Append(string.Format($@" ""{outputVideo}"""));
