@@ -43,12 +43,14 @@ namespace FFLoader
                     process.BeginErrorReadLine();
                     process.WaitForExit();
 
+                    FileInfo file = new FileInfo(ffloader.OutputVideoPath);
+
                     if (!string.IsNullOrEmpty(sb.ToString()))
                     {
                         ffloader.CatchAvsError(sb.ToString(), out AviSynthErrorHandler handler);
                         ffloader.UpdateAvsError(handler);
                     }
-                    else if (FFHelper.OutputFileNotCreated(ffloader.OutputVideoPath))
+                    else if (FFHelper.OutputFileNotCreated(ffloader.OutputVideoPath) || file.Length < 10000)
                     {
                         ffloader.CatchFFMpegError("An unknown error occured with FFMpeg.", out FFMpegErrorHandler handler);
                         ffloader.UpdateFFMpegError(handler);

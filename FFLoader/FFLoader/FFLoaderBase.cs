@@ -202,8 +202,12 @@ namespace FFLoader
                 //Gets the second line of the AviSynth+ error if exists.
                 if (AvsError)
                 {
-                    _sb.Append(" - ");
-                    _sb.Append(e.Data.TrimStart());
+                    if (!e.Data.Contains("Input #0") && !e.Data.Contains(AvisynthScriptPath))
+                    {
+                        _sb.Append(" - ");
+                        _sb.Append(e.Data.TrimStart());
+                    }
+                    
                     AvsError = false;
                 }
 
