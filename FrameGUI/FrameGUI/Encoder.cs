@@ -138,6 +138,13 @@ namespace FrameGUI
             catch (IOException)
             {
                 MessageBox.Show("FrameGUI is already open and working on a process. Please close any other running tasks of FrameGUI before starting a new process.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+                ProgressLabel.Invoke(new Action(() =>
+                {
+                    ProgressLabel.Text = "Process exited because FrameGUI is already open.";
+                }));
+
+                ProgressLabel.ForeColor = Color.Red;
             }
         }
 
@@ -157,6 +164,7 @@ namespace FrameGUI
             //Unsubscribe from events
             ffLoader.FFConversionProgress -= UpdateProgress;
             ffLoader.FFLoaderException -= FFException;
+            ffLoader.FFMpegError -= FFError;
             ffLoader.AviSynthError -= AvsError;
 
             cancel.Visible = false;
@@ -189,12 +197,12 @@ namespace FrameGUI
         {
             ProgressLabel.Invoke(new Action(() =>
             {
-                ProgressLabel.Text = "Process exited due to AviSynth+ error.";
+                ProgressLabel.Text = "Process exited with AviSynth+ error.";
             }));
 
             ProgressLabel.ForeColor = Color.Red;
 
-            var error = MessageBox.Show("Process exited due to AviSynth+ error: " + Environment.NewLine + 
+            var error = MessageBox.Show("Process exited with AviSynth+ error: " + Environment.NewLine + 
                 Environment.NewLine + $@"""{e.AviSynthErrorMessage}""" + Environment.NewLine + 
                 Environment.NewLine + "Would you like to open the error logs?", "AviSynth+ error", 
                 MessageBoxButtons.YesNo, MessageBoxIcon.Error);
@@ -212,7 +220,14 @@ namespace FrameGUI
         /// <param name="e">Instance of FFMpegErrorHandler.</param>
         internal static void FFError(object sender, FFMpegErrorHandler e)
         {
-            var error = MessageBox.Show("Process exited due to FFMpeg error: " + Environment.NewLine +
+            ProgressLabel.Invoke(new Action(() =>
+            {
+                ProgressLabel.Text = "Process exited with FFMpeg error.";
+            }));
+
+            ProgressLabel.ForeColor = Color.Red;
+
+            var error = MessageBox.Show("Process exited with FFMpeg error: " + Environment.NewLine +
                 Environment.NewLine + $@"""{e.ErrorMessage}""" + Environment.NewLine +
                 Environment.NewLine + "Would you like to open the error logs?", "FFMpeg error",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Error);
