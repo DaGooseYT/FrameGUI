@@ -119,3 +119,4 @@ FrameGUI depends on multiple other third party applications in order for it to f
 - FFMpeg v4.4 GPL Build - "The FFMpeg Developers" - [GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) - [Source code](https://github.com/FFmpeg/FFmpeg)
 - AviSynth+ v3.7.0 (including installer) - From Jeeb's "AviSynth" - [GPL v2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) - [Source code](https://github.com/AviSynth/AviSynthPlus)
 - SVPFlow AviSynth Plugins - "The SVP Team" - SVPFlow2: Closed Cource. SVPFlow1: [GPL v2.0](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) - [SVPFlow1 source code](http://www.svp-team.com/files/gpl/svpflow1-src.zip)
+- FFms2 AviSynth Plugin - Thomas Goyne, Alex Smith, & Derek Buitenhuis - [MIT License](https://opensource.org/licenses/MIT) - [Source code](https://github.com/FFMS/ffms2)
