@@ -60,7 +60,7 @@ Head over to the `Audio` tab where you will find the audio encoding options. As 
 
 [audio]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/audio.PNG "Select Audio Encoding Options"
 
-Note: the `aac` selection in `Audio Format` will use the FFMpeg native AAC encoder. Due to license resrictions, no other aac encoder was built with FFMpeg. **_Please use the `mp3` selection in `Audio Format` as an alternative as the FFMpeg native AAC encoder doesn't always work and is low quality._**
+Note: the `aac` selection in `Audio Format` will use the FFMpeg native AAC encoder. Due to license resrictions, no other aac encoder was built with FFMpeg.
 
 ### Select SVPFlow Parameters (optional)
 1. Head over to the `SVPFlow/AviSynth+/Other` tab to set the SVPFlow parameters. 
