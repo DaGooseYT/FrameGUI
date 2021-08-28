@@ -72,7 +72,7 @@ namespace FFLoader.Arguments
 
             _args.Append(FrameArgs.BFrame(bFrame));
 
-            bool fpsEnabled;
+            bool fpsEnabled, resEnabeled;
             
             if (fps != 0)
             {
@@ -83,8 +83,6 @@ namespace FFLoader.Arguments
             {
                 fpsEnabled = false;
             }
-
-            bool resEnabeled;
 
             if (vheight != 0 && vWidth != 0)
             {
@@ -105,11 +103,11 @@ namespace FFLoader.Arguments
             {
                 _args.Append(SharpenArgs.SharpenResEnabled(sharpen, resEnabeled, fpsEnabled));
             }
-            else
+            else if (fpsEnabled || resEnabeled)
             {
                 _args.Append(string.Format(@"""", CultureInfo.InvariantCulture));
             }
-            
+
             _args.Append(CodecArgs.AudioCodecs(aCodec));
             _args.Append(BitrateArgs.AudioBitrate(aBitrate));
             _args.Append(SampleRateArgs.SampleRate(sampleRate));

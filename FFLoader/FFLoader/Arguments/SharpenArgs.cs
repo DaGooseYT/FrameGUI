@@ -18,7 +18,7 @@ namespace FFLoader.Arguments
             }
             else
             {
-                return string.Format($" -vf unsharp=5:5:{sharpen}", CultureInfo.InvariantCulture);
+                return string.Format($@" -vf unsharp=5:5:{sharpen}", CultureInfo.InvariantCulture);
             }
         }
     }
