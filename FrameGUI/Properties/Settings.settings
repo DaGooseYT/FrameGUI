@@ -12,13 +12,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AudioFormat" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="AudioBitrate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3</Value>
     </Setting>
     <Setting Name="AudioSampleRate" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="vBitrate" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
@@ -39,7 +39,7 @@
       <Value Profile="(Default)">2048</Value>
     </Setting>
     <Setting Name="Threads" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">9</Value>
+      <Value Profile="(Default)">16</Value>
     </Setting>
     <Setting Name="FrameRate" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">24</Value>

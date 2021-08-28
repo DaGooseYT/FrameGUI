@@ -61,7 +61,7 @@ namespace FrameGUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int AudioFormat {
             get {
                 return ((int)(this["AudioFormat"]));
@@ -85,7 +85,7 @@ namespace FrameGUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int AudioSampleRate {
             get {
                 return ((int)(this["AudioSampleRate"]));
@@ -169,7 +169,7 @@ namespace FrameGUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16")]
         public int Threads {
             get {
                 return ((int)(this["Threads"]));
