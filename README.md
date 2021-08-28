@@ -133,13 +133,13 @@ FrameGUI consists of multiple error event handlers which makes it easy to detect
 
 ![alt text][ffloadererr]
 
-[ffloadererr]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/ffloadererr.PNG "FFLoader Error"
+[ffloadererr]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/inputerr.PNG "FFLoader Error"
 
 Below is an AviSynth+ error sample:
 
 ![alt text][avserr]
 
-[avserr]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/ffloadererr.PNG "AviSynth+ Error"
+[avserr]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/avserr.PNG "AviSynth+ Error"
 
 As you can see, the errors will define the problem which makes solving it easy. But in the case you don't know how to solve a problem, follow the steps below to properly send an issue or problem report.
 
