@@ -33,7 +33,7 @@ FrameGUI combines simplicity with advanced encoding features to accomplish tasks
 - Set audio sample rate.
 
 # Usage
-If you do not like reading (like me), the official video tutorial for FrameGUI as an alternative can be found [here](). Otherwise, continue reading for documentation and usage regarding FrameGUI.
+If you do not like reading (like me), the official video tutorial for FrameGUI as an alternative can be found [here](). Otherwise, continue reading for documentation and usage regarding FrameGUI. **This is not a noob guide.** 
 
 ### Select Input File
 Start by selecting an input file on the `Main` tab. The supported input formats are (case sensitive): .mp4, .mkv, .mov, .avi, .thp, .bik, .m2ts, .ts, .flv, .webm, .ogv
@@ -52,6 +52,13 @@ Head over to the `Encoder Settings` tab where you will first be presented with t
 
 
 Options in red: Set these options to `0` to passthrough the value from the input video.
+
+- The maximum bitrate you can define is `80000kb/s`.
+- The maximum resolution you can define is `3840x2160` (4K UHD).
+- The maximum sharpening strength you can define is `5.0`.
+- The maximum frame rate you can define is `240` fps.
+- The maximum b-frames you can define is `14`.
+- The maximum CRF value you can define is `51`.
 
 ### Select Audio Encoding Options
 Head over to the `Audio` tab where you will find the audio encoding options. As of now, these are the only options availible. More audio encoding options will come if there is a demand for them. 
