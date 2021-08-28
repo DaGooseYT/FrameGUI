@@ -85,7 +85,7 @@ namespace FFLoader
         /// </summary>
         private readonly string[] supportedExtensions =
             { ".mp4", ".mkv", ".avi", ".mov", ".thp", ".bik", 
-            ".m2ts", ".ts", ".flv", ".webm" };
+            ".m2ts", ".ts", ".flv", ".webm", ".ogv" };
 
         /// <summary>
         /// Determines if the selected input video type is supported.
