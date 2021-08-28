@@ -60,7 +60,7 @@ namespace FrameGUI
 
             if (iWantIdx == 0)
             {
-                smooth.Append(@"}},algo:21,mask:{{area:0}},scene:{{mode:0,blend:true}}}}");
+                smooth.Append(@"}},algo:21,mask:{{area:0}},scene:{{mode:0}}}}");
             }
             else if (iWantIdx == 1)
             {
@@ -135,6 +135,7 @@ namespace FrameGUI
                     sw.WriteLine(@"vectors = SVAnalyse(super, analyse_params)" + Environment.NewLine);
                     sw.WriteLine(@"SVSmoothFps(super, vectors, smoothfps_params, mt=threads)" + Environment.NewLine);
                     sw.WriteLine("Prefetch(threads)");
+                    sw.Close();
                 }
 
                 if (CheckScriptNotNull(super))

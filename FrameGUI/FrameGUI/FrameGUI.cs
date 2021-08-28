@@ -208,8 +208,22 @@ namespace FrameGUI
                         }
                         else
                         {
-                            ScriptGenerator.AvsGenerate(FFWorker, _ffloader, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text,
+                            try
+                            {
+                                ScriptGenerator.AvsGenerate(FFWorker, _ffloader, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text,
                             SuperTxtBox.Text, AnalyseTxtBox.Text, SmoothTxtBox.Text, SaveOutTxtBox.Text);
+                            }
+                            catch (IOException)
+                            {
+                                MessageBox.Show("FrameGUI is already open and working on a process. Please close any other running tasks of FrameGUI before starting a new process.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                                ProgressLabel.Invoke(new Action(() =>
+                                {
+                                    ProgressLabel.Text = "Process exited because FrameGUI is already open.";
+                                }));
+
+                                ProgressLabel.ForeColor = Color.Red;
+                            }
                         }
                     }
                     else
@@ -268,6 +282,26 @@ namespace FrameGUI
                 TuneDD.SelectedIndex = Settings.Default.Tune;
             }
             else { TuneDD.Enabled = false; TuneDD.SelectedIndex = 0; }
+        }
+
+        /// <summary>
+        /// If key F1 is clicked or help is requested through the help button, the documentation of FrameGUI will open.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="hlpevent">Instance of HelpEventArgs.</param>
+        private void FrameGUI_HelpRequested(object sender, HelpEventArgs hlpevent)
+        {
+            Process.Start("https://github.com/DaGooseYT/FrameGUI/blob/main/README.md");
+        }
+
+        /// <summary>
+        /// Opens the offical documentation for FrameGUI.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of EventArgs.</param>
+        private void OffDoc_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/DaGooseYT/FrameGUI/blob/main/README.md");
         }
 
         /// <summary>
@@ -622,6 +656,7 @@ namespace FrameGUI
             BframeValue.Value = Settings.Default.BFrames;
             NotificationCB.Checked = Settings.Default.Not;
             IwantDD.SelectedIndex = Settings.Default.iWant;
+            FrameRNUD.Value = Settings.Default.FrameRate;
 
             if (Settings.Default.ChangeRes)
             {
@@ -681,6 +716,7 @@ namespace FrameGUI
             FFWorker.DoWork += new DoWorkEventHandler(DoWork);
             FFWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkCompleted);
             FormClosing += new FormClosingEventHandler(FrameGUIClosing);
+            HelpRequested += FrameGUI_HelpRequested;
             FormatDD.TextChanged += new EventHandler(FormatDD_TabIndexChanged);
         }
     }

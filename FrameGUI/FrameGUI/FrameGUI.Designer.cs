@@ -37,6 +37,8 @@ namespace FrameGUI
             this.SaveOutBttn = new System.Windows.Forms.Button();
             this.StartEncodeBttn = new System.Windows.Forms.Button();
             this.AboutTab = new System.Windows.Forms.TabPage();
+            this.OffDocButton = new System.Windows.Forms.Button();
+            this.HelpLabel = new System.Windows.Forms.Label();
             this.AboutAuthGB = new System.Windows.Forms.GroupBox();
             this.TwitterLogo = new System.Windows.Forms.PictureBox();
             this.InstagramLogo = new System.Windows.Forms.PictureBox();
@@ -188,8 +190,9 @@ namespace FrameGUI
             this.SaveOutTxtBox.Enabled = false;
             this.SaveOutTxtBox.Location = new System.Drawing.Point(10, 262);
             this.SaveOutTxtBox.Name = "SaveOutTxtBox";
-            this.SaveOutTxtBox.Size = new System.Drawing.Size(320, 23);
+            this.SaveOutTxtBox.Size = new System.Drawing.Size(320, 20);
             this.SaveOutTxtBox.TabIndex = 1;
+            this.SaveOutTxtBox.TabStop = false;
             // 
             // SaveOutBttn
             // 
@@ -198,7 +201,7 @@ namespace FrameGUI
             this.SaveOutBttn.Location = new System.Drawing.Point(388, 260);
             this.SaveOutBttn.Name = "SaveOutBttn";
             this.SaveOutBttn.Size = new System.Drawing.Size(89, 24);
-            this.SaveOutBttn.TabIndex = 2;
+            this.SaveOutBttn.TabIndex = 41;
             this.SaveOutBttn.Text = "Save Output";
             this.SaveOutBttn.UseVisualStyleBackColor = false;
             this.SaveOutBttn.Click += new System.EventHandler(this.SaveOutBttn_Click);
@@ -210,22 +213,43 @@ namespace FrameGUI
             this.StartEncodeBttn.Location = new System.Drawing.Point(245, 48);
             this.StartEncodeBttn.Name = "StartEncodeBttn";
             this.StartEncodeBttn.Size = new System.Drawing.Size(181, 56);
-            this.StartEncodeBttn.TabIndex = 3;
+            this.StartEncodeBttn.TabIndex = 2;
             this.StartEncodeBttn.Text = "Start Encode";
             this.StartEncodeBttn.UseVisualStyleBackColor = true;
             this.StartEncodeBttn.Click += new System.EventHandler(this.StartEncodeBttn_Click);
             // 
             // AboutTab
             // 
+            this.AboutTab.Controls.Add(this.OffDocButton);
+            this.AboutTab.Controls.Add(this.HelpLabel);
             this.AboutTab.Controls.Add(this.AboutAuthGB);
             this.AboutTab.Controls.Add(this.AboutGUIGB);
-            this.AboutTab.Location = new System.Drawing.Point(4, 25);
+            this.AboutTab.Location = new System.Drawing.Point(4, 23);
             this.AboutTab.Name = "AboutTab";
             this.AboutTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AboutTab.Size = new System.Drawing.Size(460, 222);
+            this.AboutTab.Size = new System.Drawing.Size(460, 224);
             this.AboutTab.TabIndex = 3;
             this.AboutTab.Text = "About";
             this.AboutTab.UseVisualStyleBackColor = true;
+            // 
+            // OffDocButton
+            // 
+            this.OffDocButton.Location = new System.Drawing.Point(271, 192);
+            this.OffDocButton.Name = "OffDocButton";
+            this.OffDocButton.Size = new System.Drawing.Size(183, 24);
+            this.OffDocButton.TabIndex = 3;
+            this.OffDocButton.Text = "Official documentation";
+            this.OffDocButton.UseVisualStyleBackColor = true;
+            this.OffDocButton.Click += new System.EventHandler(this.OffDoc_Click);
+            // 
+            // HelpLabel
+            // 
+            this.HelpLabel.AutoSize = true;
+            this.HelpLabel.Location = new System.Drawing.Point(235, 196);
+            this.HelpLabel.Name = "HelpLabel";
+            this.HelpLabel.Size = new System.Drawing.Size(31, 14);
+            this.HelpLabel.TabIndex = 2;
+            this.HelpLabel.Text = "Help:";
             // 
             // AboutAuthGB
             // 
@@ -237,7 +261,7 @@ namespace FrameGUI
             this.AboutAuthGB.Controls.Add(this.AboutAuthLabel);
             this.AboutAuthGB.Location = new System.Drawing.Point(237, 7);
             this.AboutAuthGB.Name = "AboutAuthGB";
-            this.AboutAuthGB.Size = new System.Drawing.Size(217, 213);
+            this.AboutAuthGB.Size = new System.Drawing.Size(217, 179);
             this.AboutAuthGB.TabIndex = 1;
             this.AboutAuthGB.TabStop = false;
             // 
@@ -245,7 +269,7 @@ namespace FrameGUI
             // 
             this.TwitterLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.TwitterLogo.Image = ((System.Drawing.Image)(resources.GetObject("TwitterLogo.Image")));
-            this.TwitterLogo.Location = new System.Drawing.Point(151, 149);
+            this.TwitterLogo.Location = new System.Drawing.Point(151, 126);
             this.TwitterLogo.Margin = new System.Windows.Forms.Padding(4);
             this.TwitterLogo.Name = "TwitterLogo";
             this.TwitterLogo.Size = new System.Drawing.Size(59, 43);
@@ -258,7 +282,7 @@ namespace FrameGUI
             // 
             this.InstagramLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.InstagramLogo.Image = ((System.Drawing.Image)(resources.GetObject("InstagramLogo.Image")));
-            this.InstagramLogo.Location = new System.Drawing.Point(7, 149);
+            this.InstagramLogo.Location = new System.Drawing.Point(7, 126);
             this.InstagramLogo.Margin = new System.Windows.Forms.Padding(4);
             this.InstagramLogo.Name = "InstagramLogo";
             this.InstagramLogo.Size = new System.Drawing.Size(55, 43);
@@ -271,7 +295,7 @@ namespace FrameGUI
             // 
             this.YoutubeLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.YoutubeLogo.Image = ((System.Drawing.Image)(resources.GetObject("YoutubeLogo.Image")));
-            this.YoutubeLogo.Location = new System.Drawing.Point(78, 153);
+            this.YoutubeLogo.Location = new System.Drawing.Point(78, 130);
             this.YoutubeLogo.Margin = new System.Windows.Forms.Padding(4);
             this.YoutubeLogo.Name = "YoutubeLogo";
             this.YoutubeLogo.Size = new System.Drawing.Size(58, 33);
@@ -283,11 +307,11 @@ namespace FrameGUI
             // AboutAuthDesc
             // 
             this.AboutAuthDesc.AutoSize = true;
-            this.AboutAuthDesc.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AboutAuthDesc.Location = new System.Drawing.Point(16, 30);
+            this.AboutAuthDesc.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AboutAuthDesc.Location = new System.Drawing.Point(25, 29);
             this.AboutAuthDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AboutAuthDesc.Name = "AboutAuthDesc";
-            this.AboutAuthDesc.Size = new System.Drawing.Size(226, 102);
+            this.AboutAuthDesc.Size = new System.Drawing.Size(167, 84);
             this.AboutAuthDesc.TabIndex = 5;
             this.AboutAuthDesc.Text = "The creator behind FrameGUI is \r\nDaGoose. Help support DaGoose\r\nto encourage futu" +
     "re development\r\nof FrameGUI and other tools by \r\nfollowing his social media page" +
@@ -300,7 +324,7 @@ namespace FrameGUI
             this.AbAuthorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AbAuthorLabel.Location = new System.Drawing.Point(16, 29);
             this.AbAuthorLabel.Name = "AbAuthorLabel";
-            this.AbAuthorLabel.Size = new System.Drawing.Size(0, 18);
+            this.AbAuthorLabel.Size = new System.Drawing.Size(0, 15);
             this.AbAuthorLabel.TabIndex = 1;
             this.AbAuthorLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
@@ -310,7 +334,7 @@ namespace FrameGUI
             this.AboutAuthLabel.BackColor = System.Drawing.Color.White;
             this.AboutAuthLabel.Location = new System.Drawing.Point(88, 0);
             this.AboutAuthLabel.Name = "AboutAuthLabel";
-            this.AboutAuthLabel.Size = new System.Drawing.Size(50, 16);
+            this.AboutAuthLabel.Size = new System.Drawing.Size(40, 14);
             this.AboutAuthLabel.TabIndex = 0;
             this.AboutAuthLabel.Text = "Author";
             // 
@@ -331,19 +355,19 @@ namespace FrameGUI
             this.VideoLinkEN.AutoSize = true;
             this.VideoLinkEN.Location = new System.Drawing.Point(45, 187);
             this.VideoLinkEN.Name = "VideoLinkEN";
-            this.VideoLinkEN.Size = new System.Drawing.Size(174, 16);
-            this.VideoLinkEN.TabIndex = 4;
+            this.VideoLinkEN.Size = new System.Drawing.Size(134, 14);
+            this.VideoLinkEN.TabIndex = 39;
             this.VideoLinkEN.TabStop = true;
             this.VideoLinkEN.Text = "Official Tutorial Video (EN)";
             // 
             // AboutGUIDesc
             // 
             this.AboutGUIDesc.AutoSize = true;
-            this.AboutGUIDesc.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AboutGUIDesc.Location = new System.Drawing.Point(17, 30);
+            this.AboutGUIDesc.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AboutGUIDesc.Location = new System.Drawing.Point(25, 29);
             this.AboutGUIDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AboutGUIDesc.Name = "AboutGUIDesc";
-            this.AboutGUIDesc.Size = new System.Drawing.Size(232, 170);
+            this.AboutGUIDesc.Size = new System.Drawing.Size(176, 140);
             this.AboutGUIDesc.TabIndex = 3;
             this.AboutGUIDesc.Text = resources.GetString("AboutGUIDesc.Text");
             this.AboutGUIDesc.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -354,7 +378,7 @@ namespace FrameGUI
             this.AbGUILabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AbGUILabel.Location = new System.Drawing.Point(6, 29);
             this.AbGUILabel.Name = "AbGUILabel";
-            this.AbGUILabel.Size = new System.Drawing.Size(0, 18);
+            this.AbGUILabel.Size = new System.Drawing.Size(0, 15);
             this.AbGUILabel.TabIndex = 2;
             this.AbGUILabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
@@ -364,7 +388,7 @@ namespace FrameGUI
             this.AboutGUILabel.BackColor = System.Drawing.Color.White;
             this.AboutGUILabel.Location = new System.Drawing.Point(68, 0);
             this.AboutGUILabel.Name = "AboutGUILabel";
-            this.AboutGUILabel.Size = new System.Drawing.Size(113, 16);
+            this.AboutGUILabel.Size = new System.Drawing.Size(86, 14);
             this.AboutGUILabel.TabIndex = 0;
             this.AboutGUILabel.Text = "About FrameGUI";
             // 
@@ -376,10 +400,10 @@ namespace FrameGUI
             this.MainTab.Controls.Add(this.StartEncodeBttn);
             this.MainTab.Controls.Add(this.SetInputBttn);
             this.MainTab.Controls.Add(this.InTxtBox);
-            this.MainTab.Location = new System.Drawing.Point(4, 25);
+            this.MainTab.Location = new System.Drawing.Point(4, 23);
             this.MainTab.Name = "MainTab";
             this.MainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.MainTab.Size = new System.Drawing.Size(460, 222);
+            this.MainTab.Size = new System.Drawing.Size(460, 224);
             this.MainTab.TabIndex = 0;
             this.MainTab.Text = "Main";
             this.MainTab.UseVisualStyleBackColor = true;
@@ -391,7 +415,7 @@ namespace FrameGUI
             this.CancelBttn.Location = new System.Drawing.Point(245, 111);
             this.CancelBttn.Name = "CancelBttn";
             this.CancelBttn.Size = new System.Drawing.Size(181, 25);
-            this.CancelBttn.TabIndex = 4;
+            this.CancelBttn.TabIndex = 3;
             this.CancelBttn.Text = "Cancel";
             this.CancelBttn.UseVisualStyleBackColor = true;
             this.CancelBttn.Visible = false;
@@ -403,7 +427,7 @@ namespace FrameGUI
             this.FrameGUILabel.Font = new System.Drawing.Font("Arial", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FrameGUILabel.Location = new System.Drawing.Point(207, 155);
             this.FrameGUILabel.Name = "FrameGUILabel";
-            this.FrameGUILabel.Size = new System.Drawing.Size(307, 67);
+            this.FrameGUILabel.Size = new System.Drawing.Size(247, 55);
             this.FrameGUILabel.TabIndex = 3;
             this.FrameGUILabel.Text = "FrameGUI";
             // 
@@ -424,7 +448,7 @@ namespace FrameGUI
             this.SetInputBttn.Location = new System.Drawing.Point(359, 7);
             this.SetInputBttn.Name = "SetInputBttn";
             this.SetInputBttn.Size = new System.Drawing.Size(95, 22);
-            this.SetInputBttn.TabIndex = 1;
+            this.SetInputBttn.TabIndex = 0;
             this.SetInputBttn.Text = "Select Input";
             this.SetInputBttn.UseVisualStyleBackColor = true;
             this.SetInputBttn.Click += new System.EventHandler(this.SetInputBttn_Click);
@@ -434,8 +458,9 @@ namespace FrameGUI
             this.InTxtBox.Enabled = false;
             this.InTxtBox.Location = new System.Drawing.Point(7, 8);
             this.InTxtBox.Name = "InTxtBox";
-            this.InTxtBox.Size = new System.Drawing.Size(346, 23);
+            this.InTxtBox.Size = new System.Drawing.Size(346, 20);
             this.InTxtBox.TabIndex = 0;
+            this.InTxtBox.TabStop = false;
             // 
             // Tabs
             // 
@@ -447,15 +472,16 @@ namespace FrameGUI
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
             this.Tabs.Size = new System.Drawing.Size(468, 251);
-            this.Tabs.TabIndex = 6;
+            this.Tabs.TabIndex = 38;
+            this.Tabs.TabStop = false;
             // 
             // SettingsTab
             // 
             this.SettingsTab.Controls.Add(this.SettingsTabs);
-            this.SettingsTab.Location = new System.Drawing.Point(4, 25);
+            this.SettingsTab.Location = new System.Drawing.Point(4, 23);
             this.SettingsTab.Name = "SettingsTab";
             this.SettingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.SettingsTab.Size = new System.Drawing.Size(460, 222);
+            this.SettingsTab.Size = new System.Drawing.Size(460, 224);
             this.SettingsTab.TabIndex = 4;
             this.SettingsTab.Text = "Encoder Settings";
             this.SettingsTab.UseVisualStyleBackColor = true;
@@ -469,16 +495,17 @@ namespace FrameGUI
             this.SettingsTabs.Name = "SettingsTabs";
             this.SettingsTabs.SelectedIndex = 0;
             this.SettingsTabs.Size = new System.Drawing.Size(454, 216);
-            this.SettingsTabs.TabIndex = 2;
+            this.SettingsTabs.TabIndex = 20;
+            this.SettingsTabs.TabStop = false;
             // 
             // VideoTab
             // 
             this.VideoTab.Controls.Add(this.SizeGB);
             this.VideoTab.Controls.Add(this.EncodeGB);
-            this.VideoTab.Location = new System.Drawing.Point(4, 25);
+            this.VideoTab.Location = new System.Drawing.Point(4, 23);
             this.VideoTab.Name = "VideoTab";
             this.VideoTab.Padding = new System.Windows.Forms.Padding(3);
-            this.VideoTab.Size = new System.Drawing.Size(446, 187);
+            this.VideoTab.Size = new System.Drawing.Size(446, 189);
             this.VideoTab.TabIndex = 0;
             this.VideoTab.Text = "Video (x264)";
             this.VideoTab.UseVisualStyleBackColor = true;
@@ -496,7 +523,7 @@ namespace FrameGUI
             this.SizeGB.Location = new System.Drawing.Point(328, 6);
             this.SizeGB.Name = "SizeGB";
             this.SizeGB.Size = new System.Drawing.Size(112, 179);
-            this.SizeGB.TabIndex = 12;
+            this.SizeGB.TabIndex = 5;
             this.SizeGB.TabStop = false;
             // 
             // ResizeAlgoDD
@@ -518,15 +545,15 @@ namespace FrameGUI
             "Spline"});
             this.ResizeAlgoDD.Location = new System.Drawing.Point(6, 148);
             this.ResizeAlgoDD.Name = "ResizeAlgoDD";
-            this.ResizeAlgoDD.Size = new System.Drawing.Size(100, 24);
-            this.ResizeAlgoDD.TabIndex = 7;
+            this.ResizeAlgoDD.Size = new System.Drawing.Size(100, 22);
+            this.ResizeAlgoDD.TabIndex = 13;
             // 
             // ResizeAlgoLabel
             // 
             this.ResizeAlgoLabel.AutoSize = true;
             this.ResizeAlgoLabel.Location = new System.Drawing.Point(23, 124);
             this.ResizeAlgoLabel.Name = "ResizeAlgoLabel";
-            this.ResizeAlgoLabel.Size = new System.Drawing.Size(85, 16);
+            this.ResizeAlgoLabel.Size = new System.Drawing.Size(66, 14);
             this.ResizeAlgoLabel.TabIndex = 6;
             this.ResizeAlgoLabel.Text = "Resize algo:";
             // 
@@ -540,15 +567,15 @@ namespace FrameGUI
             0,
             0});
             this.WidthResNUD.Name = "WidthResNUD";
-            this.WidthResNUD.Size = new System.Drawing.Size(50, 23);
-            this.WidthResNUD.TabIndex = 5;
+            this.WidthResNUD.Size = new System.Drawing.Size(50, 20);
+            this.WidthResNUD.TabIndex = 12;
             // 
             // WidthLabel
             // 
             this.WidthLabel.AutoSize = true;
             this.WidthLabel.Location = new System.Drawing.Point(6, 93);
             this.WidthLabel.Name = "WidthLabel";
-            this.WidthLabel.Size = new System.Drawing.Size(48, 16);
+            this.WidthLabel.Size = new System.Drawing.Size(37, 14);
             this.WidthLabel.TabIndex = 4;
             this.WidthLabel.Text = "Width:";
             // 
@@ -562,15 +589,15 @@ namespace FrameGUI
             0,
             0});
             this.HeightResNUD.Name = "HeightResNUD";
-            this.HeightResNUD.Size = new System.Drawing.Size(50, 23);
-            this.HeightResNUD.TabIndex = 3;
+            this.HeightResNUD.Size = new System.Drawing.Size(50, 20);
+            this.HeightResNUD.TabIndex = 11;
             // 
             // VidHeightLebel
             // 
             this.VidHeightLebel.AutoSize = true;
             this.VidHeightLebel.Location = new System.Drawing.Point(6, 59);
             this.VidHeightLebel.Name = "VidHeightLebel";
-            this.VidHeightLebel.Size = new System.Drawing.Size(52, 16);
+            this.VidHeightLebel.Size = new System.Drawing.Size(40, 14);
             this.VidHeightLebel.TabIndex = 2;
             this.VidHeightLebel.Text = "Height:";
             // 
@@ -579,8 +606,8 @@ namespace FrameGUI
             this.ChangeResCB.AutoSize = true;
             this.ChangeResCB.Location = new System.Drawing.Point(25, 27);
             this.ChangeResCB.Name = "ChangeResCB";
-            this.ChangeResCB.Size = new System.Drawing.Size(80, 20);
-            this.ChangeResCB.TabIndex = 1;
+            this.ChangeResCB.Size = new System.Drawing.Size(63, 18);
+            this.ChangeResCB.TabIndex = 10;
             this.ChangeResCB.Text = "Change";
             this.ChangeResCB.UseVisualStyleBackColor = true;
             this.ChangeResCB.CheckedChanged += new System.EventHandler(this.ChangeResCB_CheckedChanged);
@@ -591,7 +618,7 @@ namespace FrameGUI
             this.SizeLabel.BackColor = System.Drawing.Color.White;
             this.SizeLabel.Location = new System.Drawing.Point(41, 0);
             this.SizeLabel.Name = "SizeLabel";
-            this.SizeLabel.Size = new System.Drawing.Size(34, 16);
+            this.SizeLabel.Size = new System.Drawing.Size(28, 14);
             this.SizeLabel.TabIndex = 0;
             this.SizeLabel.Text = "Size";
             // 
@@ -611,7 +638,7 @@ namespace FrameGUI
             this.EncodeGB.Location = new System.Drawing.Point(3, 6);
             this.EncodeGB.Name = "EncodeGB";
             this.EncodeGB.Size = new System.Drawing.Size(319, 179);
-            this.EncodeGB.TabIndex = 11;
+            this.EncodeGB.TabIndex = 3;
             this.EncodeGB.TabStop = false;
             // 
             // ColorsGB
@@ -623,7 +650,7 @@ namespace FrameGUI
             this.ColorsGB.Location = new System.Drawing.Point(6, 93);
             this.ColorsGB.Name = "ColorsGB";
             this.ColorsGB.Size = new System.Drawing.Size(122, 79);
-            this.ColorsGB.TabIndex = 21;
+            this.ColorsGB.TabIndex = 2;
             this.ColorsGB.TabStop = false;
             // 
             // SharpenValNUD
@@ -636,16 +663,16 @@ namespace FrameGUI
             0,
             0});
             this.SharpenValNUD.Name = "SharpenValNUD";
-            this.SharpenValNUD.Size = new System.Drawing.Size(40, 23);
-            this.SharpenValNUD.TabIndex = 25;
+            this.SharpenValNUD.Size = new System.Drawing.Size(40, 20);
+            this.SharpenValNUD.TabIndex = 4;
             // 
             // SharpenCB
             // 
             this.SharpenCB.AutoSize = true;
             this.SharpenCB.Location = new System.Drawing.Point(6, 52);
             this.SharpenCB.Name = "SharpenCB";
-            this.SharpenCB.Size = new System.Drawing.Size(88, 20);
-            this.SharpenCB.TabIndex = 24;
+            this.SharpenCB.Size = new System.Drawing.Size(70, 18);
+            this.SharpenCB.TabIndex = 3;
             this.SharpenCB.Text = "Sharpen:";
             this.SharpenCB.UseVisualStyleBackColor = true;
             this.SharpenCB.CheckedChanged += new System.EventHandler(this.SharpenCB_CheckedChanged);
@@ -658,8 +685,9 @@ namespace FrameGUI
             "4:2:0 8-bit"});
             this.ColorsDD.Location = new System.Drawing.Point(18, 20);
             this.ColorsDD.Name = "ColorsDD";
-            this.ColorsDD.Size = new System.Drawing.Size(86, 24);
-            this.ColorsDD.TabIndex = 1;
+            this.ColorsDD.Size = new System.Drawing.Size(86, 22);
+            this.ColorsDD.TabIndex = 5;
+            this.ColorsDD.TabStop = false;
             // 
             // ColorsLabel
             // 
@@ -667,7 +695,7 @@ namespace FrameGUI
             this.ColorsLabel.BackColor = System.Drawing.Color.White;
             this.ColorsLabel.Location = new System.Drawing.Point(42, 0);
             this.ColorsLabel.Name = "ColorsLabel";
-            this.ColorsLabel.Size = new System.Drawing.Size(49, 16);
+            this.ColorsLabel.Size = new System.Drawing.Size(38, 14);
             this.ColorsLabel.TabIndex = 0;
             this.ColorsLabel.Text = "Colors";
             // 
@@ -681,7 +709,7 @@ namespace FrameGUI
             this.FrameGB.Location = new System.Drawing.Point(6, 10);
             this.FrameGB.Name = "FrameGB";
             this.FrameGB.Size = new System.Drawing.Size(122, 81);
-            this.FrameGB.TabIndex = 20;
+            this.FrameGB.TabIndex = 1;
             this.FrameGB.TabStop = false;
             // 
             // FrameLabel
@@ -690,7 +718,7 @@ namespace FrameGUI
             this.FrameLabel.BackColor = System.Drawing.Color.White;
             this.FrameLabel.Location = new System.Drawing.Point(43, 0);
             this.FrameLabel.Name = "FrameLabel";
-            this.FrameLabel.Size = new System.Drawing.Size(49, 16);
+            this.FrameLabel.Size = new System.Drawing.Size(37, 14);
             this.FrameLabel.TabIndex = 18;
             this.FrameLabel.Text = "Frame";
             // 
@@ -699,7 +727,7 @@ namespace FrameGUI
             this.FRLabel.AutoSize = true;
             this.FRLabel.Location = new System.Drawing.Point(6, 21);
             this.FRLabel.Name = "FRLabel";
-            this.FRLabel.Size = new System.Drawing.Size(78, 16);
+            this.FRLabel.Size = new System.Drawing.Size(59, 14);
             this.FRLabel.TabIndex = 16;
             this.FRLabel.Text = "Framerate:";
             // 
@@ -712,15 +740,15 @@ namespace FrameGUI
             0,
             0});
             this.FrameRNUD.Name = "FrameRNUD";
-            this.FrameRNUD.Size = new System.Drawing.Size(50, 23);
-            this.FrameRNUD.TabIndex = 17;
+            this.FrameRNUD.Size = new System.Drawing.Size(50, 20);
+            this.FrameRNUD.TabIndex = 1;
             // 
             // bframeLabel
             // 
             this.bframeLabel.AutoSize = true;
             this.bframeLabel.Location = new System.Drawing.Point(6, 53);
             this.bframeLabel.Name = "bframeLabel";
-            this.bframeLabel.Size = new System.Drawing.Size(69, 16);
+            this.bframeLabel.Size = new System.Drawing.Size(55, 14);
             this.bframeLabel.TabIndex = 7;
             this.bframeLabel.Text = "B-frames:";
             // 
@@ -733,8 +761,8 @@ namespace FrameGUI
             0,
             0});
             this.BframeValue.Name = "BframeValue";
-            this.BframeValue.Size = new System.Drawing.Size(50, 23);
-            this.BframeValue.TabIndex = 9;
+            this.BframeValue.Size = new System.Drawing.Size(50, 20);
+            this.BframeValue.TabIndex = 2;
             // 
             // ModeGB
             // 
@@ -746,7 +774,7 @@ namespace FrameGUI
             this.ModeGB.Location = new System.Drawing.Point(134, 50);
             this.ModeGB.Name = "ModeGB";
             this.ModeGB.Size = new System.Drawing.Size(179, 60);
-            this.ModeGB.TabIndex = 19;
+            this.ModeGB.TabIndex = 4;
             this.ModeGB.TabStop = false;
             // 
             // crfNUD
@@ -758,10 +786,10 @@ namespace FrameGUI
             0,
             0});
             this.crfNUD.Name = "crfNUD";
-            this.crfNUD.Size = new System.Drawing.Size(38, 23);
-            this.crfNUD.TabIndex = 4;
+            this.crfNUD.Size = new System.Drawing.Size(38, 20);
+            this.crfNUD.TabIndex = 9;
             this.crfNUD.Value = new decimal(new int[] {
-            22,
+            9,
             0,
             0,
             0});
@@ -771,8 +799,8 @@ namespace FrameGUI
             this.crfValueLabel.AutoSize = true;
             this.crfValueLabel.Location = new System.Drawing.Point(35, 27);
             this.crfValueLabel.Name = "crfValueLabel";
-            this.crfValueLabel.Size = new System.Drawing.Size(79, 16);
-            this.crfValueLabel.TabIndex = 3;
+            this.crfValueLabel.Size = new System.Drawing.Size(59, 14);
+            this.crfValueLabel.TabIndex = 9;
             this.crfValueLabel.Text = "CRF value:";
             // 
             // EModeSettingLabel
@@ -781,8 +809,8 @@ namespace FrameGUI
             this.EModeSettingLabel.BackColor = System.Drawing.Color.White;
             this.EModeSettingLabel.Location = new System.Drawing.Point(26, 0);
             this.EModeSettingLabel.Name = "EModeSettingLabel";
-            this.EModeSettingLabel.Size = new System.Drawing.Size(161, 16);
-            this.EModeSettingLabel.TabIndex = 0;
+            this.EModeSettingLabel.Size = new System.Drawing.Size(122, 14);
+            this.EModeSettingLabel.TabIndex = 9;
             this.EModeSettingLabel.Text = "Encoding Mode Settings";
             // 
             // BitrateValue
@@ -794,8 +822,8 @@ namespace FrameGUI
             0,
             0});
             this.BitrateValue.Name = "BitrateValue";
-            this.BitrateValue.Size = new System.Drawing.Size(61, 23);
-            this.BitrateValue.TabIndex = 2;
+            this.BitrateValue.Size = new System.Drawing.Size(61, 20);
+            this.BitrateValue.TabIndex = 9;
             this.BitrateValue.Value = new decimal(new int[] {
             1000,
             0,
@@ -808,8 +836,8 @@ namespace FrameGUI
             this.BitrateLabel.AutoSize = true;
             this.BitrateLabel.Location = new System.Drawing.Point(24, 27);
             this.BitrateLabel.Name = "BitrateLabel";
-            this.BitrateLabel.Size = new System.Drawing.Size(93, 16);
-            this.BitrateLabel.TabIndex = 1;
+            this.BitrateLabel.Size = new System.Drawing.Size(72, 14);
+            this.BitrateLabel.TabIndex = 9;
             this.BitrateLabel.Text = "Bitrate (kb/s):";
             this.BitrateLabel.Visible = false;
             // 
@@ -818,8 +846,8 @@ namespace FrameGUI
             this.UseCB2.AutoSize = true;
             this.UseCB2.Location = new System.Drawing.Point(274, 119);
             this.UseCB2.Name = "UseCB2";
-            this.UseCB2.Size = new System.Drawing.Size(54, 20);
-            this.UseCB2.TabIndex = 18;
+            this.UseCB2.Size = new System.Drawing.Size(45, 18);
+            this.UseCB2.TabIndex = 6;
             this.UseCB2.Text = "Use";
             this.UseCB2.UseVisualStyleBackColor = true;
             this.UseCB2.CheckedChanged += new System.EventHandler(this.UseCB2_CheckedChanged);
@@ -841,15 +869,15 @@ namespace FrameGUI
             "ssim"});
             this.TuneDD.Location = new System.Drawing.Point(172, 116);
             this.TuneDD.Name = "TuneDD";
-            this.TuneDD.Size = new System.Drawing.Size(96, 24);
-            this.TuneDD.TabIndex = 13;
+            this.TuneDD.Size = new System.Drawing.Size(96, 22);
+            this.TuneDD.TabIndex = 7;
             // 
             // TuneLabel
             // 
             this.TuneLabel.AutoSize = true;
-            this.TuneLabel.Location = new System.Drawing.Point(131, 121);
+            this.TuneLabel.Location = new System.Drawing.Point(131, 119);
             this.TuneLabel.Name = "TuneLabel";
-            this.TuneLabel.Size = new System.Drawing.Size(44, 16);
+            this.TuneLabel.Size = new System.Drawing.Size(34, 14);
             this.TuneLabel.TabIndex = 12;
             this.TuneLabel.Text = "Tune:";
             // 
@@ -857,13 +885,14 @@ namespace FrameGUI
             // 
             this.EncodeModeDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.EncodeModeDD.FormattingEnabled = true;
+            this.EncodeModeDD.ItemHeight = 14;
             this.EncodeModeDD.Items.AddRange(new object[] {
             "Constant Rate Factor (CRF)",
             "1 Pass Average Bit Rate"});
             this.EncodeModeDD.Location = new System.Drawing.Point(174, 20);
             this.EncodeModeDD.Name = "EncodeModeDD";
-            this.EncodeModeDD.Size = new System.Drawing.Size(139, 24);
-            this.EncodeModeDD.TabIndex = 11;
+            this.EncodeModeDD.Size = new System.Drawing.Size(139, 22);
+            this.EncodeModeDD.TabIndex = 3;
             this.EncodeModeDD.SelectedIndexChanged += new System.EventHandler(this.EncodeModeDD_SelectedIndexChanged);
             // 
             // EncodeModeLabel
@@ -871,8 +900,8 @@ namespace FrameGUI
             this.EncodeModeLabel.AutoSize = true;
             this.EncodeModeLabel.Location = new System.Drawing.Point(131, 24);
             this.EncodeModeLabel.Name = "EncodeModeLabel";
-            this.EncodeModeLabel.Size = new System.Drawing.Size(47, 16);
-            this.EncodeModeLabel.TabIndex = 10;
+            this.EncodeModeLabel.Size = new System.Drawing.Size(36, 14);
+            this.EncodeModeLabel.TabIndex = 5;
             this.EncodeModeLabel.Text = "Mode:";
             // 
             // CPUPDD
@@ -892,15 +921,15 @@ namespace FrameGUI
             "placebo"});
             this.CPUPDD.Location = new System.Drawing.Point(202, 148);
             this.CPUPDD.Name = "CPUPDD";
-            this.CPUPDD.Size = new System.Drawing.Size(111, 24);
-            this.CPUPDD.TabIndex = 4;
+            this.CPUPDD.Size = new System.Drawing.Size(111, 22);
+            this.CPUPDD.TabIndex = 8;
             // 
             // CPUPreLabel
             // 
             this.CPUPreLabel.AutoSize = true;
             this.CPUPreLabel.Location = new System.Drawing.Point(131, 151);
             this.CPUPreLabel.Name = "CPUPreLabel";
-            this.CPUPreLabel.Size = new System.Drawing.Size(85, 16);
+            this.CPUPreLabel.Size = new System.Drawing.Size(64, 14);
             this.CPUPreLabel.TabIndex = 3;
             this.CPUPreLabel.Text = "CPU Preset:";
             // 
@@ -910,17 +939,17 @@ namespace FrameGUI
             this.EncodeLabel.BackColor = System.Drawing.Color.White;
             this.EncodeLabel.Location = new System.Drawing.Point(146, 0);
             this.EncodeLabel.Name = "EncodeLabel";
-            this.EncodeLabel.Size = new System.Drawing.Size(67, 16);
+            this.EncodeLabel.Size = new System.Drawing.Size(51, 14);
             this.EncodeLabel.TabIndex = 0;
             this.EncodeLabel.Text = "Encoding";
             // 
             // AudioTab
             // 
             this.AudioTab.Controls.Add(this.AudioSetGB);
-            this.AudioTab.Location = new System.Drawing.Point(4, 25);
+            this.AudioTab.Location = new System.Drawing.Point(4, 23);
             this.AudioTab.Name = "AudioTab";
             this.AudioTab.Padding = new System.Windows.Forms.Padding(3);
-            this.AudioTab.Size = new System.Drawing.Size(446, 187);
+            this.AudioTab.Size = new System.Drawing.Size(446, 189);
             this.AudioTab.TabIndex = 1;
             this.AudioTab.Text = "Audio";
             this.AudioTab.UseVisualStyleBackColor = true;
@@ -946,19 +975,18 @@ namespace FrameGUI
             this.SRDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SRDD.FormattingEnabled = true;
             this.SRDD.Items.AddRange(new object[] {
-            "41000",
             "48000"});
             this.SRDD.Location = new System.Drawing.Point(229, 116);
             this.SRDD.Name = "SRDD";
-            this.SRDD.Size = new System.Drawing.Size(74, 24);
-            this.SRDD.TabIndex = 7;
+            this.SRDD.Size = new System.Drawing.Size(74, 22);
+            this.SRDD.TabIndex = 3;
             // 
             // AudNote
             // 
             this.AudNote.AutoSize = true;
             this.AudNote.Location = new System.Drawing.Point(26, 163);
             this.AudNote.Name = "AudNote";
-            this.AudNote.Size = new System.Drawing.Size(506, 16);
+            this.AudNote.Size = new System.Drawing.Size(387, 14);
             this.AudNote.TabIndex = 3;
             this.AudNote.Text = "Note: Any settings set here will only apply to the FIRST audio track in the video" +
     ".";
@@ -968,7 +996,7 @@ namespace FrameGUI
             this.AudioSRLabel.AutoSize = true;
             this.AudioSRLabel.Location = new System.Drawing.Point(126, 119);
             this.AudioSRLabel.Name = "AudioSRLabel";
-            this.AudioSRLabel.Size = new System.Drawing.Size(122, 16);
+            this.AudioSRLabel.Size = new System.Drawing.Size(94, 14);
             this.AudioSRLabel.TabIndex = 6;
             this.AudioSRLabel.Text = "Sample Rate (Hz):";
             // 
@@ -977,7 +1005,7 @@ namespace FrameGUI
             this.AudioBitLabel.AutoSize = true;
             this.AudioBitLabel.Location = new System.Drawing.Point(137, 77);
             this.AudioBitLabel.Name = "AudioBitLabel";
-            this.AudioBitLabel.Size = new System.Drawing.Size(93, 16);
+            this.AudioBitLabel.Size = new System.Drawing.Size(72, 14);
             this.AudioBitLabel.TabIndex = 4;
             this.AudioBitLabel.Text = "Audio Bitrate:";
             // 
@@ -994,14 +1022,11 @@ namespace FrameGUI
             "224",
             "256",
             "320",
-            "640",
-            "754",
-            "1280",
-            "1510"});
+            "576"});
             this.AudBitrateDD.Location = new System.Drawing.Point(217, 74);
             this.AudBitrateDD.Name = "AudBitrateDD";
-            this.AudBitrateDD.Size = new System.Drawing.Size(74, 24);
-            this.AudBitrateDD.TabIndex = 5;
+            this.AudBitrateDD.Size = new System.Drawing.Size(74, 22);
+            this.AudBitrateDD.TabIndex = 2;
             // 
             // AudioSetLabel
             // 
@@ -1009,7 +1034,7 @@ namespace FrameGUI
             this.AudioSetLabel.BackColor = System.Drawing.Color.White;
             this.AudioSetLabel.Location = new System.Drawing.Point(201, 0);
             this.AudioSetLabel.Name = "AudioSetLabel";
-            this.AudioSetLabel.Size = new System.Drawing.Size(44, 16);
+            this.AudioSetLabel.Size = new System.Drawing.Size(35, 14);
             this.AudioSetLabel.TabIndex = 0;
             this.AudioSetLabel.Text = "Audio";
             // 
@@ -1018,7 +1043,7 @@ namespace FrameGUI
             this.AudFormatLabel.AutoSize = true;
             this.AudFormatLabel.Location = new System.Drawing.Point(137, 37);
             this.AudFormatLabel.Name = "AudFormatLabel";
-            this.AudFormatLabel.Size = new System.Drawing.Size(97, 16);
+            this.AudFormatLabel.Size = new System.Drawing.Size(74, 14);
             this.AudFormatLabel.TabIndex = 2;
             this.AudFormatLabel.Text = "Audio Format:";
             // 
@@ -1031,17 +1056,17 @@ namespace FrameGUI
             "mp3"});
             this.AudFormatDD.Location = new System.Drawing.Point(217, 34);
             this.AudFormatDD.Name = "AudFormatDD";
-            this.AudFormatDD.Size = new System.Drawing.Size(74, 24);
-            this.AudFormatDD.TabIndex = 3;
+            this.AudFormatDD.Size = new System.Drawing.Size(74, 22);
+            this.AudFormatDD.TabIndex = 1;
             // 
             // ScriptOtherTab
             // 
             this.ScriptOtherTab.Controls.Add(this.vsSettingLabel);
             this.ScriptOtherTab.Controls.Add(this.OtherSettingGB);
             this.ScriptOtherTab.Controls.Add(this.SettingsGB);
-            this.ScriptOtherTab.Location = new System.Drawing.Point(4, 25);
+            this.ScriptOtherTab.Location = new System.Drawing.Point(4, 23);
             this.ScriptOtherTab.Name = "ScriptOtherTab";
-            this.ScriptOtherTab.Size = new System.Drawing.Size(446, 187);
+            this.ScriptOtherTab.Size = new System.Drawing.Size(446, 189);
             this.ScriptOtherTab.TabIndex = 2;
             this.ScriptOtherTab.Text = "SVPFlow/AviSynth+/Other";
             this.ScriptOtherTab.UseVisualStyleBackColor = true;
@@ -1056,7 +1081,7 @@ namespace FrameGUI
             this.vsSettingLabel.Location = new System.Drawing.Point(3, 117);
             this.vsSettingLabel.Name = "vsSettingLabel";
             this.vsSettingLabel.Size = new System.Drawing.Size(134, 68);
-            this.vsSettingLabel.TabIndex = 5;
+            this.vsSettingLabel.TabIndex = 2;
             this.vsSettingLabel.TabStop = false;
             // 
             // MaxMemLabel
@@ -1064,7 +1089,7 @@ namespace FrameGUI
             this.MaxMemLabel.AutoSize = true;
             this.MaxMemLabel.Location = new System.Drawing.Point(3, 44);
             this.MaxMemLabel.Name = "MaxMemLabel";
-            this.MaxMemLabel.Size = new System.Drawing.Size(83, 16);
+            this.MaxMemLabel.Size = new System.Drawing.Size(64, 14);
             this.MaxMemLabel.TabIndex = 4;
             this.MaxMemLabel.Text = "Max. Mem. :";
             // 
@@ -1078,8 +1103,8 @@ namespace FrameGUI
             0,
             0});
             this.MaxMemNUD.Name = "MaxMemNUD";
-            this.MaxMemNUD.Size = new System.Drawing.Size(56, 23);
-            this.MaxMemNUD.TabIndex = 3;
+            this.MaxMemNUD.Size = new System.Drawing.Size(56, 20);
+            this.MaxMemNUD.TabIndex = 2;
             // 
             // ThreadsNUD
             // 
@@ -1091,15 +1116,15 @@ namespace FrameGUI
             0,
             0});
             this.ThreadsNUD.Name = "ThreadsNUD";
-            this.ThreadsNUD.Size = new System.Drawing.Size(67, 23);
-            this.ThreadsNUD.TabIndex = 2;
+            this.ThreadsNUD.Size = new System.Drawing.Size(67, 20);
+            this.ThreadsNUD.TabIndex = 1;
             // 
             // ThreadsLabel
             // 
             this.ThreadsLabel.AutoSize = true;
             this.ThreadsLabel.Location = new System.Drawing.Point(3, 19);
             this.ThreadsLabel.Name = "ThreadsLabel";
-            this.ThreadsLabel.Size = new System.Drawing.Size(65, 16);
+            this.ThreadsLabel.Size = new System.Drawing.Size(50, 14);
             this.ThreadsLabel.TabIndex = 1;
             this.ThreadsLabel.Text = "Threads:";
             // 
@@ -1109,7 +1134,7 @@ namespace FrameGUI
             this.aviLabel.BackColor = System.Drawing.Color.White;
             this.aviLabel.Location = new System.Drawing.Point(38, 0);
             this.aviLabel.Name = "aviLabel";
-            this.aviLabel.Size = new System.Drawing.Size(71, 16);
+            this.aviLabel.Size = new System.Drawing.Size(57, 14);
             this.aviLabel.TabIndex = 0;
             this.aviLabel.Text = "AviSynth+";
             // 
@@ -1122,7 +1147,7 @@ namespace FrameGUI
             this.OtherSettingGB.Location = new System.Drawing.Point(143, 117);
             this.OtherSettingGB.Name = "OtherSettingGB";
             this.OtherSettingGB.Size = new System.Drawing.Size(298, 68);
-            this.OtherSettingGB.TabIndex = 4;
+            this.OtherSettingGB.TabIndex = 3;
             this.OtherSettingGB.TabStop = false;
             // 
             // NotificationCB
@@ -1132,7 +1157,7 @@ namespace FrameGUI
             this.NotificationCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.NotificationCB.Location = new System.Drawing.Point(33, 46);
             this.NotificationCB.Name = "NotificationCB";
-            this.NotificationCB.Size = new System.Drawing.Size(310, 20);
+            this.NotificationCB.Size = new System.Drawing.Size(243, 18);
             this.NotificationCB.TabIndex = 3;
             this.NotificationCB.Text = "Show message box upon encoding complete";
             this.NotificationCB.UseVisualStyleBackColor = true;
@@ -1142,7 +1167,7 @@ namespace FrameGUI
             this.CopyCommandBttn.Location = new System.Drawing.Point(6, 18);
             this.CopyCommandBttn.Name = "CopyCommandBttn";
             this.CopyCommandBttn.Size = new System.Drawing.Size(147, 25);
-            this.CopyCommandBttn.TabIndex = 2;
+            this.CopyCommandBttn.TabIndex = 1;
             this.CopyCommandBttn.Text = "Copy FFMpeg Command";
             this.CopyCommandBttn.UseVisualStyleBackColor = true;
             this.CopyCommandBttn.Click += new System.EventHandler(this.CopyCommandBttn_Click);
@@ -1152,7 +1177,7 @@ namespace FrameGUI
             this.SaveSettingBttn.Location = new System.Drawing.Point(159, 18);
             this.SaveSettingBttn.Name = "SaveSettingBttn";
             this.SaveSettingBttn.Size = new System.Drawing.Size(133, 25);
-            this.SaveSettingBttn.TabIndex = 1;
+            this.SaveSettingBttn.TabIndex = 2;
             this.SaveSettingBttn.Text = "Save Current Settings";
             this.SaveSettingBttn.UseVisualStyleBackColor = true;
             this.SaveSettingBttn.Click += new System.EventHandler(this.SaveSettingBttn_Click);
@@ -1163,7 +1188,7 @@ namespace FrameGUI
             this.OtherSettingLabel.BackColor = System.Drawing.Color.White;
             this.OtherSettingLabel.Location = new System.Drawing.Point(114, 0);
             this.OtherSettingLabel.Name = "OtherSettingLabel";
-            this.OtherSettingLabel.Size = new System.Drawing.Size(99, 16);
+            this.OtherSettingLabel.Size = new System.Drawing.Size(76, 14);
             this.OtherSettingLabel.TabIndex = 0;
             this.OtherSettingLabel.Text = "Other Settings";
             // 
@@ -1191,7 +1216,7 @@ namespace FrameGUI
             this.SettingsGB.Location = new System.Drawing.Point(3, 3);
             this.SettingsGB.Name = "SettingsGB";
             this.SettingsGB.Size = new System.Drawing.Size(438, 112);
-            this.SettingsGB.TabIndex = 3;
+            this.SettingsGB.TabIndex = 1;
             this.SettingsGB.TabStop = false;
             // 
             // ArtefactLabel
@@ -1201,7 +1226,7 @@ namespace FrameGUI
             this.ArtefactLabel.ForeColor = System.Drawing.Color.Red;
             this.ArtefactLabel.Location = new System.Drawing.Point(57, 91);
             this.ArtefactLabel.Name = "ArtefactLabel";
-            this.ArtefactLabel.Size = new System.Drawing.Size(405, 16);
+            this.ArtefactLabel.Size = new System.Drawing.Size(312, 14);
             this.ArtefactLabel.TabIndex = 18;
             this.ArtefactLabel.Text = "Note: artefacts (glitches) can\'t be fully removed in output video.";
             this.ArtefactLabel.Visible = false;
@@ -1212,8 +1237,8 @@ namespace FrameGUI
             this.UseGPUCB.Enabled = false;
             this.UseGPUCB.Location = new System.Drawing.Point(340, 23);
             this.UseGPUCB.Name = "UseGPUCB";
-            this.UseGPUCB.Size = new System.Drawing.Size(95, 20);
-            this.UseGPUCB.TabIndex = 17;
+            this.UseGPUCB.Size = new System.Drawing.Size(75, 18);
+            this.UseGPUCB.TabIndex = 8;
             this.UseGPUCB.Text = "Use GPU?";
             this.UseGPUCB.UseVisualStyleBackColor = true;
             this.UseGPUCB.Visible = false;
@@ -1229,8 +1254,8 @@ namespace FrameGUI
             "Low smoothness with very little to no artefacts (glitches)"});
             this.IwantDD.Location = new System.Drawing.Point(73, 56);
             this.IwantDD.Name = "IwantDD";
-            this.IwantDD.Size = new System.Drawing.Size(335, 24);
-            this.IwantDD.TabIndex = 16;
+            this.IwantDD.Size = new System.Drawing.Size(335, 22);
+            this.IwantDD.TabIndex = 9;
             this.IwantDD.Visible = false;
             // 
             // IwantLabel
@@ -1238,7 +1263,7 @@ namespace FrameGUI
             this.IwantLabel.AutoSize = true;
             this.IwantLabel.Location = new System.Drawing.Point(27, 59);
             this.IwantLabel.Name = "IwantLabel";
-            this.IwantLabel.Size = new System.Drawing.Size(48, 16);
+            this.IwantLabel.Size = new System.Drawing.Size(40, 14);
             this.IwantLabel.TabIndex = 15;
             this.IwantLabel.Text = "I want:";
             this.IwantLabel.Visible = false;
@@ -1253,8 +1278,8 @@ namespace FrameGUI
             0,
             0});
             this.OutFPSNUD.Name = "OutFPSNUD";
-            this.OutFPSNUD.Size = new System.Drawing.Size(58, 23);
-            this.OutFPSNUD.TabIndex = 14;
+            this.OutFPSNUD.Size = new System.Drawing.Size(58, 20);
+            this.OutFPSNUD.TabIndex = 7;
             this.OutFPSNUD.Value = new decimal(new int[] {
             60,
             0,
@@ -1267,7 +1292,7 @@ namespace FrameGUI
             this.OutFPSLabel.AutoSize = true;
             this.OutFPSLabel.Location = new System.Drawing.Point(177, 24);
             this.OutFPSLabel.Name = "OutFPSLabel";
-            this.OutFPSLabel.Size = new System.Drawing.Size(86, 16);
+            this.OutFPSLabel.Size = new System.Drawing.Size(64, 14);
             this.OutFPSLabel.TabIndex = 13;
             this.OutFPSLabel.Text = "Output FPS:";
             this.OutFPSLabel.Visible = false;
@@ -1282,8 +1307,8 @@ namespace FrameGUI
             0,
             0});
             this.InputFPSNUD.Name = "InputFPSNUD";
-            this.InputFPSNUD.Size = new System.Drawing.Size(57, 23);
-            this.InputFPSNUD.TabIndex = 12;
+            this.InputFPSNUD.Size = new System.Drawing.Size(57, 20);
+            this.InputFPSNUD.TabIndex = 6;
             this.InputFPSNUD.Value = new decimal(new int[] {
             24,
             0,
@@ -1297,7 +1322,7 @@ namespace FrameGUI
             this.InputFPSLabel.AutoSize = true;
             this.InputFPSLabel.Location = new System.Drawing.Point(27, 24);
             this.InputFPSLabel.Name = "InputFPSLabel";
-            this.InputFPSLabel.Size = new System.Drawing.Size(74, 16);
+            this.InputFPSLabel.Size = new System.Drawing.Size(55, 14);
             this.InputFPSLabel.TabIndex = 11;
             this.InputFPSLabel.Text = "Input FPS:";
             this.InputFPSLabel.Visible = false;
@@ -1307,8 +1332,8 @@ namespace FrameGUI
             this.NoobCB.AutoSize = true;
             this.NoobCB.Location = new System.Drawing.Point(381, 90);
             this.NoobCB.Name = "NoobCB";
-            this.NoobCB.Size = new System.Drawing.Size(71, 20);
-            this.NoobCB.TabIndex = 10;
+            this.NoobCB.Size = new System.Drawing.Size(57, 18);
+            this.NoobCB.TabIndex = 2;
             this.NoobCB.Text = "Noob?";
             this.NoobCB.UseVisualStyleBackColor = true;
             this.NoobCB.CheckedChanged += new System.EventHandler(this.NoobCB_CheckedChanged);
@@ -1318,8 +1343,8 @@ namespace FrameGUI
             this.UseCB.AutoSize = true;
             this.UseCB.Location = new System.Drawing.Point(6, 90);
             this.UseCB.Name = "UseCB";
-            this.UseCB.Size = new System.Drawing.Size(54, 20);
-            this.UseCB.TabIndex = 9;
+            this.UseCB.Size = new System.Drawing.Size(45, 18);
+            this.UseCB.TabIndex = 1;
             this.UseCB.Text = "Use";
             this.UseCB.UseVisualStyleBackColor = true;
             this.UseCB.CheckedChanged += new System.EventHandler(this.UseCB_CheckedChanged);
@@ -1329,8 +1354,8 @@ namespace FrameGUI
             this.StuckLink.AutoSize = true;
             this.StuckLink.Location = new System.Drawing.Point(111, 91);
             this.StuckLink.Name = "StuckLink";
-            this.StuckLink.Size = new System.Drawing.Size(37, 16);
-            this.StuckLink.TabIndex = 8;
+            this.StuckLink.Size = new System.Drawing.Size(29, 14);
+            this.StuckLink.TabIndex = 10;
             this.StuckLink.TabStop = true;
             this.StuckLink.Text = "here";
             this.StuckLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.StuckLink_LinkClicked);
@@ -1340,7 +1365,7 @@ namespace FrameGUI
             this.StuckLabel.AutoSize = true;
             this.StuckLabel.Location = new System.Drawing.Point(57, 91);
             this.StuckLabel.Name = "StuckLabel";
-            this.StuckLabel.Size = new System.Drawing.Size(412, 16);
+            this.StuckLabel.Size = new System.Drawing.Size(318, 14);
             this.StuckLabel.TabIndex = 7;
             this.StuckLabel.Text = "Stuck? Go          to see the syntax and information of the scripts.";
             // 
@@ -1349,15 +1374,15 @@ namespace FrameGUI
             this.AnalyseTxtBox.Enabled = false;
             this.AnalyseTxtBox.Location = new System.Drawing.Point(59, 66);
             this.AnalyseTxtBox.Name = "AnalyseTxtBox";
-            this.AnalyseTxtBox.Size = new System.Drawing.Size(373, 23);
-            this.AnalyseTxtBox.TabIndex = 6;
+            this.AnalyseTxtBox.Size = new System.Drawing.Size(373, 20);
+            this.AnalyseTxtBox.TabIndex = 5;
             // 
             // AnalyseLabel
             // 
             this.AnalyseLabel.AutoSize = true;
             this.AnalyseLabel.Location = new System.Drawing.Point(7, 69);
             this.AnalyseLabel.Name = "AnalyseLabel";
-            this.AnalyseLabel.Size = new System.Drawing.Size(62, 16);
+            this.AnalyseLabel.Size = new System.Drawing.Size(50, 14);
             this.AnalyseLabel.TabIndex = 5;
             this.AnalyseLabel.Text = "Analyse:";
             // 
@@ -1366,7 +1391,7 @@ namespace FrameGUI
             this.SuperTxtBox.Enabled = false;
             this.SuperTxtBox.Location = new System.Drawing.Point(59, 42);
             this.SuperTxtBox.Name = "SuperTxtBox";
-            this.SuperTxtBox.Size = new System.Drawing.Size(373, 23);
+            this.SuperTxtBox.Size = new System.Drawing.Size(373, 20);
             this.SuperTxtBox.TabIndex = 4;
             // 
             // SmoothTxtBox
@@ -1374,7 +1399,7 @@ namespace FrameGUI
             this.SmoothTxtBox.Enabled = false;
             this.SmoothTxtBox.Location = new System.Drawing.Point(59, 18);
             this.SmoothTxtBox.Name = "SmoothTxtBox";
-            this.SmoothTxtBox.Size = new System.Drawing.Size(373, 23);
+            this.SmoothTxtBox.Size = new System.Drawing.Size(373, 20);
             this.SmoothTxtBox.TabIndex = 3;
             // 
             // SuperLabel
@@ -1382,7 +1407,7 @@ namespace FrameGUI
             this.SuperLabel.AutoSize = true;
             this.SuperLabel.Location = new System.Drawing.Point(7, 45);
             this.SuperLabel.Name = "SuperLabel";
-            this.SuperLabel.Size = new System.Drawing.Size(50, 16);
+            this.SuperLabel.Size = new System.Drawing.Size(39, 14);
             this.SuperLabel.TabIndex = 2;
             this.SuperLabel.Text = "Super:";
             // 
@@ -1391,7 +1416,7 @@ namespace FrameGUI
             this.SmoothLabel.AutoSize = true;
             this.SmoothLabel.Location = new System.Drawing.Point(7, 22);
             this.SmoothLabel.Name = "SmoothLabel";
-            this.SmoothLabel.Size = new System.Drawing.Size(60, 16);
+            this.SmoothLabel.Size = new System.Drawing.Size(46, 14);
             this.SmoothLabel.TabIndex = 1;
             this.SmoothLabel.Text = "Smooth:";
             // 
@@ -1401,7 +1426,7 @@ namespace FrameGUI
             this.ScriptsLabel.BackColor = System.Drawing.Color.White;
             this.ScriptsLabel.Location = new System.Drawing.Point(194, 0);
             this.ScriptsLabel.Name = "ScriptsLabel";
-            this.ScriptsLabel.Size = new System.Drawing.Size(64, 16);
+            this.ScriptsLabel.Size = new System.Drawing.Size(52, 14);
             this.ScriptsLabel.TabIndex = 0;
             this.ScriptsLabel.Text = "SVPFlow";
             // 
@@ -1409,6 +1434,7 @@ namespace FrameGUI
             // 
             this.FormatDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FormatDD.FormattingEnabled = true;
+            this.FormatDD.ItemHeight = 14;
             this.FormatDD.Items.AddRange(new object[] {
             ".mp4",
             ".mkv",
@@ -1417,8 +1443,8 @@ namespace FrameGUI
             ".flv"});
             this.FormatDD.Location = new System.Drawing.Point(336, 261);
             this.FormatDD.Name = "FormatDD";
-            this.FormatDD.Size = new System.Drawing.Size(46, 24);
-            this.FormatDD.TabIndex = 10;
+            this.FormatDD.Size = new System.Drawing.Size(46, 22);
+            this.FormatDD.TabIndex = 40;
             // 
             // FFWorker
             // 
@@ -1439,7 +1465,7 @@ namespace FrameGUI
             // FrameGUI
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(487, 320);
@@ -1452,12 +1478,14 @@ namespace FrameGUI
             this.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FrameGUI";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.Text = "FrameGUI v1.0";
             this.AboutTab.ResumeLayout(false);
+            this.AboutTab.PerformLayout();
             this.AboutAuthGB.ResumeLayout(false);
             this.AboutAuthGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TwitterLogo)).EndInit();
@@ -1617,5 +1645,7 @@ namespace FrameGUI
         internal CheckBox UseGPUCB;
         internal Label ArtefactLabel;
         internal LinkLabel VideoLinkEN;
+        private Button OffDocButton;
+        private Label HelpLabel;
     }
 }
