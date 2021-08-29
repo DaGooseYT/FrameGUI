@@ -36,7 +36,7 @@ FrameGUI combines simplicity with advanced encoding features to accomplish tasks
 If you do not like reading (like me), the official video tutorial for FrameGUI as an alternative can be found [here](https://youtu.be/Fs38PwpMdo4). Otherwise, continue reading for documentation and usage regarding FrameGUI. **This is not a noob guide.** 
 
 ### Select Input File
-Start by selecting an input file on the `Main` tab. The supported input formats are (case sensitive): .mp4, .mkv, .mov, .avi, .thp, .bik, .m2ts, .ts, .flv, .webm, .ogv
+Start by selecting an input file on the `Main` tab. The supported input formats are as follows: .mp4, .mkv, .mov, .avi, .thp, .bik, .m2ts, .ts, .flv, .webm, .ogv
 
 ![alt text][input]
 
