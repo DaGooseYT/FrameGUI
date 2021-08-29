@@ -111,6 +111,7 @@ namespace FFLoader.Arguments
             _args.Append(CodecArgs.AudioCodecs(aCodec));
             _args.Append(BitrateArgs.AudioBitrate(aBitrate));
             _args.Append(SampleRateArgs.SampleRate(sampleRate));
+            _args.Append(EncoderAppArgs.EncoderApp());
 
             _args.Append(string.Format($@" ""{outputVideo}"""));
 
