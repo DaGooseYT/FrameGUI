@@ -33,7 +33,7 @@ FrameGUI combines simplicity with advanced encoding features to accomplish tasks
 - Set audio sample rate.
 
 # Usage
-If you do not like reading (like me), the official video tutorial for FrameGUI as an alternative can be found [here](). Otherwise, continue reading for documentation and usage regarding FrameGUI. **This is not a noob guide.** 
+If you do not like reading (like me), the official video tutorial for FrameGUI as an alternative can be found [here](https://youtu.be/Fs38PwpMdo4). Otherwise, continue reading for documentation and usage regarding FrameGUI. **This is not a noob guide.** 
 
 ### Select Input File
 Start by selecting an input file on the `Main` tab. The supported input formats are (case sensitive): .mp4, .mkv, .mov, .avi, .thp, .bik, .m2ts, .ts, .flv, .webm, .ogv
@@ -148,13 +148,14 @@ Below is an AviSynth+ error sample:
 
 [avserr]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/avserr.PNG "AviSynth+ Error"
 
-As you can see, the errors will define the problem which makes solving it easy. But in the case you don't know how to solve a problem, follow the steps below to properly send an issue or problem report.
+As you can see, the errors will define the problem which makes solving it easy. But in the case you don't know how to solve a problem, follow the steps below to properly send an issue or problem report. You can send problem or issue reports in the `Issues` section of this repository or in the comments section of the official video tutorial found [here](https://youtu.be/Fs38PwpMdo4)
 
 Required files and other info to properly report errors, problems, bugs, and issues are listed below. **_Issues and problem reports will not be accepted without these files and info!_**
-1. `ffmpeglogs.txt`. This can be found in `C:\Users\~USER\AppData\Local\Temp\FrameGUI`. If no log file was generated or if it's blank, please state that when reporting the issue.
-2. `aviscript.avs`. This can also be found in `C:\Users\~USER\AppData\Local\Temp\FrameGUI`. If no AviSynth+ script was generated (e.g. you didn't use AviSynth+) then please state that when reporting the issue.
-3. The settings that you have set in FrameGUI (If `ffmpeglogs.txt` was not generated).
-4. What version OS you are using (Windows 10, Windows 7, etc.)
+1. The error message that you have received. 
+2. `ffmpeglogs.txt`. This can be found in `C:\Users\<username>\AppData\Local\Temp\FrameGUI`. If no log file was generated or if it's blank, please state that when reporting the issue.
+3. `aviscript.avs`. This can also be found in `C:\Users\<username>\AppData\Local\Temp\FrameGUI`. If no AviSynth+ script was generated (e.g. you didn't use AviSynth+) then please state that when reporting the issue.
+4. The settings that you have set in FrameGUI (If `ffmpeglogs.txt` was not generated).
+5. What version OS you are using (Windows 10, Windows 7, etc.)
 
 All of this information will help me solve the problem quicker and hopefully in one response. Thank you.
 
