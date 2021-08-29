@@ -81,6 +81,16 @@ namespace FrameGUI
         }
 
         /// <summary>
+        /// The link to the official tutorial video of FrameGUI.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of LinkLabelClickedEventArgs.</param>
+        private void VideoLinkEN_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://youtu.be/Fs38PwpMdo4");
+        }
+
+        /// <summary>
         /// Sets the path for the input video.
         /// </summary>
         /// <param name="sender">FrameGUI object.</param>
