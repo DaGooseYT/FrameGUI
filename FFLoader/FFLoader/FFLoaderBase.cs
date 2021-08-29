@@ -93,7 +93,7 @@ namespace FFLoader
         /// <returns>True of False.</returns>
         private bool SupportedFiles()
         {
-            return supportedExtensions.Contains(Path.GetExtension(InputVideoPath));
+            return supportedExtensions.Contains(Path.GetExtension(InputVideoPath).ToLower());
         }
 
         /// <summary>
