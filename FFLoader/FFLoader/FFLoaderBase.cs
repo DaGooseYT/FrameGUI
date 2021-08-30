@@ -114,7 +114,7 @@ namespace FFLoader
         /// <param name="sRate">The audio sample rate.</param>
         public void ConvertFFMpeg(string vCodec, string mode, string preset, string tune, string algo, string aCodec, 
             string aBitrate, string sRate, double vHeight, double vWidth, double vBitrate, double fps, double bFrame, 
-            double crf, float sharpen)
+            double crf, float sharpen, string version)
         {
             IsRealProcess = true; 
 
@@ -132,7 +132,7 @@ namespace FFLoader
                 _fflog = File.CreateText(FFMpegLogPath);
                 _sb = new StringBuilder();
 
-                FFMpegCommand = ArgsBuilder.ArgumentBuilder(InputVideoPath, OutputVideoPath, AvisynthScriptPath, vCodec, tune, mode, vBitrate, crf, preset, aCodec, aBitrate, fps, bFrame, vHeight, vWidth, algo, sRate, sharpen);
+                FFMpegCommand = ArgsBuilder.ArgumentBuilder(InputVideoPath, OutputVideoPath, AvisynthScriptPath, vCodec, tune, mode, vBitrate, crf, preset, aCodec, aBitrate, fps, bFrame, vHeight, vWidth, algo, sRate, sharpen, version);
 
                 NewProcess(ExeName.FFMpeg, FFMpegPath, FFMpegCommand);
                 _process.ErrorDataReceived += OutputData;
