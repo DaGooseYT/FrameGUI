@@ -1,0 +1,14 @@
+===========================================================================================
+[08/28/2021]: FrameGUI v1.0
+
+Initial release.
+===========================================================================================
+
+===========================================================================================
+[08/30/2021]: FrameGUI v1.0.2
+
+- Fixed an issue where an FFMpeg error would be thrown if a user quickly cancels the encoding process. A message box will show instead prompting the users to wait for the process to initialize before canceling the process.
+- Fixed an issue where the computer will go to sleep (if enabled) while an encoding process is running. While a process is running in FrameGUI, sleep mode will be temporarily disabled until that process is finished or canceled.
+- Extended the maximum output fps selection in the SVPFlow noob helper. The maximum output fps a user can select is 140fps.
+- Extended the maximum thread count for AviSynth+. The maximum thread count you can define for AviSynth+ is 25, this is for better performance with larger videos (i.e. 4K)
+===========================================================================================
