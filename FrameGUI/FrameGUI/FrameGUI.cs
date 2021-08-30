@@ -21,6 +21,7 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 using FrameGUI.Properties;
 using FFLoader;
 
@@ -104,6 +105,7 @@ namespace FrameGUI
                 Title = "Select Input File",
 
             };
+
             if (InputFileWindow.ShowDialog() == DialogResult.OK)
             {
                 InTxtBox.Text = InputFileWindow.FileName;
@@ -143,6 +145,7 @@ namespace FrameGUI
                 Filter = Filter1,
                 Title = "Save Output File",
             };
+
             if (OutputFileWindow.ShowDialog() == DialogResult.OK)
             {
                 SaveOutTxtBox.Text = OutputFileWindow.FileName;
@@ -158,22 +161,45 @@ namespace FrameGUI
         {
             if (FFWorker.IsBusy)
             {
-                if (MessageBox.Show("Are you sure you want to cancel the encoding process? All encoded data associated with the process will be lost.", "Cancel encode confirmation",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                if (ProgressLabel.Text != "The process will begin momentarily...")
                 {
-                    _ffloader.StopFFMpegProcess();
-                    ProgressLabel.ForeColor = Color.Red;
+                    if (MessageBox.Show("Are you sure you want to cancel the encoding process? All encoded data associated with the process will be lost.", "Cancel encode confirmation",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                    {
+                        FFWorker.CancelAsync();
+                        _ffloader.StopFFMpegProcess();
+                        ProgressLabel.ForeColor = Color.Red;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 else
                 {
-                    return;
+                    MessageBox.Show("Please wait for the process to initialize before canceling it.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
+                CancelBttn.Visible = false;
                 return;
             }
         }
+
+        /// <summary>
+        /// The execution status' of kernel.
+        /// </summary>
+        internal enum EXECUTION_STATE : uint
+        {
+            ES_DISPLAY_REQUIRED = 0x00000002,
+            ES_SYSTEM_REQUIRED = 0x00000001,
+            ES_CONTINUOUS = 0x80000000,
+            ES_AWAYMODE_REQUIRED = 0x00000040
+        }
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern EXECUTION_STATE SetThreadExecutionState(EXECUTION_STATE status);
 
         /// <summary>
         /// Initializes the encoding process.
@@ -260,8 +286,10 @@ namespace FrameGUI
         /// <param name="e">Instance of DoWorkEventArgs.</param>
         internal void DoWork(object sender, DoWorkEventArgs e)
         {
+            SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED);
+
             Encoder.WhileWorking(_ffloader, CPUPDD, TuneDD, ResizeAlgoDD, AudFormatDD, SRDD, EncodeModeDD, AudBitrateDD, ProgressLabel, EncodePB, (double)FrameRNUD.Value, 
-                (double)BframeValue.Value, (double)BitrateValue.Value, (double)crfNUD.Value, (double)HeightResNUD.Value, (double)WidthResNUD.Value, (float)SharpenValNUD.Value);
+                (double)BframeValue.Value, (double)BitrateValue.Value, (double)crfNUD.Value, (double)HeightResNUD.Value, (double)WidthResNUD.Value, (float)SharpenValNUD.Value, Text);
         }
 
         /// <summary>
@@ -271,6 +299,8 @@ namespace FrameGUI
         /// <param name="e">Instance of RunWorkerCompletedEventArgs.</param>
         internal void WorkCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            SetThreadExecutionState(EXECUTION_STATE.ES_CONTINUOUS);
+
             Encoder.WhileComplete(_ffloader, EncodePB, NotificationCB, CancelBttn);
 
             if (File.Exists(InTxtBox.Text + ".ffindex"))

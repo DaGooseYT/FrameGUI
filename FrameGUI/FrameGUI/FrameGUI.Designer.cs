@@ -1112,7 +1112,7 @@ namespace FrameGUI
             this.ThreadsNUD.Enabled = false;
             this.ThreadsNUD.Location = new System.Drawing.Point(59, 17);
             this.ThreadsNUD.Maximum = new decimal(new int[] {
-            16,
+            25,
             0,
             0,
             0});
@@ -1274,7 +1274,7 @@ namespace FrameGUI
             this.OutFPSNUD.Enabled = false;
             this.OutFPSNUD.Location = new System.Drawing.Point(247, 22);
             this.OutFPSNUD.Maximum = new decimal(new int[] {
-            120,
+            140,
             0,
             0,
             0});
@@ -1484,7 +1484,7 @@ namespace FrameGUI
             this.MaximizeBox = false;
             this.Name = "FrameGUI";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Text = "FrameGUI v1.0";
+            this.Text = "FrameGUI v1.0.2";
             this.AboutTab.ResumeLayout(false);
             this.AboutTab.PerformLayout();
             this.AboutAuthGB.ResumeLayout(false);
