@@ -8,9 +8,9 @@ namespace FFLoader.Arguments
         /// Writes the encoder application to the metadata of the output video.
         /// </summary>
         /// <returns>The writing application in a string format.</returns>
-        internal static string EncoderApp()
+        internal static string EncoderApp(string version)
         {
-            return string.Format(@" -metadata:g encoding_tool=""FrameGUI v1.0""", CultureInfo.InvariantCulture);
+            return string.Format($@" -metadata:g encoding_tool=""{version}""", CultureInfo.InvariantCulture);
         }
     }
 }

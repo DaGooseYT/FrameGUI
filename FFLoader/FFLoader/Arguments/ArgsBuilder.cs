@@ -25,7 +25,7 @@ namespace FFLoader.Arguments
         /// <param name="sampleRate">The audio sample rate.</param>
         /// <returns>The arguments in one string.</returns>
         internal static string ArgumentBuilder(string inputVideo, string outputVideo, string avisynthScript, string vCodec, string tune, string mode, double vBitrate, double crf, string preset, string aCodec,
-            string aBitrate, double fps, double bFrame, double vheight, double vWidth, string resizeAlgo, string sampleRate, float sharpen)
+            string aBitrate, double fps, double bFrame, double vheight, double vWidth, string resizeAlgo, string sampleRate, float sharpen, string version)
         {
             if (_args != null)
             {
@@ -111,7 +111,7 @@ namespace FFLoader.Arguments
             _args.Append(CodecArgs.AudioCodecs(aCodec));
             _args.Append(BitrateArgs.AudioBitrate(aBitrate));
             _args.Append(SampleRateArgs.SampleRate(sampleRate));
-            _args.Append(EncoderAppArgs.EncoderApp());
+            _args.Append(EncoderAppArgs.EncoderApp(version));
 
             _args.Append(string.Format($@" ""{outputVideo}"""));
 
