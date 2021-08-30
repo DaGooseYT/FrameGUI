@@ -108,7 +108,7 @@ namespace FrameGUI
         /// <param name="width">The width of the video in pixels.</param>
         internal static void WhileWorking(FFLoaderBase ffLoader, ComboBox preset, ComboBox tune, ComboBox algo, ComboBox format, ComboBox sr, 
             ComboBox mode, ComboBox abitrate, Label progress, ProgressBar pb, double frameRate, double bframe, double vbitrate, double crf, 
-            double height, double width, float sharpen)
+            double height, double width, float sharpen, string version)
         {
             EncodePB = pb;
             ProgressLabel = progress;
@@ -133,7 +133,7 @@ namespace FrameGUI
             try
             {
                 ffLoader.ConvertFFMpeg("libx264", Mode.ToString(), Preset.ToString(), Tune.ToString(), ResizeAlgo.ToString(), AudioFormat.ToString(),
-                AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen);
+                AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen, version);
             }
             catch (IOException)
             {
@@ -202,9 +202,9 @@ namespace FrameGUI
 
             ProgressLabel.ForeColor = Color.Red;
 
-            var error = MessageBox.Show("Process exited with AviSynth+ error: " + Environment.NewLine + 
-                Environment.NewLine + $@"""{e.AviSynthErrorMessage}""" + Environment.NewLine + 
-                Environment.NewLine + "Would you like to open the error logs?", "AviSynth+ error", 
+            var error = MessageBox.Show("Process exited with AviSynth+ error: " + Environment.NewLine +
+                Environment.NewLine + $@"""{e.AviSynthErrorMessage}""" + Environment.NewLine +
+                Environment.NewLine + "Would you like to open the error logs?", "AviSynth+ error",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 
             if (error == DialogResult.Yes)
