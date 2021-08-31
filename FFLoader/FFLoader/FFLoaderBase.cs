@@ -217,7 +217,7 @@ namespace FFLoader
                     AvsError = true;
                 }
 
-                if (e.Data.Contains(AvisynthScriptPath) && string.IsNullOrEmpty(_sb.ToString()))
+                if (e.Data.Contains(AvisynthScriptPath) && string.IsNullOrEmpty(_sb.ToString()) && !string.IsNullOrEmpty(AvisynthScriptPath))
                 {
                     _sb.Append(FFHelper.AviSynthNullOrMissing(AvisynthDllPath, AvisynthPlusPath));
                 }
