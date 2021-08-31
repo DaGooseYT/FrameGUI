@@ -12,3 +12,10 @@ Initial release.
 - Extended the maximum output fps selection in the SVPFlow noob helper. The maximum output fps a user can select is 140fps.
 - Extended the maximum thread count for AviSynth+. The maximum thread count you can define for AviSynth+ is 25, this is for better performance with larger videos (i.e. 4K)
 ===========================================================================================
+
+===========================================================================================
+[08/31/2021]: FrameGUI v1.0.3
+
+- Fixed an issue where an "AviSynth+ is missing" error would be thrown if the user didn't use AviSynth+ (i.e. when it's not required).
+- Added the option to open FrameGUI's log path on a button click so that the user doesn't have to use file explorer manually to navigate to the files. See the "Open Logs Path" button in Other Settings section.
+===========================================================================================
