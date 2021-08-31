@@ -152,8 +152,8 @@ As you can see, the errors will define the problem which makes solving it easy. 
 
 Required files and other info to properly report errors, problems, bugs, and issues are listed below. **_Issues and problem reports will not be accepted without these files and info!_**
 1. The error message that you have received. 
-2. `ffmpeglogs.txt`. This can be found in `C:\Users\<username>\AppData\Local\Temp\FrameGUI`. If no log file was generated or if it's blank, please state that when reporting the issue.
-3. `aviscript.avs`. This can also be found in `C:\Users\<username>\AppData\Local\Temp\FrameGUI`. If no AviSynth+ script was generated (e.g. you didn't use AviSynth+) then please state that when reporting the issue.
+2. `ffmpeglogs.txt`. This can be found by clicking the `Open Logs Path` button located in the `Other Settings` section of SVPFlow. If no log file was generated or if it's blank, please state that when reporting the issue.
+3. `aviscript.avs`. This can also be found by clicking the `Open Logs Path` button located in the `Other Settings` section of SVPFlow. If no AviSynth+ script was generated (e.g. you didn't use AviSynth+) then please state that when reporting the issue.
 4. The settings that you have set in FrameGUI (If `ffmpeglogs.txt` was not generated).
 5. What version OS you are using (Windows 10, Windows 7, etc.)
 
