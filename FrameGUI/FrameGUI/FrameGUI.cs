@@ -414,16 +414,31 @@ namespace FrameGUI
         }
 
         /// <summary>
+        /// Opens the path to the logs and avs script file on the user's temp folder.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of EventArgs.</param>
+        private void LogsBttn_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(SetUserTempPath()))
+            {
+                Process.Start("explorer.exe", SetUserTempPath());
+            }
+        }
+
+        /// <summary>
         /// Creates the Temp path for FrameGUI.
         /// </summary>
-        private void SetUserTempPath()
+        private string SetUserTempPath()
         {
-            string tempPath = Path.GetTempPath();
+            string tempPath = Path.GetTempPath() + "FrameGUI";
 
-            if (!Directory.Exists(tempPath + "FrameGUI"))
+            if (!Directory.Exists(tempPath))
             {
-                Directory.CreateDirectory(tempPath + "FrameGUI");
+                Directory.CreateDirectory(tempPath);
             }
+
+            return tempPath;
         }
 
         /// <summary>
