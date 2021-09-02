@@ -19,3 +19,10 @@ Initial release.
 - Fixed an issue where an "AviSynth+ is missing" error would be thrown if the user didn't use AviSynth+ (i.e. when it's not required).
 - Added the option to open FrameGUI's log path on a button click so that the user doesn't have to use file explorer manually to navigate to the files. See the "Open Logs Path" button in Other Settings section.
 ===========================================================================================
+
+===========================================================================================
+[09/01/2021]: FrameGUI v1.0.5
+
+- Fixed an issue where an FFMpeg error would be thrown if SVPFlow was used and there was no audio track in the video.
+- Added the option to mute the audio in the video. See the "Mute audio" checkbox in the "Audio" tab.
+===========================================================================================
