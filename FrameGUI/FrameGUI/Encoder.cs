@@ -108,7 +108,7 @@ namespace FrameGUI
         /// <param name="width">The width of the video in pixels.</param>
         internal static void WhileWorking(FFLoaderBase ffLoader, ComboBox preset, ComboBox tune, ComboBox algo, ComboBox format, ComboBox sr, 
             ComboBox mode, ComboBox abitrate, Label progress, ProgressBar pb, double frameRate, double bframe, double vbitrate, double crf, 
-            double height, double width, float sharpen, string version)
+            double height, double width, float sharpen, string version, bool mute)
         {
             EncodePB = pb;
             ProgressLabel = progress;
@@ -133,7 +133,7 @@ namespace FrameGUI
             try
             {
                 ffLoader.ConvertFFMpeg("libx264", Mode.ToString(), Preset.ToString(), Tune.ToString(), ResizeAlgo.ToString(), AudioFormat.ToString(),
-                AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen, version);
+                AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen, version, mute);
             }
             catch (IOException)
             {

@@ -289,7 +289,8 @@ namespace FrameGUI
             SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED);
 
             Encoder.WhileWorking(_ffloader, CPUPDD, TuneDD, ResizeAlgoDD, AudFormatDD, SRDD, EncodeModeDD, AudBitrateDD, ProgressLabel, EncodePB, (double)FrameRNUD.Value, 
-                (double)BframeValue.Value, (double)BitrateValue.Value, (double)crfNUD.Value, (double)HeightResNUD.Value, (double)WidthResNUD.Value, (float)SharpenValNUD.Value, Text);
+                (double)BframeValue.Value, (double)BitrateValue.Value, (double)crfNUD.Value, (double)HeightResNUD.Value, (double)WidthResNUD.Value, (float)SharpenValNUD.Value, 
+                Text, MuteAudCB.Checked);
         }
 
         /// <summary>
@@ -457,6 +458,27 @@ namespace FrameGUI
             {
                 SharpenValNUD.Value = 0;
                 SharpenValNUD.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Enables or disables the audio settings depending if Mute Audio checkbox is checked.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of EventArgs.</param>
+        private void MuteAudCB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (MuteAudCB.Checked)
+            {
+                AudBitrateDD.Enabled = false;
+                AudFormatDD.Enabled = false;
+                SRDD.Enabled = false;
+            }
+            else
+            {
+                AudBitrateDD.Enabled = true;
+                AudFormatDD.Enabled = true;
+                SRDD.Enabled = true;
             }
         }
 

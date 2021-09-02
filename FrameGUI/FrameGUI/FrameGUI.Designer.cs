@@ -98,6 +98,7 @@ namespace FrameGUI
             this.EncodeLabel = new System.Windows.Forms.Label();
             this.AudioTab = new System.Windows.Forms.TabPage();
             this.AudioSetGB = new System.Windows.Forms.GroupBox();
+            this.MuteAudCB = new System.Windows.Forms.CheckBox();
             this.SRDD = new System.Windows.Forms.ComboBox();
             this.AudNote = new System.Windows.Forms.Label();
             this.AudioSRLabel = new System.Windows.Forms.Label();
@@ -958,6 +959,7 @@ namespace FrameGUI
             // 
             // AudioSetGB
             // 
+            this.AudioSetGB.Controls.Add(this.MuteAudCB);
             this.AudioSetGB.Controls.Add(this.SRDD);
             this.AudioSetGB.Controls.Add(this.AudNote);
             this.AudioSetGB.Controls.Add(this.AudioSRLabel);
@@ -972,13 +974,24 @@ namespace FrameGUI
             this.AudioSetGB.TabIndex = 0;
             this.AudioSetGB.TabStop = false;
             // 
+            // MuteAudCB
+            // 
+            this.MuteAudCB.AutoSize = true;
+            this.MuteAudCB.Location = new System.Drawing.Point(272, 118);
+            this.MuteAudCB.Name = "MuteAudCB";
+            this.MuteAudCB.Size = new System.Drawing.Size(78, 18);
+            this.MuteAudCB.TabIndex = 7;
+            this.MuteAudCB.Text = "Mute audio";
+            this.MuteAudCB.UseVisualStyleBackColor = true;
+            this.MuteAudCB.CheckedChanged += new System.EventHandler(this.MuteAudCB_CheckedChanged);
+            // 
             // SRDD
             // 
             this.SRDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SRDD.FormattingEnabled = true;
             this.SRDD.Items.AddRange(new object[] {
             "48000"});
-            this.SRDD.Location = new System.Drawing.Point(229, 116);
+            this.SRDD.Location = new System.Drawing.Point(178, 116);
             this.SRDD.Name = "SRDD";
             this.SRDD.Size = new System.Drawing.Size(74, 22);
             this.SRDD.TabIndex = 3;
@@ -996,7 +1009,7 @@ namespace FrameGUI
             // AudioSRLabel
             // 
             this.AudioSRLabel.AutoSize = true;
-            this.AudioSRLabel.Location = new System.Drawing.Point(126, 119);
+            this.AudioSRLabel.Location = new System.Drawing.Point(75, 119);
             this.AudioSRLabel.Name = "AudioSRLabel";
             this.AudioSRLabel.Size = new System.Drawing.Size(94, 14);
             this.AudioSRLabel.TabIndex = 6;
@@ -1005,11 +1018,11 @@ namespace FrameGUI
             // AudioBitLabel
             // 
             this.AudioBitLabel.AutoSize = true;
-            this.AudioBitLabel.Location = new System.Drawing.Point(137, 77);
+            this.AudioBitLabel.Location = new System.Drawing.Point(124, 78);
             this.AudioBitLabel.Name = "AudioBitLabel";
-            this.AudioBitLabel.Size = new System.Drawing.Size(72, 14);
+            this.AudioBitLabel.Size = new System.Drawing.Size(103, 14);
             this.AudioBitLabel.TabIndex = 4;
-            this.AudioBitLabel.Text = "Audio Bitrate:";
+            this.AudioBitLabel.Text = "Audio Bitrate (kb/s):";
             // 
             // AudBitrateDD
             // 
@@ -1025,7 +1038,7 @@ namespace FrameGUI
             "256",
             "320",
             "576"});
-            this.AudBitrateDD.Location = new System.Drawing.Point(217, 74);
+            this.AudBitrateDD.Location = new System.Drawing.Point(233, 75);
             this.AudBitrateDD.Name = "AudBitrateDD";
             this.AudBitrateDD.Size = new System.Drawing.Size(74, 22);
             this.AudBitrateDD.TabIndex = 2;
@@ -1496,7 +1509,7 @@ namespace FrameGUI
             this.MaximizeBox = false;
             this.Name = "FrameGUI";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Text = "FrameGUI v1.0.3";
+            this.Text = "FrameGUI v1.0.5";
             this.AboutTab.ResumeLayout(false);
             this.AboutTab.PerformLayout();
             this.AboutAuthGB.ResumeLayout(false);
@@ -1661,5 +1674,6 @@ namespace FrameGUI
         private Button OffDocButton;
         private Label HelpLabel;
         private Button LogsBttn;
+        private CheckBox MuteAudCB;
     }
 }
