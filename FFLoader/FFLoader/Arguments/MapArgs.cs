@@ -10,7 +10,7 @@ namespace FFLoader.Arguments
         /// <returns>String representation of the argument.</returns>
         internal static string MapVideo()
         {
-            return string.Format(" -map 0:v -map 1:a", CultureInfo.InvariantCulture);
+            return string.Format(" -map 0:v -map 1:a?", CultureInfo.InvariantCulture);
         }
     }
 }
