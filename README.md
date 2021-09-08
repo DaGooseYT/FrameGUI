@@ -126,7 +126,7 @@ Note: the `aac` selection in `Audio Format` will use the FFMpeg native AAC encod
 [saveout]: https://github.com/DaGooseYT/FrameGUI/blob/main/photos/save.PNG "Save Output Video"
 
 3. Lastly, select the `Start Encode` button (in the green box) to start the encoding process.
-4. Please wait up to 10 seconds for the process to start, then progress info will show (in the red box, below).
+4. Please wait up to 10 seconds for the process to start, then progress info will show at the bottom.
 5. You can cancel the encoding process at any time while its running. Select the `Cancel` button (in the blue box) to do this.
 
 ![alt text][progress]
