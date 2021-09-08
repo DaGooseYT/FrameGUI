@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FFLoader": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Users\\Garrett Aderholdt\\source\\repos\\FrameGUI\\bin\\x64\\Release\\FrameGUI.exe"
+    }
+  }
+}
