@@ -26,3 +26,15 @@ Initial release.
 - Fixed an issue where an FFMpeg error would be thrown if SVPFlow was used and there was no audio track in the video.
 - Added the option to mute the audio in the video. See the "Mute audio" checkbox in the "Audio" tab.
 ===========================================================================================
+
+===========================================================================================
+[09/09/2021]: FrameGUI v1.1
+
+- Completely redesigned the conversion progress info and progress bar by implementing a custom progress bar control with text. The progress bar will change colors based on the process state (green: running, red: cancelled/error).
+- "Duration left" conversion progress info property was replaced with a "Time left" conversion progress info property. Accuracy is within 2% based on multiple tests.
+- "Time elapsed" conversion progress info property added. This property will also be displayed in the encoding complete message box.
+- The progress percentage in the conversion progress info will now display up to two decimal places.
+- FrameGUI now supports DPI-awareness. With this change, FRAMEGUI WILL NOW ONLY WORK ON WINDOWS 10 (CREATOR UPDATE) AND ABOVE. If you aren't using Windows 10 then don't update to v1.1! The DPI-awareness allows the controls to be clearer and appear as higher quality.
+
+Known issues:
+- When selecting "Mute audio" checkbox in the "Audio" tab and starting an encode, towards the end of the process, the conversion progress info will display as incomplete even though the process is truly complete.
