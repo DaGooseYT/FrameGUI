@@ -9,16 +9,24 @@ namespace FFLoader
         /// <summary>
         /// Total duration of the video file.
         /// </summary>
-        private static TimeSpan TotalDuration { get; set; }
+        internal static TimeSpan TotalDuration { get; set; }
+
+        /// <summary>
+        /// The fps of the video.
+        /// </summary>
+        private static float VideoInfoFPS { get; set; }
 
         //Conversion progress regex
-        static readonly Regex _fps = new Regex(@"fps=\s?(?<FPS>\d*\.?\d?)");
+        static readonly Regex _fps = new Regex(@"fps=\s?(?<FPS>\d*\.?\d*)");
         static readonly Regex _bitrate = new Regex(@"bitrate=\s?(?<Bitrate>\d*\.?\d?)kbits/s");
-        static readonly Regex _processedDuration = new Regex(@"time=(?<ProcessedDuration>\d*:\d*:\d*)");
+        static readonly Regex _processedFrames = new Regex(@"frame=\s*(?<Frames>\d*)\s?");
+        static readonly Regex _outputFPS = new Regex(@"\s?(?<OutputFPS>\d*\.?\d*)\s?fps,");
+        static readonly Regex _processedDurationWms = new Regex(@"time=\s?(?<ProcessedDuration>\d*:\d*:\d*\.\d*)");
 
         //Video info regex
-        static readonly Regex _VITotalDuration = new Regex(@"Duration:\s?(?<VITotalDuration>\d*:\d*:\d*)");
+        static readonly Regex _VITotalDuration = new Regex(@"Duration:\s?(?<VITotalDuration>\d*:\d*:\d*\.\d*)");
         static readonly Regex _VIBitrate = new Regex(@",\s?bitrate:\s?(?<VIBitrate>\d*)\s?kb/s");
+        static readonly Regex _VIFPS = new Regex(@"fps,\s?(?<VIFPS>\d*\.?\d*)\s?tbr,");
         static readonly Regex _VI = new Regex(@"\s?Stream\s?#\d:\d:\s?Video:\s?(?<VideoCodec>\w*)\s?\(\w*\),\s?
             (?<PixelFormat>\w*)\((?<Luminance>\w*),\s?\w*,\s?(?<ScanType>\w*)\),\s?(?<Resolution>\w*)\s?
             \[SAR\s?\d?:\d?\s?DAR\s?(?<AspectRatio>\d*:\d*)\],\s?q=\d*-\d*,\s?\d*\s?kb/s,\s?(?<VFPS>\d*\.?\d?)\s?fps,");
@@ -43,9 +51,10 @@ namespace FFLoader
 
             var matchFPS = _fps.Match(console);
             var matchBitrate = _bitrate.Match(console);
-            var matchProcessedDuration = _processedDuration.Match(console);
+            var matchFrame = _processedFrames.Match(console);
+            var matchProcessedDurationWms = _processedDurationWms.Match(console);
 
-            if (!matchFPS.Success || !matchBitrate.Success || !matchProcessedDuration.Success)
+            if (!matchFPS.Success || !matchBitrate.Success || !matchProcessedDurationWms.Success || !matchFrame.Success || TotalDuration == TimeSpan.Zero)
             {
                 return false;
             }
@@ -53,9 +62,12 @@ namespace FFLoader
             {
                 float fps = ParseFloat(matchFPS, "FPS");
                 float bitrate = ParseFloat(matchBitrate, "Bitrate");
-                TimeSpan processedDuration = TimeSpan.Parse(matchProcessedDuration.Groups["ProcessedDuration"].Value, CultureInfo.InvariantCulture);
+                double frame = Convert.ToDouble(matchFrame.Groups["Frames"].Value, CultureInfo.InvariantCulture);
+                TimeSpan processedDuration = TimeSpan.ParseExact(matchProcessedDurationWms.Groups["ProcessedDuration"].Value, @"hh\:mm\:ss\.ff", CultureInfo.InvariantCulture);
+                double ts = FFEncoder.Timer.Elapsed.TotalSeconds;
+                TimeSpan timeElapsed = TimeSpan.FromSeconds(Math.Round(ts));
 
-                progress = new ConversionProgress(fps, bitrate, processedDuration, TotalDuration);
+                progress = new ConversionProgress(fps, bitrate, frame, processedDuration, TotalDuration, VideoInfoFPS, timeElapsed);
 
                 return true;
             }
@@ -124,14 +136,29 @@ namespace FFLoader
         {
             var matchTotalDuration = _VITotalDuration.Match(console);
 
-            if (!matchTotalDuration.Success)
+            if (!matchTotalDuration.Success || !TotalDuration.Equals(TimeSpan.Zero))
             {
                 return;
             }
             else
             {
-                TimeSpan.TryParse(matchTotalDuration.Groups["VITotalDuration"].Value, out TimeSpan totalVideoDuration);
+                TimeSpan totalVideoDuration = TimeSpan.ParseExact(matchTotalDuration.Groups["VITotalDuration"].Value, @"hh\:mm\:ss\.ff", CultureInfo.InvariantCulture);
                 TotalDuration = totalVideoDuration;
+            }
+        }
+
+        internal static void CheckRegexProgressFPSMatch(string console)
+        {
+            var matchVIFPS = _outputFPS.Match(console);
+
+            if (!matchVIFPS.Success)
+            {
+                return;
+            }
+            else
+            {
+                float fps = ParseFloat(matchVIFPS, "OutputFPS");
+                VideoInfoFPS = fps;
             }
         }
 

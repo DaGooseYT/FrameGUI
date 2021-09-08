@@ -9,6 +9,11 @@ namespace FFLoader
     internal class FFEncoder
     {
         /// <summary>
+        /// The timer for the encoding process.
+        /// </summary>
+        internal static Stopwatch Timer = new Stopwatch();
+
+        /// <summary>
         /// Attmpts to start the process and will catch FFLoader exceptions if they occur.
         /// </summary>
         /// <param name="log">Instace of StreamWriter logger.</param>
@@ -31,6 +36,7 @@ namespace FFLoader
                 if (ffloader.IsRealProcess)
                 {
                     process.Start();
+                    Timer.Restart();
 
                     string line = new string('=', 100);
 
@@ -42,6 +48,7 @@ namespace FFLoader
 
                     process.BeginErrorReadLine();
                     process.WaitForExit();
+                    Timer.Stop();
 
                     FileInfo file = new FileInfo(ffloader.OutputVideoPath);
 

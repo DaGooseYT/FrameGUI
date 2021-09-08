@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -88,6 +89,11 @@ namespace FFLoader
             ".m2ts", ".ts", ".flv", ".webm", ".ogv" };
 
         /// <summary>
+        /// Strings to find in the output FFMpeg console.
+        /// </summary>
+        private readonly string[] find = { "[avisynth", "Input #0" };
+
+        /// <summary>
         /// Determines if the selected input video type is supported.
         /// </summary>
         /// <returns>True of False.</returns>
@@ -138,6 +144,7 @@ namespace FFLoader
 
                 NewProcess(ExeName.FFMpeg, FFMpegPath, FFMpegCommand);
                 _process.ErrorDataReceived += OutputData;
+                RegexTool.TotalDuration = TimeSpan.Zero;
                 FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
             }
             else
@@ -189,22 +196,23 @@ namespace FFLoader
                     return;
                 }
 
+                RegexTool.CheckRegexDurationMatch(e.Data);
+                RegexTool.CheckRegexProgressFPSMatch(e.Data);
+
+                if (RegexTool.CheckProgressRegexMatch(e.Data, out ConversionProgress progress))
+                {
+                    UpdateConversionProgress(progress);
+                }
+
                 if (!e.Data.Contains("frame="))
                 {
                     _fflog.WriteLine(e.Data);
-                }
-                else
-                {
-                    if (RegexTool.CheckProgressRegexMatch(e.Data, out ConversionProgress progress))
-                    {
-                        UpdateConversionProgress(progress);
-                    }
                 }
 
                 //Gets the second line of the AviSynth+ error if exists.
                 if (AvsError)
                 {
-                    if (!e.Data.Contains("Input #0") && !e.Data.Contains(AvisynthScriptPath))
+                    if (!e.Data.Contains(find.Last()) && !e.Data.Contains(AvisynthScriptPath))
                     {
                         _sb.Append(" - ");
                         _sb.Append(e.Data.TrimStart());
@@ -213,7 +221,7 @@ namespace FFLoader
                     AvsError = false;
                 }
 
-                if (e.Data.Contains("[avisynth"))
+                if (e.Data.Contains(find.First()))
                 {
                     _sb.Append(RegexTool.CheckAviSynthErrorMatch(e.Data));
                     AvsError = true;
@@ -223,8 +231,6 @@ namespace FFLoader
                 {
                     _sb.Append(FFHelper.AviSynthNullOrMissing(AvisynthDllPath, AvisynthPlusPath));
                 }
-
-                RegexTool.CheckRegexDurationMatch(e.Data);
             }
             else
             {

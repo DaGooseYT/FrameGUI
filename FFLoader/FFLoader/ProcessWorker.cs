@@ -92,6 +92,22 @@ namespace FFLoader
         }
 
         /// <summary>
+        /// WIP
+        /// </summary>
+        /// <param name="pause"></param>
+        public void PauseProcess(bool pause)
+        {
+            if (pause)
+            {
+                _process.StandardInput.Write(ConsoleSpecialKey.ControlBreak);
+            }
+            else
+            {
+                _process.StandardInput.Write(ConsoleKey.Enter);
+            }
+        }
+
+        /// <summary>
         /// Frees all resources used by the process.
         /// </summary>
         public void Dispose()
