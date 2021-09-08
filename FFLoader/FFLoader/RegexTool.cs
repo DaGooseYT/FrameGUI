@@ -9,7 +9,7 @@ namespace FFLoader
         /// <summary>
         /// Total duration of the video file.
         /// </summary>
-        internal static TimeSpan TotalDuration { get; set; }
+        private static TimeSpan TotalDuration { get; set; }
 
         /// <summary>
         /// The fps of the video.
@@ -54,7 +54,7 @@ namespace FFLoader
             var matchFrame = _processedFrames.Match(console);
             var matchProcessedDurationWms = _processedDurationWms.Match(console);
 
-            if (!matchFPS.Success || !matchBitrate.Success || !matchProcessedDurationWms.Success || !matchFrame.Success || TotalDuration == TimeSpan.Zero)
+            if (!matchFPS.Success || !matchBitrate.Success || !matchProcessedDurationWms.Success || !matchFrame.Success)
             {
                 return false;
             }
@@ -136,7 +136,7 @@ namespace FFLoader
         {
             var matchTotalDuration = _VITotalDuration.Match(console);
 
-            if (!matchTotalDuration.Success || !TotalDuration.Equals(TimeSpan.Zero))
+            if (!matchTotalDuration.Success)
             {
                 return;
             }

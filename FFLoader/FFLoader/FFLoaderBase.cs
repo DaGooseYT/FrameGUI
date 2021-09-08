@@ -144,7 +144,6 @@ namespace FFLoader
 
                 NewProcess(ExeName.FFMpeg, FFMpegPath, FFMpegCommand);
                 _process.ErrorDataReceived += OutputData;
-                RegexTool.TotalDuration = TimeSpan.Zero;
                 FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
             }
             else
