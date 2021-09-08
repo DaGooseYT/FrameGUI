@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace FFLoader
 {
@@ -25,14 +26,14 @@ namespace FFLoader
         public TimeSpan TimeRemaining { get; private set; }
 
         /// <summary>
+        /// The elapsed time of the current running process.
+        /// </summary>
+        public TimeSpan TimeElapsed { get; private set; }
+
+        /// <summary>
         /// The progress percentage of the operation in a integer format. 
         /// </summary>
         public int ProgressPercentInt { get; private set; }
-
-        /// <summary>
-        /// The number of frames encoded.
-        /// </summary>
-        public double ProcessedFrames { get; private set; }
 
         /// <summary>
         /// The progress percentage of the operation in a string format.
@@ -45,34 +46,28 @@ namespace FFLoader
         public string ConversionProgressLabel { get; private set; }
 
         /// <summary>
-        /// The total amount of frames in the video stream.
-        /// </summary>
-        public double TotalFrames { get; private set; }
-
-        /// <summary>
-        /// The remaining number of frames to encode.
-        /// </summary>
-        public double RemainingFrames { get; private set; }
-
-        /// <summary>
         /// The encoding conversion progress arguments.  
         /// </summary>
         /// <param name="fps">The FPS at which the conversion is processing.</param>
         /// <param name="bitrate">The Bitrate at which the conversion is processing.</param>
         /// <param name="processedDuration">The Processed Duration at which the conversion is processing.</param>
         /// <param name="totalDuration">The Total Duration from VideoInfo. Used for the purposes of finding the progress percentage and time remaining.</param>
-        public ConversionProgress(float fps, float bitrate, TimeSpan processedDuration, TimeSpan totalDuration)
+        public ConversionProgress(float fps, float bitrate, double frame, TimeSpan processedDuration, TimeSpan totalDuration, float VIfps, TimeSpan timer)
         {
             ConversionFPS = fps;
             ConversionBitrate = bitrate;
             ProcessedDuration = processedDuration;
+            TimeElapsed = timer;
 
-            //Reports duration left instead (TODO: create a new and accurate implementation of TimeRemaining).
-            TimeRemaining = totalDuration.Subtract(processedDuration);
+            double totalFrames = Math.Round(totalDuration.TotalSeconds * VIfps);
+            double framesLeft = totalFrames - frame;
 
-            ProgressPercentInt = (int)(processedDuration.TotalSeconds / totalDuration.TotalSeconds * 100);
-            ProgressPercentStrng = Math.Floor((decimal)ProgressPercentInt).ToString();
-            ConversionProgressLabel = string.Format($"FPS: {fps} - Bitrate: {bitrate}kb/s - Duration left: {TimeRemaining} - {ProgressPercentStrng}%");
+            double timeLeft = (Math.Round(timer.TotalSeconds) / frame) * framesLeft;
+            TimeRemaining = TimeSpan.FromSeconds(Math.Floor(timeLeft));
+
+            ProgressPercentInt = (int)Math.Round(processedDuration.TotalMilliseconds / totalDuration.TotalMilliseconds * 100, 2);
+            ProgressPercentStrng = Math.Round(processedDuration.TotalMilliseconds / totalDuration.TotalMilliseconds * 100, 2).ToString();
+            ConversionProgressLabel = $"FPS: {fps}, Bitrate: {bitrate}kb/s, Time left: {TimeRemaining}, Time elapsed: {timer} - " + string.Format("{0:000.00}%", ProgressPercentStrng);
         }
     }
 }
