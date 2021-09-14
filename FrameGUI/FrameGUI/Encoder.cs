@@ -1,10 +1,11 @@
-﻿using FFLoader;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System;
 using System.IO;
+using System.Drawing;
+using System.Diagnostics;
+using System.ComponentModel;
 using System.Windows.Forms;
+using FFLoader;
+using EncodeProg;
 
 namespace FrameGUI
 {
@@ -46,6 +47,11 @@ namespace FrameGUI
         private static object Mode { get; set; }
 
         /// <summary>
+        /// The time elapsed since the start of the encoding process.
+        /// </summary>
+        internal static TimeSpan TimeElapsed { get; private set; }
+
+        /// <summary>
         /// Instance of FFLoader.
         /// </summary>
         private static FFLoaderBase FFloader { get; set; }
@@ -53,12 +59,7 @@ namespace FrameGUI
         /// <summary>
         /// Instance of progress bar for conversion.
         /// </summary>
-        private static ProgressBar EncodePB { get; set; }
-
-        /// <summary>
-        /// Instance of conversion progress label.
-        /// </summary>
-        private static Label ProgressLabel { get; set; }
+        private static ProgressBarLabel EncodePB { get; set; }
 
         /// <summary>
         /// Configuration for FFLoader.
@@ -98,7 +99,6 @@ namespace FrameGUI
         /// <param name="sr">Instance of audio sample rate drop-down.</param>
         /// <param name="mode">Instance of encoding mode drop-down.</param>
         /// <param name="abitrate">Instance of audio bitrate drop-down.</param>
-        /// <param name="progress">Instance of conversion progress info label.</param>
         /// <param name="pb">Instance of conversion progress bar.</param>
         /// <param name="frameRate">The output frame rate if SVPFlow isn't used.</param>
         /// <param name="bframe">The number of consecutive b-frames.</param>
@@ -107,13 +107,11 @@ namespace FrameGUI
         /// <param name="height">The height of the video in pixels.</param>
         /// <param name="width">The width of the video in pixels.</param>
         internal static void WhileWorking(FFLoaderBase ffLoader, ComboBox preset, ComboBox tune, ComboBox algo, ComboBox format, ComboBox sr, 
-            ComboBox mode, ComboBox abitrate, Label progress, ProgressBar pb, double frameRate, double bframe, double vbitrate, double crf, 
+            ComboBox mode, ComboBox abitrate, ProgressBarLabel pb, double frameRate, double bframe, double vbitrate, double crf, 
             double height, double width, float sharpen, string version, bool mute)
         {
             EncodePB = pb;
-            ProgressLabel = progress;
             FFloader = ffLoader;
-            progress.ForeColor = Color.Black;
 
             //Prevents cross-threading errors.
             preset.Invoke(new Action(() => { Preset = preset.SelectedItem; }));
@@ -133,18 +131,18 @@ namespace FrameGUI
             try
             {
                 ffLoader.ConvertFFMpeg("libx264", Mode.ToString(), Preset.ToString(), Tune.ToString(), ResizeAlgo.ToString(), AudioFormat.ToString(),
-                AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen, version, mute);
+                    AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen, version, mute);
             }
             catch (IOException)
             {
                 MessageBox.Show("FrameGUI is already open and working on a process. Please close any other running tasks of FrameGUI before starting a new process.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 
-                ProgressLabel.Invoke(new Action(() =>
+                EncodePB.Invoke(new Action(() =>
                 {
-                    ProgressLabel.Text = "Process exited because FrameGUI is already open.";
+                    EncodePB.ProgressText = "Process exited because FrameGUI is already open.";
                 }));
-
-                ProgressLabel.ForeColor = Color.Red;
+                
+                EncodePB.TextColor = Color.Red;
             }
         }
 
@@ -154,11 +152,16 @@ namespace FrameGUI
         /// <param name="pb">Instance of conversion progress bar.</param>
         /// <param name="not">Instance of NotificationCB checkbox.</param>
         /// <param name="cancel">Instance of cancel button.</param>
-        internal static void WhileComplete(FFLoaderBase ffLoader, ProgressBar pb, CheckBox not, Button cancel)
+        internal static void WhileComplete(FFLoaderBase ffLoader, ProgressBarLabel pb, CheckBox not, Button cancel)
         {
-            if (pb.Value == 100 && not.Checked)
+            cancel.Visible = false;
+
+            if (ffLoader.FixPercentage())
             {
-                MessageBox.Show("Encoding process complete!", "Encoding Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (not.Checked)
+                {
+                    MessageBox.Show($"Encoding process complete after (hh:mm:ss) {TimeElapsed}", "Encoding Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
 
             //Unsubscribe from events
@@ -166,8 +169,6 @@ namespace FrameGUI
             ffLoader.FFLoaderException -= FFException;
             ffLoader.FFMpegError -= FFError;
             ffLoader.AviSynthError -= AvsError;
-
-            cancel.Visible = false;
         }
 
         /// <summary>
@@ -177,15 +178,15 @@ namespace FrameGUI
         /// <param name="e">Instance of FFExceptionHandler.</param>
         internal static void FFException(object sender, FFExceptionHandler e)
         {
-            MessageBox.Show("FFLoader ran into a problem: " + Environment.NewLine + Environment.NewLine + 
-                $@"""{e.Message}""", "FFLoader exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            ProgressLabel.Invoke(new Action(() =>
+            EncodePB.Invoke(new Action(() =>
             {
-                ProgressLabel.Text = "Process exited due to FFLoader error.";
+                EncodePB.ProgressText = "Process exited with FFLoader error.";
             }));
 
-            ProgressLabel.ForeColor = Color.Red;
+            EncodePB.TextColor = Color.Red;
+
+            MessageBox.Show("FFLoader ran into a problem: " + Environment.NewLine + Environment.NewLine + 
+                $@"""{e.Message}""", "FFLoader exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -195,12 +196,19 @@ namespace FrameGUI
         /// <param name="e">Instance of AviSynthErrorHandler.</param>
         internal static void AvsError(object sender, AviSynthErrorHandler e)
         {
-            ProgressLabel.Invoke(new Action(() =>
+            EncodePB.Invoke(new Action(() =>
             {
-                ProgressLabel.Text = "Process exited with AviSynth+ error.";
+                EncodePB.ProgressText = "Process exited with AviSynth+ error.";
             }));
 
-            ProgressLabel.ForeColor = Color.Red;
+            if (EncodePB.Value > 1)
+            {
+                EncodePB.ProgressColor = Brushes.OrangeRed;
+            }
+            else
+            {
+                EncodePB.TextColor = Color.Red;
+            }
 
             var error = MessageBox.Show("Process exited with AviSynth+ error: " + Environment.NewLine +
                 Environment.NewLine + $@"""{e.AviSynthErrorMessage}""" + Environment.NewLine +
@@ -220,12 +228,12 @@ namespace FrameGUI
         /// <param name="e">Instance of FFMpegErrorHandler.</param>
         internal static void FFError(object sender, FFMpegErrorHandler e)
         {
-            ProgressLabel.Invoke(new Action(() =>
+            EncodePB.Invoke(new Action(() =>
             {
-                ProgressLabel.Text = "Process exited with FFMpeg error.";
+                EncodePB.ProgressText = "Process exited with FFMpeg error.";
             }));
 
-            ProgressLabel.ForeColor = Color.Red;
+            EncodePB.TextColor = Color.Red;
 
             var error = MessageBox.Show("Process exited with FFMpeg error: " + Environment.NewLine +
                 Environment.NewLine + $@"""{e.ErrorMessage}""" + Environment.NewLine +
@@ -248,10 +256,9 @@ namespace FrameGUI
             EncodePB.Invoke(new Action(() =>
             {
                 EncodePB.Value = e.ProgressPercentInt;
-            }));
-            ProgressLabel.Invoke(new Action(() =>
-            {
-                ProgressLabel.Text = e.ConversionProgressLabel;
+                EncodePB.ProgressText = e.ConversionProgressLabel;
+                
+                TimeElapsed = e.TimeElapsed;
             }));
         }
     }

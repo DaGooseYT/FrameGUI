@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading;
 using FrameGUI.Properties;
 using FFLoader;
 
@@ -40,6 +41,11 @@ namespace FrameGUI
         /// The input video FPS.
         /// </summary>
         internal string InputVideoFPS { get; private set; }
+
+        /// <summary>
+        /// Progress initialization message.
+        /// </summary>
+        internal string Initialize { get; private set; } = "Conversion progress info will be available soon...";
 
         /// <summary>
         /// Link to SVPFlow plugin parameters if the user needs assistance building the SVPFLow parameters.
@@ -161,34 +167,30 @@ namespace FrameGUI
         {
             if (FFWorker.IsBusy)
             {
-                if (ProgressLabel.Text != "The process will begin momentarily...")
+                if (EncodePB.ProgressText != Initialize)
                 {
-                    if (MessageBox.Show("Are you sure you want to cancel the encoding process? All encoded data associated with the process will be lost.", "Cancel encode confirmation",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                    if (MessageBox.Show("Are you sure you want to cancel the encoding process? You can't continue the process once cancelled.",
+                        "Cancel encode confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                     {
                         FFWorker.CancelAsync();
                         _ffloader.StopFFMpegProcess();
-                        ProgressLabel.ForeColor = Color.Red;
-                    }
-                    else
-                    {
-                        return;
+
+                        EncodePB.ProgressColor = Brushes.OrangeRed;
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Please wait for the process to initialize before canceling it.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Please wait for the process to initialize before cancelling it.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
                 CancelBttn.Visible = false;
-                return;
             }
         }
 
         /// <summary>
-        /// The execution status' of kernel.
+        /// The execution status of the system.
         /// </summary>
         internal enum EXECUTION_STATE : uint
         {
@@ -208,10 +210,6 @@ namespace FrameGUI
         /// <param name="e">Instance of EventArgs.</param>
         private void StartEncodeBttn_Click(object sender, EventArgs e)
         {
-            //Deselect button.
-            StartEncodeBttn.Enabled = false;
-            StartEncodeBttn.Enabled = true;
-
             if (!FFWorker.IsBusy)
             {
                 if (!string.IsNullOrEmpty(InTxtBox.Text))
@@ -232,8 +230,9 @@ namespace FrameGUI
                             }
                         }
 
-                        ProgressLabel.Text = "The process will begin momentarily...";
-
+                        EncodePB.TextColor = Color.Black;
+                        EncodePB.ProgressColor = Brushes.LimeGreen;
+                        EncodePB.ProgressText = Initialize;
                         CancelBttn.Visible = true;
                         EncodePB.Value = 0;
 
@@ -253,12 +252,12 @@ namespace FrameGUI
                             {
                                 MessageBox.Show("FrameGUI is already open and working on a process. Please close any other running tasks of FrameGUI before starting a new process.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                                ProgressLabel.Invoke(new Action(() =>
+                                EncodePB.Invoke(new Action(() =>
                                 {
-                                    ProgressLabel.Text = "Process exited because FrameGUI is already open.";
+                                    EncodePB.ProgressText = "Process exited because FrameGUI is already open.";
                                 }));
 
-                                ProgressLabel.ForeColor = Color.Red;
+                                EncodePB.TextColor = Color.Red;
                             }
                         }
                     }
@@ -288,7 +287,7 @@ namespace FrameGUI
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED);
 
-            Encoder.WhileWorking(_ffloader, CPUPDD, TuneDD, ResizeAlgoDD, AudFormatDD, SRDD, EncodeModeDD, AudBitrateDD, ProgressLabel, EncodePB, (double)FrameRNUD.Value, 
+            Encoder.WhileWorking(_ffloader, CPUPDD, TuneDD, ResizeAlgoDD, AudFormatDD, SRDD, EncodeModeDD, AudBitrateDD, EncodePB, (double)FrameRNUD.Value, 
                 (double)BframeValue.Value, (double)BitrateValue.Value, (double)crfNUD.Value, (double)HeightResNUD.Value, (double)WidthResNUD.Value, (float)SharpenValNUD.Value, 
                 Text, MuteAudCB.Checked);
         }
@@ -558,7 +557,7 @@ namespace FrameGUI
             {
                 BitrateLabel.Visible = true;
                 BitrateValue.Visible = true;
-                BitrateValue.Value = (decimal)Settings.Default.vBitrate;
+                BitrateValue.Value = Settings.Default.vBitrate;
                 crfValueLabel.Visible = false;
                 crfNUD.Visible = false;
             }
