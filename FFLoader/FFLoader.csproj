@@ -7,7 +7,7 @@
     <Description>Converts media files using FFMpeg and VapourSynth.</Description>
     <Copyright>© 2021 DaGoose</Copyright>
     <Platforms>AnyCPU;x64</Platforms>
-    <Version>1.1</Version>
+    <Version>1.1.2</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
