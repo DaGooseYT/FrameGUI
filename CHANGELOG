@@ -38,3 +38,10 @@ Initial release.
 
 Known issues:
 - When selecting "Mute audio" checkbox in the "Audio" tab and starting an encode, towards the end of the process, the conversion progress info will display as incomplete even though the process is truly complete.
+===========================================================================================
+
+===========================================================================================
+[9/13/2021]: FrameGUI v1.1.2
+
+- Fixed the conversion progress issue: When selecting "Mute audio" checkbox in the "Audio" tab and starting an encode, towards the end of the process, the conversion progress info will display as incomplete even though the process is truly complete. This issue was also present on normal processes.
+===========================================================================================
