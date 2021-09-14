@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using System.Diagnostics;
 
 namespace FFLoader
 {
@@ -33,12 +33,12 @@ namespace FFLoader
         /// <summary>
         /// The progress percentage of the operation in a integer format. 
         /// </summary>
-        public int ProgressPercentInt { get; private set; }
+        public int ProgressPercentInt { get; internal set; }
 
         /// <summary>
         /// The progress percentage of the operation in a string format.
         /// </summary>
-        public string ProgressPercentStrng { get; private set; }
+        public string ProgressPercentStrng { get; internal set; }
 
         /// <summary>
         /// Lists all aspects of the conversion progress for use in a windows form label.
@@ -59,15 +59,32 @@ namespace FFLoader
             ProcessedDuration = processedDuration;
             TimeElapsed = timer;
 
-            double totalFrames = Math.Round(totalDuration.TotalSeconds * VIfps);
+            double totalFrames = totalDuration.TotalSeconds * VIfps;
             double framesLeft = totalFrames - frame;
+            double timeLeft = framesLeft * (timer.TotalSeconds / frame);
 
-            double timeLeft = (Math.Round(timer.TotalSeconds) / frame) * framesLeft;
             TimeRemaining = TimeSpan.FromSeconds(Math.Floor(timeLeft));
 
             ProgressPercentInt = (int)Math.Round(processedDuration.TotalMilliseconds / totalDuration.TotalMilliseconds * 100, 2);
             ProgressPercentStrng = Math.Round(processedDuration.TotalMilliseconds / totalDuration.TotalMilliseconds * 100, 2).ToString();
+
             ConversionProgressLabel = $"FPS: {fps}, Bitrate: {bitrate}kb/s, Time left: {TimeRemaining}, Time elapsed: {timer} - " + string.Format("{0:000.00}%", ProgressPercentStrng);
+        }
+
+        /// <summary>
+        /// Sets ConversionProgress to complete (fixes incomplete progress bug).
+        /// </summary>
+        /// <param name="percent">Percentage in a string format.</param>
+        /// <param name="timer">Instance of the timer for the encoding.</param>
+        public ConversionProgress(string percent, Stopwatch timer)
+        {
+            ProgressPercentInt = 100;
+
+            double ts = timer.Elapsed.TotalSeconds;
+            TimeSpan timeElapsed = TimeSpan.FromSeconds(Math.Round(ts));
+            TimeElapsed = timeElapsed;
+
+            ConversionProgressLabel = $"FPS: {ConversionFPS}, Bitrate: {ConversionBitrate}kb/s, Time left: {TimeRemaining}, Time elapsed: {TimeElapsed} - " + string.Format("{0:000.00}%", percent);
         }
     }
 }
