@@ -15,7 +15,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -122,7 +121,8 @@ namespace FFLoader
             string aBitrate, string sRate, double vHeight, double vWidth, double vBitrate, double fps, double bFrame, 
             double crf, float sharpen, string version, bool mute)
         {
-            IsRealProcess = true; 
+            IsRealProcess = true;
+            Cancelled = false;
 
             if (SupportedFiles())
             {
@@ -144,7 +144,7 @@ namespace FFLoader
 
                 NewProcess(ExeName.FFMpeg, FFMpegPath, FFMpegCommand);
                 _process.ErrorDataReceived += OutputData;
-                FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
+                FFEncoder.TryStartProcess(_fflog, _process, _sb, Cancelled, this);
             }
             else
             {
@@ -167,12 +167,30 @@ namespace FFLoader
                 string command = $@"-i ""{InputVideoPath}""";
                 NewProcess(ExeName.FFMpeg, FFMpegPath, command);
                 _process.ErrorDataReceived += OutputData;
-                FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
+                FFEncoder.TryStartProcess(_fflog, _process, _sb, Cancelled, this);
             }
             else
             {
                 CatchException($"The selected input video is currently not supported.", out FFExceptionHandler handler);
                 UpdateException(handler);
+            }
+        }
+
+        /// <summary>
+        /// Fixes the progress percentage if complete but if the conversion progress info doesn't indicate completed.
+        /// </summary>
+        public bool FixPercentage()
+        {
+            if (!Cancelled)
+            {
+                var progress = new ConversionProgress("100", FFEncoder.Timer);
+                UpdateConversionProgress(progress);
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

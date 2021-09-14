@@ -20,7 +20,7 @@ namespace FFLoader
         /// <param name="process">Instance of the process.</param>
         /// <param name="sb">Instace of the AviSynth+ error StringBuilder.</param>
         /// <param name="ffloader">Instance of FFLoader.</param>
-        internal static void TryStartProcess(StreamWriter log, Process process, StringBuilder sb, FFLoaderBase ffloader)
+        internal static void TryStartProcess(StreamWriter log, Process process, StringBuilder sb, bool cancel, FFLoaderBase ffloader)
         {
             try
             {
@@ -56,11 +56,13 @@ namespace FFLoader
                     {
                         ffloader.CatchAvsError(sb.ToString(), out AviSynthErrorHandler handler);
                         ffloader.UpdateAvsError(handler);
+                        ProcessWorker.Cancelled = true;
                     }
                     else if (FFHelper.OutputFileNotCreated(ffloader.OutputVideoPath) || file.Length < 10000)
                     {
                         ffloader.CatchFFMpegError("An unknown error occured with FFMpeg.", out FFMpegErrorHandler handler);
                         ffloader.UpdateFFMpegError(handler);
+                        ProcessWorker.Cancelled = true;
                     }
 
                     log.WriteLine();

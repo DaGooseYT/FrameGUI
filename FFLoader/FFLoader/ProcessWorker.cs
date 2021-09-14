@@ -9,6 +9,11 @@ namespace FFLoader
         internal Process _process;
 
         /// <summary>
+        /// True if the user requested to cancel the encode, otherwise false.
+        /// </summary>
+        internal static bool Cancelled { get; set; }
+
+        /// <summary>
         /// The process at which to execute.
         /// </summary>
         internal enum ExeName
@@ -70,12 +75,14 @@ namespace FFLoader
         {
             if (IsProcessRunning(_process))
             {
+                Cancelled = true;
                 _process.StandardInput.Write('q');
                 CloseProcess();
             }
             else
             {
                 FFHelper.NoProcessRunning();
+                Cancelled = false;
             }
         }
 

@@ -62,7 +62,7 @@ namespace FFLoader
         /// <summary>
         /// Provides a method to update the AviSynthError event from the AviSynthErrorHandler event handler.
         /// </summary>
-        /// <param name="handler">Instace of AviSynthErrorHandler.</param>
+        /// <param name="handler">Instance of AviSynthErrorHandler.</param>
         internal virtual void UpdateAvsError(AviSynthErrorHandler handler)
         {
             AviSynthError?.Invoke(this, handler);
@@ -71,7 +71,7 @@ namespace FFLoader
         /// <summary>
         /// Provides a method to update the FFMpegError event from the FFMpegErrorHandler event handler.
         /// </summary>
-        /// <param name="handler">Instace of FFMpegErrorHandler.</param>
+        /// <param name="handler">Instance of FFMpegErrorHandler.</param>
         internal virtual void UpdateFFMpegError(FFMpegErrorHandler handler)
         {
             FFMpegError?.Invoke(this, handler);
@@ -80,7 +80,7 @@ namespace FFLoader
         /// <summary>
         /// Provides a method to update the FFConversionProgress event from the ConversionProgress event handler.
         /// </summary>
-        /// <param name="progress">Instace of ConversionProgress.</param>
+        /// <param name="progress">Instance of ConversionProgress.</param>
         internal virtual void UpdateConversionProgress(ConversionProgress progress)
         {
             FFConversionProgress?.Invoke(this, progress);
@@ -98,7 +98,7 @@ namespace FFLoader
         /// <summary>
         /// Provides a method to update the FFLoaderException event from the FFExceptionHandler event handler.
         /// </summary>
-        /// <param name="handler">Instace of FFExceptionHandler.</param>
+        /// <param name="handler">Instance of FFExceptionHandler.</param>
         internal virtual void UpdateException(FFExceptionHandler handler)
         {
             FFLoaderException?.Invoke(this, handler);

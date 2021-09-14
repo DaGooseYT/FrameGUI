@@ -20,7 +20,7 @@ namespace FFLoader
         static readonly Regex _fps = new Regex(@"fps=\s?(?<FPS>\d*\.?\d*)");
         static readonly Regex _bitrate = new Regex(@"bitrate=\s?(?<Bitrate>\d*\.?\d?)kbits/s");
         static readonly Regex _processedFrames = new Regex(@"frame=\s*(?<Frames>\d*)\s?");
-        static readonly Regex _outputFPS = new Regex(@"\s?(?<OutputFPS>\d*\.?\d*)\s?fps,");
+        static readonly Regex _outputFPS = new Regex(@",\s?(?<OutputFPS>\d*\.?\d*)\s?fps,\s?\d*\s?tbn");
         static readonly Regex _processedDurationWms = new Regex(@"time=\s?(?<ProcessedDuration>\d*:\d*:\d*\.\d*)");
 
         //Video info regex
