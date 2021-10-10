@@ -12,15 +12,15 @@ namespace FFLoader
         private static TimeSpan TotalDuration { get; set; }
 
         /// <summary>
-        /// The fps of the video.
+        /// The fps of the output video.
         /// </summary>
-        private static float VideoInfoFPS { get; set; }
+        private  static float ProgressFPS { get; set; }
 
         //Conversion progress regex
         static readonly Regex _fps = new Regex(@"fps=\s?(?<FPS>\d*\.?\d*)");
         static readonly Regex _bitrate = new Regex(@"bitrate=\s?(?<Bitrate>\d*\.?\d?)kbits/s");
         static readonly Regex _processedFrames = new Regex(@"frame=\s*(?<Frames>\d*)\s?");
-        static readonly Regex _outputFPS = new Regex(@",\s?(?<OutputFPS>\d*\.?\d*)\s?fps,\s?\d*\s?tbn");
+        static readonly Regex _outputFPS = new Regex(@",\s?(?<OutputFPS>\d*\.?\d*)\s?fps,\s?\d*k?\s?tbn");
         static readonly Regex _processedDurationWms = new Regex(@"time=\s?(?<ProcessedDuration>\d*:\d*:\d*\.\d*)");
 
         //Video info regex
@@ -67,7 +67,7 @@ namespace FFLoader
                 double ts = FFEncoder.Timer.Elapsed.TotalSeconds;
                 TimeSpan timeElapsed = TimeSpan.FromSeconds(Math.Round(ts));
 
-                progress = new ConversionProgress(fps, bitrate, frame, processedDuration, TotalDuration, VideoInfoFPS, timeElapsed);
+                progress = new ConversionProgress(fps, bitrate, frame, processedDuration, TotalDuration, ProgressFPS, timeElapsed);
 
                 return true;
             }
@@ -158,7 +158,27 @@ namespace FFLoader
             else
             {
                 float fps = ParseFloat(matchVIFPS, "OutputFPS");
-                VideoInfoFPS = fps;
+                ProgressFPS = fps;
+            }
+        }
+
+        internal static bool CheckRegexFPSInfoMatch(string console, out InfoFPSHandler handler)
+        {
+            handler = null;
+
+            var matchVIFPS = _VIFPS.Match(console);
+
+            if (!matchVIFPS.Success)
+            {
+                return false;
+            }
+            else
+            {
+                float fps = ParseFloat(matchVIFPS, "VIFPS");
+
+                handler = new InfoFPSHandler(fps);
+
+                return true;
             }
         }
 

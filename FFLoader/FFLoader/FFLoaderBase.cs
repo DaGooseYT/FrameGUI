@@ -71,16 +71,6 @@ namespace FFLoader
         public string FFMpegLogPath { get; private set; } = Path.GetTempPath() + @"FrameGUI\ffmpeglogs.txt";
 
         /// <summary>
-        /// Determines if the process is a real process or simply a process to get the video info.
-        /// </summary>
-        internal bool IsRealProcess { get; set; }
-
-        /// <summary>
-        /// Input video fps.
-        /// </summary>
-        public float VideoFps { get; private set; }
-
-        /// <summary>
         /// Supported file extensions by the encoder.
         /// </summary>
         private readonly string[] supportedExtensions =
@@ -117,11 +107,53 @@ namespace FFLoader
         /// <param name="vWidth">The adjusted width of the video.</param>
         /// <param name="algo">The resize algorithm to use if resizing.</param>
         /// <param name="sRate">The audio sample rate.</param>
+        /// <param name="crf">The Constant Rate Factor value.</param>
+        /// <param name="sharpen">The sharpening value to be applied to the video.</param>
+        /// <param name="version">The version of FrameGUI being used.</param>
+        /// <param name="mute">Mutes the audio from the video.</param>
         public void ConvertFFMpeg(string vCodec, string mode, string preset, string tune, string algo, string aCodec, 
             string aBitrate, string sRate, double vHeight, double vWidth, double vBitrate, double fps, double bFrame, 
             double crf, float sharpen, string version, bool mute)
         {
-            IsRealProcess = true;
+            Cancelled = false;
+
+            if (SupportedFiles())
+            {
+                _process = null;
+                AvsError = false;
+
+                if (_sb != null)
+                {
+                    _sb.Clear();
+                    _sb = null;
+                }
+
+                _fflog = File.CreateText(FFMpegLogPath);
+                _sb = new StringBuilder();
+                
+                FFMpegCommand = ArgsBuilder.ArgumentBuilder(InputVideoPath, OutputVideoPath, AvisynthScriptPath, vCodec,
+                tune, mode, vBitrate, crf, preset, aCodec, aBitrate, fps, bFrame, vHeight, vWidth, algo, sRate, sharpen,
+                version, mute);
+                
+
+                NewProcess(ExeName.FFMpeg, FFMpegPath, FFMpegCommand);
+                _process.ErrorDataReceived += OutputData;
+                FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
+            }
+            else
+            {
+                CatchException($"The selected input is not a video or is not a supported video format.", out FFExceptionHandler handler);
+                UpdateException(handler);
+            }
+        }
+
+        /// <summary>
+        /// Method to convert a video using a one click method and settings automatically defined.
+        /// </summary>
+        /// <param name="vCodec">The video codec for FFMpeg to use.</param>
+        /// <param name="version">The version of FrameGUI.</param>
+        public void ConvertOneClick(string vCodec, string version)
+        {
             Cancelled = false;
 
             if (SupportedFiles())
@@ -138,17 +170,55 @@ namespace FFLoader
                 _fflog = File.CreateText(FFMpegLogPath);
                 _sb = new StringBuilder();
 
-                FFMpegCommand = ArgsBuilder.ArgumentBuilder(InputVideoPath, OutputVideoPath, AvisynthScriptPath, vCodec, 
-                    tune, mode, vBitrate, crf, preset, aCodec, aBitrate, fps, bFrame, vHeight, vWidth, algo, sRate, sharpen, 
-                    version, mute);
+                FFMpegCommand = ArgsBuilder.OneCArguments(InputVideoPath, OutputVideoPath, AvisynthScriptPath, vCodec, version);
 
                 NewProcess(ExeName.FFMpeg, FFMpegPath, FFMpegCommand);
                 _process.ErrorDataReceived += OutputData;
-                FFEncoder.TryStartProcess(_fflog, _process, _sb, Cancelled, this);
+                FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
             }
             else
             {
-                CatchException($"The selected input video is currently not supported.", out FFExceptionHandler handler);
+                CatchException($"The selected input is not a video or is not a supported video format.", out FFExceptionHandler handler);
+                UpdateException(handler);
+            }
+        }
+
+        /// <summary>
+        /// Gets the input FPS of the selected input video for use of one-click encoding method.
+        /// </summary>
+        public void GetVideoFPS()
+        {
+            Cancelled = false;
+
+            if (SupportedFiles())
+            {
+                _process = null;
+
+                string command = $@"-i ""{InputVideoPath}""";
+                NewProcess(ExeName.FFMpeg, FFMpegPath, command);
+                _process.ErrorDataReceived += (sender, e) =>
+                {
+                    if (e.Data == null)
+                    {
+                        return;
+                    }
+
+                    if (RegexTool.CheckRegexFPSInfoMatch(e.Data, out InfoFPSHandler handler))
+                    {
+                        UpdateInputVideoFPS(handler);
+                    }
+                };
+
+                FFHelper.FFMpegPathNullOrMissing(FFMpegPath);
+                FFHelper.InputFileNullOrMissing(InputVideoPath);
+
+                _process.Start();
+                _process.BeginErrorReadLine();
+                _process.WaitForExit();
+            }
+            else
+            {
+                CatchException($"The selected input is not a video or is not a supported video format.", out FFExceptionHandler handler);
                 UpdateException(handler);
             }
         }
@@ -158,8 +228,6 @@ namespace FFLoader
         /// </summary>
         public void GetVideoInfo()
         {
-            IsRealProcess = false;
-
             if (SupportedFiles())
             {
                 _process = null;
@@ -167,11 +235,11 @@ namespace FFLoader
                 string command = $@"-i ""{InputVideoPath}""";
                 NewProcess(ExeName.FFMpeg, FFMpegPath, command);
                 _process.ErrorDataReceived += OutputData;
-                FFEncoder.TryStartProcess(_fflog, _process, _sb, Cancelled, this);
+                FFEncoder.TryStartProcess(_fflog, _process, _sb, this);
             }
             else
             {
-                CatchException($"The selected input video is currently not supported.", out FFExceptionHandler handler);
+                CatchException($"The selected input is not a video or is not a supported video format.", out FFExceptionHandler handler);
                 UpdateException(handler);
             }
         }
@@ -200,68 +268,51 @@ namespace FFLoader
         private bool AvsError { get; set; }
 
         /// <summary>
-        /// FFMpeg console data.
+        /// FFMpeg output console data.
         /// </summary>
         /// <param name="sender">Process object.</param>
         /// <param name="e">Instance of DataReceivedEventArgs.</param>
         private void OutputData(object sender, DataReceivedEventArgs e)
         {
-            if (IsRealProcess)
+            if (e.Data == null)
             {
-                if (e.Data == null)
-                {
-                    return;
-                }
-
-                RegexTool.CheckRegexDurationMatch(e.Data);
-                RegexTool.CheckRegexProgressFPSMatch(e.Data);
-
-                if (RegexTool.CheckProgressRegexMatch(e.Data, out ConversionProgress progress))
-                {
-                    UpdateConversionProgress(progress);
-                }
-
-                if (!e.Data.Contains("frame="))
-                {
-                    _fflog.WriteLine(e.Data);
-                }
-
-                //Gets the second line of the AviSynth+ error if exists.
-                if (AvsError)
-                {
-                    if (!e.Data.Contains(find.Last()) && !e.Data.Contains(AvisynthScriptPath))
-                    {
-                        _sb.Append(" - ");
-                        _sb.Append(e.Data.TrimStart());
-                    }
-                    
-                    AvsError = false;
-                }
-
-                if (e.Data.Contains(find.First()))
-                {
-                    _sb.Append(RegexTool.CheckAviSynthErrorMatch(e.Data));
-                    AvsError = true;
-                }
-
-                if (e.Data.Contains(AvisynthScriptPath) && string.IsNullOrEmpty(_sb.ToString()) && !string.IsNullOrEmpty(AvisynthScriptPath))
-                {
-                    _sb.Append(FFHelper.AviSynthNullOrMissing(AvisynthDllPath, AvisynthPlusPath));
-                }
+                return;
             }
-            else
-            {
-                if (e.Data == null)
-                {
-                    return;
-                }
-                else
-                {
-                    RegexTool.CheckRegexDurationMatch(e.Data);
 
-                    RegexTool.CheckRegexVideoInfoMatch(e.Data, out VideoInfoHandler info);
-                    UpdateVideoInfo(info);
+            RegexTool.CheckRegexDurationMatch(e.Data);
+            RegexTool.CheckRegexProgressFPSMatch(e.Data);
+
+            if (RegexTool.CheckProgressRegexMatch(e.Data, out ConversionProgress progress))
+            {
+                UpdateConversionProgress(progress);
+            }
+
+            if (!e.Data.Contains("frame="))
+            {
+                _fflog.WriteLine(e.Data);
+            }
+
+            //Gets the second line of the AviSynth+ error if exists.
+            if (AvsError)
+            {
+                if (!e.Data.Contains(find.Last()) && !e.Data.Contains(AvisynthScriptPath))
+                {
+                    _sb.Append(" - ");
+                    _sb.Append(e.Data.TrimStart());
                 }
+                    
+                AvsError = false;
+            }
+
+            if (e.Data.Contains(find.First()))
+            {
+                _sb.Append(RegexTool.CheckAviSynthErrorMatch(e.Data));
+                AvsError = true;
+            }
+
+            if (e.Data.Contains(AvisynthScriptPath) && string.IsNullOrEmpty(_sb.ToString()) && !string.IsNullOrEmpty(AvisynthScriptPath))
+            {
+                _sb.Append(FFHelper.AviSynthNullOrMissing(AvisynthDllPath, AvisynthPlusPath));
             }
         }
     }

@@ -11,7 +11,7 @@ namespace FFLoader
         /// <summary>
         /// True if the user requested to cancel the encode, otherwise false.
         /// </summary>
-        internal static bool Cancelled { get; set; }
+        public static bool Cancelled { get; set; }
 
         /// <summary>
         /// The process at which to execute.

@@ -30,6 +30,11 @@ namespace FFLoader
         public event EventHandler<FFMpegErrorHandler> FFMpegError;
 
         /// <summary>
+        /// Raises when Regex finds the FPS of the input video in FFMpeg.
+        /// </summary>
+        public event EventHandler<InfoFPSHandler> FPSHandler;
+
+        /// <summary>
         /// Catches the FFLoader exception message and creates a new instance of FFExceptionHandler from it.
         /// </summary>
         /// <param name="message">The exception message.</param>
@@ -84,6 +89,15 @@ namespace FFLoader
         internal virtual void UpdateConversionProgress(ConversionProgress progress)
         {
             FFConversionProgress?.Invoke(this, progress);
+        }
+
+        /// <summary>
+        /// Provides a method to update the FPSHandler event from the InfoFPSHandler event handler.
+        /// </summary>
+        /// <param name="handler">Instance of InfoFPSHandler.</param>
+        internal virtual void UpdateInputVideoFPS(InfoFPSHandler handler)
+        {
+            FPSHandler?.Invoke(this, handler);
         }
 
         /// <summary>
