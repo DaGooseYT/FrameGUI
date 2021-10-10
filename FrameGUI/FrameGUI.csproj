@@ -126,6 +126,7 @@
     <Compile Include="FrameGUI\ScriptGenerator.cs" />
     <EmbeddedResource Include="FrameGUI\FrameGUI.resx">
       <DependentUpon>FrameGUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
