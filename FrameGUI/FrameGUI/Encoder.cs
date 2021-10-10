@@ -62,6 +62,11 @@ namespace FrameGUI
         private static ProgressBarLabel EncodePB { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        private static ComboBox FMode { get; set; }
+
+        /// <summary>
         /// Configuration for FFLoader.
         /// </summary>
         /// <param name="worker">Instance of FFWorker.</param>
@@ -69,11 +74,11 @@ namespace FrameGUI
         /// <param name="useCB">Bool of UseCB checked.</param>
         /// <param name="input">Input video file path.</param>
         /// <param name="output">Output video file path.</param>
-        internal static void BeginEncode(BackgroundWorker worker, FFLoaderBase ffLoader, bool useCB, string input, string output)
+        internal static void BeginEncode(BackgroundWorker worker, FFLoaderBase ffLoader, bool useCB, string input, string output, int oneClick)
         {
             ffLoader.FFMpegPath = Directory.GetCurrentDirectory() + @"\ffmpeg.exe";
 
-            if (useCB)
+            if (useCB || oneClick == 1)
             {
                 ffLoader.AvisynthScriptPath = Path.GetTempPath() + @"FrameGUI\aviscript.avs";
             }
@@ -107,20 +112,23 @@ namespace FrameGUI
         /// <param name="height">The height of the video in pixels.</param>
         /// <param name="width">The width of the video in pixels.</param>
         internal static void WhileWorking(FFLoaderBase ffLoader, ComboBox preset, ComboBox tune, ComboBox algo, ComboBox format, ComboBox sr, 
-            ComboBox mode, ComboBox abitrate, ProgressBarLabel pb, double frameRate, double bframe, double vbitrate, double crf, 
+            ComboBox mode, ComboBox abitrate, ProgressBarLabel pb, int fmode, double frameRate, double bframe, double vbitrate, double crf, 
             double height, double width, float sharpen, string version, bool mute)
         {
             EncodePB = pb;
             FFloader = ffLoader;
 
             //Prevents cross-threading errors.
-            preset.Invoke(new Action(() => { Preset = preset.SelectedItem; }));
-            tune.Invoke(new Action(() => { Tune = tune.SelectedItem; }));
-            algo.Invoke(new Action(() => { ResizeAlgo = algo.SelectedItem; }));
-            format.Invoke(new Action(() => { AudioFormat = format.SelectedItem; }));
-            abitrate.Invoke(new Action(() => { AudioBitrate = abitrate.SelectedItem; }));
-            sr.Invoke(new Action(() => { AudioSR = sr.SelectedItem; }));
-            mode.Invoke(new Action(() => { Mode = mode.SelectedItem; }));
+            if (fmode == 0)
+            {
+                preset.Invoke(new Action(() => { Preset = preset.SelectedItem; }));
+                tune.Invoke(new Action(() => { Tune = tune.SelectedItem; }));
+                algo.Invoke(new Action(() => { ResizeAlgo = algo.SelectedItem; }));
+                format.Invoke(new Action(() => { AudioFormat = format.SelectedItem; }));
+                abitrate.Invoke(new Action(() => { AudioBitrate = abitrate.SelectedItem; }));
+                sr.Invoke(new Action(() => { AudioSR = sr.SelectedItem; }));
+                mode.Invoke(new Action(() => { Mode = mode.SelectedItem; }));
+            }
 
             //Subcribe to events.
             ffLoader.FFConversionProgress += UpdateProgress;
@@ -130,8 +138,15 @@ namespace FrameGUI
 
             try
             {
-                ffLoader.ConvertFFMpeg("libx264", Mode.ToString(), Preset.ToString(), Tune.ToString(), ResizeAlgo.ToString(), AudioFormat.ToString(),
+                if (fmode == 0)
+                {
+                    ffLoader.ConvertFFMpeg("libx264", Mode.ToString(), Preset.ToString(), Tune.ToString(), ResizeAlgo.ToString(), AudioFormat.ToString(),
                     AudioBitrate.ToString(), AudioSR.ToString(), height, width, vbitrate, frameRate, bframe, crf, sharpen, version, mute);
+                }
+                else
+                {
+                    ffLoader.ConvertOneClick("libx264", version);
+                }
             }
             catch (IOException)
             {
@@ -156,7 +171,7 @@ namespace FrameGUI
         {
             cancel.Visible = false;
 
-            if (ffLoader.FixPercentage())
+            if (ffLoader.FixPercentage() && pb.Value > 0)
             {
                 if (not.Checked)
                 {
@@ -185,6 +200,8 @@ namespace FrameGUI
 
             EncodePB.TextColor = Color.Red;
 
+            ProcessWorker.Cancelled = true;
+
             MessageBox.Show("FFLoader ran into a problem: " + Environment.NewLine + Environment.NewLine + 
                 $@"""{e.Message}""", "FFLoader exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
@@ -201,7 +218,7 @@ namespace FrameGUI
                 EncodePB.ProgressText = "Process exited with AviSynth+ error.";
             }));
 
-            if (EncodePB.Value > 1)
+            if (EncodePB.Value >= 1)
             {
                 EncodePB.ProgressColor = Brushes.OrangeRed;
             }

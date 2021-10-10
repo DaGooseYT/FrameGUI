@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 using EncodeProg;
 
@@ -55,8 +54,11 @@ namespace FrameGUI
             this.AbGUILabel = new System.Windows.Forms.Label();
             this.AboutGUILabel = new System.Windows.Forms.Label();
             this.MainTab = new System.Windows.Forms.TabPage();
+            this.FGUIGB = new System.Windows.Forms.GroupBox();
+            this.FGUILabel = new System.Windows.Forms.Label();
+            this.FGUIDD = new System.Windows.Forms.ComboBox();
+            this.ModeLabel = new System.Windows.Forms.Label();
             this.CancelBttn = new System.Windows.Forms.Button();
-            this.FrameGUILabel = new System.Windows.Forms.Label();
             this.FrameGUILogo = new System.Windows.Forms.PictureBox();
             this.SetInputBttn = new System.Windows.Forms.Button();
             this.InTxtBox = new System.Windows.Forms.TextBox();
@@ -130,7 +132,6 @@ namespace FrameGUI
             this.IwantLabel = new System.Windows.Forms.Label();
             this.OutFPSNUD = new System.Windows.Forms.NumericUpDown();
             this.OutFPSLabel = new System.Windows.Forms.Label();
-            this.InputFPSNUD = new System.Windows.Forms.NumericUpDown();
             this.InputFPSLabel = new System.Windows.Forms.Label();
             this.NoobCB = new System.Windows.Forms.CheckBox();
             this.UseCB = new System.Windows.Forms.CheckBox();
@@ -145,7 +146,9 @@ namespace FrameGUI
             this.ScriptsLabel = new System.Windows.Forms.Label();
             this.FormatDD = new System.Windows.Forms.ComboBox();
             this.FFWorker = new System.ComponentModel.BackgroundWorker();
-            this.EncodePB = new EncodeProg.ProgressBarLabel();
+            EncodePB = new EncodeProg.ProgressBarLabel();
+            this.FPSGrabber = new System.ComponentModel.BackgroundWorker();
+            this.FPSLabel = new System.Windows.Forms.Label();
             this.AboutTab.SuspendLayout();
             this.SupportGB.SuspendLayout();
             this.AboutAuthGB.SuspendLayout();
@@ -154,6 +157,7 @@ namespace FrameGUI
             ((System.ComponentModel.ISupportInitialize)(this.YoutubeLogo)).BeginInit();
             this.AboutGUIGB.SuspendLayout();
             this.MainTab.SuspendLayout();
+            this.FGUIGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrameGUILogo)).BeginInit();
             this.Tabs.SuspendLayout();
             this.SettingsTab.SuspendLayout();
@@ -180,7 +184,6 @@ namespace FrameGUI
             this.OtherSettingGB.SuspendLayout();
             this.SettingsGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OutFPSNUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.InputFPSNUD)).BeginInit();
             this.SuspendLayout();
             // 
             // SaveOutTxtBox
@@ -209,7 +212,7 @@ namespace FrameGUI
             // 
             this.StartEncodeBttn.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartEncodeBttn.ForeColor = System.Drawing.Color.Green;
-            this.StartEncodeBttn.Location = new System.Drawing.Point(337, 66);
+            this.StartEncodeBttn.Location = new System.Drawing.Point(324, 140);
             this.StartEncodeBttn.Name = "StartEncodeBttn";
             this.StartEncodeBttn.Size = new System.Drawing.Size(231, 69);
             this.StartEncodeBttn.TabIndex = 2;
@@ -414,8 +417,8 @@ namespace FrameGUI
             // 
             // MainTab
             // 
+            this.MainTab.Controls.Add(this.FGUIGB);
             this.MainTab.Controls.Add(this.CancelBttn);
-            this.MainTab.Controls.Add(this.FrameGUILabel);
             this.MainTab.Controls.Add(this.FrameGUILogo);
             this.MainTab.Controls.Add(this.StartEncodeBttn);
             this.MainTab.Controls.Add(this.SetInputBttn);
@@ -428,11 +431,54 @@ namespace FrameGUI
             this.MainTab.Text = "Main";
             this.MainTab.UseVisualStyleBackColor = true;
             // 
+            // FGUIGB
+            // 
+            this.FGUIGB.Controls.Add(this.FGUILabel);
+            this.FGUIGB.Controls.Add(this.FGUIDD);
+            this.FGUIGB.Controls.Add(this.ModeLabel);
+            this.FGUIGB.Location = new System.Drawing.Point(324, 66);
+            this.FGUIGB.Name = "FGUIGB";
+            this.FGUIGB.Size = new System.Drawing.Size(231, 68);
+            this.FGUIGB.TabIndex = 8;
+            this.FGUIGB.TabStop = false;
+            // 
+            // FGUILabel
+            // 
+            this.FGUILabel.AutoSize = true;
+            this.FGUILabel.BackColor = System.Drawing.Color.White;
+            this.FGUILabel.Location = new System.Drawing.Point(79, 0);
+            this.FGUILabel.Name = "FGUILabel";
+            this.FGUILabel.Size = new System.Drawing.Size(71, 16);
+            this.FGUILabel.TabIndex = 9;
+            this.FGUILabel.Text = "FrameGUI";
+            // 
+            // FGUIDD
+            // 
+            this.FGUIDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FGUIDD.FormattingEnabled = true;
+            this.FGUIDD.Items.AddRange(new object[] {
+            "Normal",
+            "One-click"});
+            this.FGUIDD.Location = new System.Drawing.Point(90, 27);
+            this.FGUIDD.Name = "FGUIDD";
+            this.FGUIDD.Size = new System.Drawing.Size(106, 24);
+            this.FGUIDD.TabIndex = 7;
+            this.FGUIDD.SelectedIndexChanged += new System.EventHandler(this.FGUIDD_SelectedIndexChanged);
+            // 
+            // ModeLabel
+            // 
+            this.ModeLabel.AutoSize = true;
+            this.ModeLabel.Location = new System.Drawing.Point(38, 30);
+            this.ModeLabel.Name = "ModeLabel";
+            this.ModeLabel.Size = new System.Drawing.Size(46, 16);
+            this.ModeLabel.TabIndex = 6;
+            this.ModeLabel.Text = "Mode:";
+            // 
             // CancelBttn
             // 
             this.CancelBttn.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CancelBttn.ForeColor = System.Drawing.Color.Red;
-            this.CancelBttn.Location = new System.Drawing.Point(337, 141);
+            this.CancelBttn.Location = new System.Drawing.Point(324, 215);
             this.CancelBttn.Name = "CancelBttn";
             this.CancelBttn.Size = new System.Drawing.Size(231, 28);
             this.CancelBttn.TabIndex = 3;
@@ -441,23 +487,13 @@ namespace FrameGUI
             this.CancelBttn.Visible = false;
             this.CancelBttn.Click += new System.EventHandler(this.CancelClick);
             // 
-            // FrameGUILabel
-            // 
-            this.FrameGUILabel.AutoSize = true;
-            this.FrameGUILabel.Font = new System.Drawing.Font("Arial", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FrameGUILabel.Location = new System.Drawing.Point(291, 206);
-            this.FrameGUILabel.Name = "FrameGUILabel";
-            this.FrameGUILabel.Size = new System.Drawing.Size(307, 67);
-            this.FrameGUILabel.TabIndex = 3;
-            this.FrameGUILabel.Text = "FrameGUI";
-            // 
             // FrameGUILogo
             // 
             this.FrameGUILogo.ErrorImage = null;
             this.FrameGUILogo.Image = ((System.Drawing.Image)(resources.GetObject("FrameGUILogo.Image")));
-            this.FrameGUILogo.Location = new System.Drawing.Point(17, 47);
+            this.FrameGUILogo.Location = new System.Drawing.Point(26, 54);
             this.FrameGUILogo.Name = "FrameGUILogo";
-            this.FrameGUILogo.Size = new System.Drawing.Size(288, 226);
+            this.FrameGUILogo.Size = new System.Drawing.Size(271, 204);
             this.FrameGUILogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.FrameGUILogo.TabIndex = 5;
             this.FrameGUILogo.TabStop = false;
@@ -1239,13 +1275,13 @@ namespace FrameGUI
             // 
             // SettingsGB
             // 
+            this.SettingsGB.Controls.Add(this.FPSLabel);
             this.SettingsGB.Controls.Add(this.ArtefactLabel);
             this.SettingsGB.Controls.Add(this.UseGPUCB);
             this.SettingsGB.Controls.Add(this.IwantDD);
             this.SettingsGB.Controls.Add(this.IwantLabel);
             this.SettingsGB.Controls.Add(this.OutFPSNUD);
             this.SettingsGB.Controls.Add(this.OutFPSLabel);
-            this.SettingsGB.Controls.Add(this.InputFPSNUD);
             this.SettingsGB.Controls.Add(this.InputFPSLabel);
             this.SettingsGB.Controls.Add(this.NoobCB);
             this.SettingsGB.Controls.Add(this.UseCB);
@@ -1280,7 +1316,7 @@ namespace FrameGUI
             // 
             this.UseGPUCB.AutoSize = true;
             this.UseGPUCB.Enabled = false;
-            this.UseGPUCB.Location = new System.Drawing.Point(416, 37);
+            this.UseGPUCB.Location = new System.Drawing.Point(413, 38);
             this.UseGPUCB.Name = "UseGPUCB";
             this.UseGPUCB.Size = new System.Drawing.Size(92, 20);
             this.UseGPUCB.TabIndex = 8;
@@ -1316,7 +1352,7 @@ namespace FrameGUI
             // OutFPSNUD
             // 
             this.OutFPSNUD.Enabled = false;
-            this.OutFPSNUD.Location = new System.Drawing.Point(324, 36);
+            this.OutFPSNUD.Location = new System.Drawing.Point(317, 36);
             this.OutFPSNUD.Maximum = new decimal(new int[] {
             140,
             0,
@@ -1335,37 +1371,17 @@ namespace FrameGUI
             // OutFPSLabel
             // 
             this.OutFPSLabel.AutoSize = true;
-            this.OutFPSLabel.Location = new System.Drawing.Point(237, 38);
+            this.OutFPSLabel.Location = new System.Drawing.Point(230, 38);
             this.OutFPSLabel.Name = "OutFPSLabel";
             this.OutFPSLabel.Size = new System.Drawing.Size(83, 16);
             this.OutFPSLabel.TabIndex = 13;
             this.OutFPSLabel.Text = "Output FPS:";
             this.OutFPSLabel.Visible = false;
             // 
-            // InputFPSNUD
-            // 
-            this.InputFPSNUD.Enabled = false;
-            this.InputFPSNUD.Location = new System.Drawing.Point(143, 36);
-            this.InputFPSNUD.Minimum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.InputFPSNUD.Name = "InputFPSNUD";
-            this.InputFPSNUD.Size = new System.Drawing.Size(57, 22);
-            this.InputFPSNUD.TabIndex = 6;
-            this.InputFPSNUD.Value = new decimal(new int[] {
-            24,
-            0,
-            0,
-            0});
-            this.InputFPSNUD.Visible = false;
-            this.InputFPSNUD.ValueChanged += new System.EventHandler(this.InputFPSNUD_ValueChanged);
-            // 
             // InputFPSLabel
             // 
             this.InputFPSLabel.AutoSize = true;
-            this.InputFPSLabel.Location = new System.Drawing.Point(64, 38);
+            this.InputFPSLabel.Location = new System.Drawing.Point(73, 38);
             this.InputFPSLabel.Name = "InputFPSLabel";
             this.InputFPSLabel.Size = new System.Drawing.Size(73, 16);
             this.InputFPSLabel.TabIndex = 11;
@@ -1498,14 +1514,25 @@ namespace FrameGUI
             // 
             // EncodePB
             // 
-            this.EncodePB.Location = new System.Drawing.Point(10, 362);
-            this.EncodePB.Name = "EncodePB";
-            this.EncodePB.ProgressColor = null;
-            this.EncodePB.ProgressText = null;
-            this.EncodePB.Size = new System.Drawing.Size(610, 25);
-            this.EncodePB.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.EncodePB.TabIndex = 42;
-            this.EncodePB.TextColor = System.Drawing.Color.Empty;
+            EncodePB.Location = new System.Drawing.Point(10, 362);
+            EncodePB.Name = "EncodePB";
+            EncodePB.ProgressColor = null;
+            EncodePB.ProgressText = null;
+            EncodePB.Size = new System.Drawing.Size(610, 25);
+            EncodePB.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            EncodePB.TabIndex = 42;
+            EncodePB.TextColor = System.Drawing.Color.Empty;
+            // 
+            // FPSLabel
+            // 
+            this.FPSLabel.AutoSize = true;
+            this.FPSLabel.ForeColor = System.Drawing.Color.ForestGreen;
+            this.FPSLabel.Location = new System.Drawing.Point(148, 38);
+            this.FPSLabel.Name = "FPSLabel";
+            this.FPSLabel.Size = new System.Drawing.Size(14, 16);
+            this.FPSLabel.TabIndex = 20;
+            this.FPSLabel.Text = "0";
+            this.FPSLabel.Visible = false;
             // 
             // FrameGUI
             // 
@@ -1516,7 +1543,7 @@ namespace FrameGUI
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(632, 398);
-            this.Controls.Add(this.EncodePB);
+            this.Controls.Add(EncodePB);
             this.Controls.Add(this.FormatDD);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.SaveOutBttn);
@@ -1530,7 +1557,7 @@ namespace FrameGUI
             this.Name = "FrameGUI";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrameGUI v1.1.2";
+            this.Text = "FrameGUI v1.2";
             this.AboutTab.ResumeLayout(false);
             this.SupportGB.ResumeLayout(false);
             this.SupportGB.PerformLayout();
@@ -1543,6 +1570,8 @@ namespace FrameGUI
             this.AboutGUIGB.PerformLayout();
             this.MainTab.ResumeLayout(false);
             this.MainTab.PerformLayout();
+            this.FGUIGB.ResumeLayout(false);
+            this.FGUIGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FrameGUILogo)).EndInit();
             this.Tabs.ResumeLayout(false);
             this.SettingsTab.ResumeLayout(false);
@@ -1578,7 +1607,6 @@ namespace FrameGUI
             this.SettingsGB.ResumeLayout(false);
             this.SettingsGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OutFPSNUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.InputFPSNUD)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1595,7 +1623,6 @@ namespace FrameGUI
         internal GroupBox AboutGUIGB;
         internal Label AboutGUILabel;
         internal TabPage MainTab;
-        internal Label FrameGUILabel;
         internal PictureBox FrameGUILogo;
         internal Button SetInputBttn;
         internal TextBox InTxtBox;
@@ -1684,7 +1711,6 @@ namespace FrameGUI
         internal CheckBox SharpenCB;
         internal NumericUpDown OutFPSNUD;
         internal Label OutFPSLabel;
-        internal NumericUpDown InputFPSNUD;
         internal Label InputFPSLabel;
         internal ComboBox IwantDD;
         internal Label IwantLabel;
@@ -1695,8 +1721,14 @@ namespace FrameGUI
         internal Label HelpLabel;
         internal Button LogsBttn;
         internal CheckBox MuteAudCB;
-        internal ProgressBarLabel EncodePB;
-        private GroupBox SupportGB;
-        private Label SupportLabel;
+        static internal ProgressBarLabel EncodePB;
+        internal GroupBox SupportGB;
+        internal Label SupportLabel;
+        internal ComboBox FGUIDD;
+        internal Label ModeLabel;
+        internal GroupBox FGUIGB;
+        internal Label FGUILabel;
+        internal BackgroundWorker FPSGrabber;
+        internal Label FPSLabel;
     }
 }

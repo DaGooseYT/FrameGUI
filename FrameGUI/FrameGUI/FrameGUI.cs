@@ -22,9 +22,10 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Threading;
 using FrameGUI.Properties;
 using FFLoader;
+using System.Globalization;
+using System.Threading;
 
 namespace FrameGUI
 {
@@ -40,12 +41,17 @@ namespace FrameGUI
         /// <summary>
         /// The input video FPS.
         /// </summary>
-        internal string InputVideoFPS { get; private set; }
+        internal float InputVideoFPS { get; private set; }
 
         /// <summary>
         /// Progress initialization message.
         /// </summary>
         internal string Initialize { get; private set; } = "Conversion progress info will be available soon...";
+
+        /// <summary>
+        /// String to notify the user that the input video fps is trying to be recieved.
+        /// </summary>
+        internal string GettingFPS { get; private set; } = "Getting input video FPS...";
 
         /// <summary>
         /// Link to SVPFlow plugin parameters if the user needs assistance building the SVPFLow parameters.
@@ -104,17 +110,18 @@ namespace FrameGUI
         /// <param name="e">Instance of EventArgs.</param>
         public void SetInputBttn_Click(object sender, EventArgs e)
         {
-            OpenFileDialog InputFileWindow = new OpenFileDialog
+            OpenFileDialog inputFileWindow = new OpenFileDialog
             {
-
                 Filter = "All files (*.*)|*.*",
                 Title = "Select Input File",
-
             };
 
-            if (InputFileWindow.ShowDialog() == DialogResult.OK)
+            if (inputFileWindow.ShowDialog() == DialogResult.OK)
             {
-                InTxtBox.Text = InputFileWindow.FileName;
+                if (CheckFPS(inputFileWindow.FileName))
+                {
+                    InTxtBox.Text = inputFileWindow.FileName;
+                }
             }
         }
 
@@ -146,15 +153,15 @@ namespace FrameGUI
                 Filter1 = "FLV Files (*.flv)|*.flv";
             }
 
-            SaveFileDialog OutputFileWindow = new SaveFileDialog
+            SaveFileDialog outputFileWindow = new SaveFileDialog
             {
                 Filter = Filter1,
                 Title = "Save Output File",
             };
 
-            if (OutputFileWindow.ShowDialog() == DialogResult.OK)
+            if (outputFileWindow.ShowDialog() == DialogResult.OK)
             {
-                SaveOutTxtBox.Text = OutputFileWindow.FileName;
+                SaveOutTxtBox.Text = outputFileWindow.FileName;
             }
         }
 
@@ -172,20 +179,17 @@ namespace FrameGUI
                     if (MessageBox.Show("Are you sure you want to cancel the encoding process? You can't continue the process once cancelled.",
                         "Cancel encode confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                     {
+                        CancelBttn.Visible = false;
+                        EncodePB.ProgressColor = Brushes.OrangeRed;
+
                         FFWorker.CancelAsync();
                         _ffloader.StopFFMpegProcess();
-
-                        EncodePB.ProgressColor = Brushes.OrangeRed;
                     }
                 }
                 else
                 {
                     MessageBox.Show("Please wait for the process to initialize before cancelling it.", "FrameGUI error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-            else
-            {
-                CancelBttn.Visible = false;
             }
         }
 
@@ -233,20 +237,44 @@ namespace FrameGUI
                         EncodePB.TextColor = Color.Black;
                         EncodePB.ProgressColor = Brushes.LimeGreen;
                         EncodePB.ProgressText = Initialize;
-                        CancelBttn.Visible = true;
                         EncodePB.Value = 0;
+                        CancelBttn.Visible = true;
 
-                        if (NoobCB.Checked)
+                        if (UseCB.Checked && FrameRNUD.Value != 0 && FGUIDD.SelectedIndex == 0)
                         {
-                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text, SaveOutTxtBox.Text, 
-                                (int)OutFPSNUD.Value, (int)InputFPSNUD.Value, IwantDD.SelectedIndex, UseGPUCB.Checked);
+                            FrameRNUD.Value = 0;
+                        }
+
+                        if (((float)FrameRNUD.Value > InputVideoFPS) && !UseCB.Checked && (FGUIDD.SelectedIndex == 0) && (InputVideoFPS != 0))
+                        {
+                            var question = MessageBox.Show($"You've defined the output fps value at {FrameRNUD.Value}fps, which is higher than the input video fps ({InputVideoFPS}fps)." +
+                                $" If you would like to increase the output fps, please use SVPFlow instead (press F1 for help). Would you like to continue the encoding process regardless?",
+                                "Output FPS higher than input FPS by improper means.", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+                            if (question == DialogResult.No)
+                            {
+                                EncodePB.ProgressText = string.Empty;
+                                CancelBttn.Visible = false;
+                                return;
+                            }
+                        }
+                       
+                        if (UseCB.Checked && NoobCB.Checked && FGUIDD.SelectedIndex == 0)
+                        {
+                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text, SaveOutTxtBox.Text,
+                                (int)OutFPSNUD.Value, InputVideoFPS, IwantDD.SelectedIndex, UseGPUCB.Checked, FGUIDD.SelectedIndex);
+                        }
+                        else if (FGUIDD.SelectedIndex == 1)
+                        {
+                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, UseCB.Checked, CancelBttn, 2048, 16, InTxtBox.Text, SaveOutTxtBox.Text,
+                            60, InputVideoFPS, IwantDD.SelectedIndex, UseGPUCB.Checked, FGUIDD.SelectedIndex);
                         }
                         else
                         {
                             try
                             {
                                 ScriptGenerator.AvsGenerate(FFWorker, _ffloader, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text,
-                            SuperTxtBox.Text, AnalyseTxtBox.Text, SmoothTxtBox.Text, SaveOutTxtBox.Text);
+                            SuperTxtBox.Text, AnalyseTxtBox.Text, SmoothTxtBox.Text, SaveOutTxtBox.Text, FGUIDD.SelectedIndex);
                             }
                             catch (IOException)
                             {
@@ -279,6 +307,85 @@ namespace FrameGUI
         }
 
         /// <summary>
+        /// Runs the input video FPSGrabber.
+        /// </summary>
+        private bool CheckFPS(string path)
+        {
+            if (!FFWorker.IsBusy)
+            {
+                Enabled = false;
+                EncodePB.Value = 0;
+                EncodePB.ProgressText = GettingFPS;
+                _ffloader.FFMpegPath = Directory.GetCurrentDirectory() + @"\ffmpeg.exe";
+                _ffloader.InputVideoPath = path;
+                _ffloader.FPSHandler += FPS;
+                FPSGrabber.RunWorkerAsync();
+
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Please wait for the current encoding process to finish before importing a video", "Input video error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Background worker for FPSGrabber.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of DoWorkEventArgs.</param>
+        internal void DoShortWork(object sender, DoWorkEventArgs e)
+        {
+            InputVideoFPS = 0;
+            _ffloader.GetVideoFPS();
+        }
+
+        /// <summary>
+        /// Retrieves the input FPS from Regex console match.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of InfoFPSHandler.</param>
+        private void FPS(object sender, InfoFPSHandler e)
+        {
+            InputVideoFPS = e.InputFPS;
+        }
+
+        /// <summary>
+        /// Stuff to do after the FPSGrabber worker has finished.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of RunWorkerCompletedEventArgs.</param>
+        internal void ShortWorkComplete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            _ffloader.FPSHandler -= FPS;
+
+            if (InputVideoFPS == 0)
+            {
+                MessageBox.Show("There was a problem finding the input fps of your video. Please confirm that your video is not corrupt and is a video file.", 
+                    "Input FPS not found", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (InputVideoFPS >= 10)
+            {
+                FPSLabel.Text = InputVideoFPS.ToString();
+            }
+            else
+            {
+                MessageBox.Show("Videos under 10fps are not supported.", "Invalid FPS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                EncodePB.ProgressText = string.Empty;
+
+                if (InTxtBox.Text != string.Empty)
+                {
+                    InTxtBox.Text = string.Empty;
+                }
+            }
+
+            EncodePB.ProgressText = string.Empty;
+            Enabled = true;
+        }
+
+        /// <summary>
         /// Instance of DoWork event from FFWorker. 
         /// </summary>
         /// <param name="sender">FrameGUI object.</param>
@@ -287,7 +394,11 @@ namespace FrameGUI
         {
             SetThreadExecutionState(EXECUTION_STATE.ES_SYSTEM_REQUIRED);
 
-            Encoder.WhileWorking(_ffloader, CPUPDD, TuneDD, ResizeAlgoDD, AudFormatDD, SRDD, EncodeModeDD, AudBitrateDD, EncodePB, (double)FrameRNUD.Value, 
+            int oneClick = 0;
+
+            FGUIDD.Invoke(new Action(() => { oneClick = FGUIDD.SelectedIndex; }));
+
+            Encoder.WhileWorking(_ffloader, CPUPDD, TuneDD, ResizeAlgoDD, AudFormatDD, SRDD, EncodeModeDD, AudBitrateDD, EncodePB, oneClick, (double)FrameRNUD.Value, 
                 (double)BframeValue.Value, (double)BitrateValue.Value, (double)crfNUD.Value, (double)HeightResNUD.Value, (double)WidthResNUD.Value, (float)SharpenValNUD.Value, 
                 Text, MuteAudCB.Checked);
         }
@@ -404,16 +515,6 @@ namespace FrameGUI
         }
 
         /// <summary>
-        /// Sets the output FPS in noob configuration based on the input FPS.
-        /// </summary>
-        /// <param name="sender">FrameGUI object.</param>
-        /// <param name="e">Instance of EventArgs.</param>
-        private void InputFPSNUD_ValueChanged(object sender, EventArgs e)
-        {
-            OutFPSNUD.Minimum = InputFPSNUD.Value;
-        }
-
-        /// <summary>
         /// Opens the path to the logs and avs script file on the user's temp folder.
         /// </summary>
         /// <param name="sender">FrameGUI object.</param>
@@ -490,42 +591,22 @@ namespace FrameGUI
         {
             if (UseCB.Checked)
             {
-                if (CheckAviSynthExists())
-                {
-                    SuperTxtBox.Enabled = true;
-                    AnalyseTxtBox.Enabled = true;
-                    SmoothTxtBox.Enabled = true;
-                    ThreadsNUD.Enabled = true;
-                    ThreadsNUD.Value = Settings.Default.Threads;
-                    FrameRNUD.Enabled = false;
-                    FrameRNUD.Value = 0;
-                    MaxMemNUD.Enabled = true;
-                    MaxMemNUD.Value = Settings.Default.MaxMem;
-                    InputFPSNUD.Enabled = true;
-                    OutFPSNUD.Enabled = true;
-                    IwantDD.Enabled = true;
-                    UseGPUCB.Enabled = true;
-                }
-                else
-                {
-                    UseCB.Checked = false;
+                SuperTxtBox.Enabled = true;
+                AnalyseTxtBox.Enabled = true;
+                SmoothTxtBox.Enabled = true;
+                ThreadsNUD.Enabled = true;
+                ThreadsNUD.Value = Settings.Default.Threads;
+                FrameRNUD.Enabled = false;
+                FrameRNUD.Value = 0;
+                MaxMemNUD.Enabled = true;
+                MaxMemNUD.Value = Settings.Default.MaxMem;
+                OutFPSNUD.Enabled = true;
+                IwantDD.Enabled = true;
+                UseGPUCB.Enabled = true;
 
-                    var action = MessageBox.Show($@"AviSynth+ is not installed and is required for FrameGUI to use this function. Would you like to install AviSynth+ now?", 
-                        "Action needed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-
-                    if (action == DialogResult.Yes)
-                    {
-                        try
-                        {
-                            Process.Start(Directory.GetCurrentDirectory() + @"\AviSynth+\AviSynthPlus_3.7.0_vcredist.exe");
-                        }
-                        catch (Win32Exception)
-                        {
-                            MessageBox.Show(@"FrameGUI failed to load the installer for AviSynth+ in ""\FrameGUI\AviSynth+\AviSynthPlus_3.7.0_vcredist.exe"" 
-                                Please ensure that no antivirus software or other program deleted the installer.", "AviSynth+ install error", MessageBoxButtons.OK, 
-                                MessageBoxIcon.Error);
-                        }
-                    }
+                if (!CheckAviSynthExists())
+                {
+                    AviSynthMissing();
                 }
             }
             else
@@ -537,12 +618,34 @@ namespace FrameGUI
                 ThreadsNUD.Value = 0;
                 FrameRNUD.Enabled = true;
                 FrameRNUD.Value = Settings.Default.FrameRate;
-                MaxMemNUD.Enabled = false;
                 MaxMemNUD.Value = 0;
-                InputFPSNUD.Enabled = false;
+                MaxMemNUD.Enabled = false;
                 OutFPSNUD.Enabled = false;
                 IwantDD.Enabled = false;
                 UseGPUCB.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Message to prompt if AviSynth+ isn't installed on the host's machine.
+        /// </summary>
+        private void AviSynthMissing()
+        {
+            var action = MessageBox.Show($@"AviSynth+ is not installed and is required for FrameGUI to use this function. Would you like to install AviSynth+ now?",
+                        "Action needed", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+
+            if (action == DialogResult.Yes)
+            {
+                try
+                {
+                    Process.Start(Directory.GetCurrentDirectory() + @"\AviSynth+\AviSynthPlus_3.7.0_vcredist.exe");
+                }
+                catch (Win32Exception)
+                {
+                    MessageBox.Show(@"FrameGUI failed to load the installer for AviSynth+ in ""\FrameGUI\AviSynth+\AviSynthPlus_3.7.0_vcredist.exe"" 
+                                Please ensure that no antivirus software or other program deleted the installer.", "AviSynth+ install error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -569,6 +672,38 @@ namespace FrameGUI
                 crfValueLabel.Visible = true;
                 crfNUD.Visible = true;
             }
+        }
+
+        /// <summary>
+        /// Provides a method to change the layout depending on the mode selection.
+        /// </summary>
+        /// <param name="sender">FrameGUI object.</param>
+        /// <param name="e">Instance of EventArgs.</param>
+        private void FGUIDD_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (FGUIDD.SelectedIndex == 1)
+            {
+                if (CheckAviSynthExists())
+                {
+                    Tabs.TabPages.Remove(SettingsTab);
+                }
+                else
+                {
+                    AviSynthMissing();
+                    FGUIDD.SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                if (!Tabs.TabPages.Contains(SettingsTab))
+                {
+                    Tabs.TabPages.Insert(1, SettingsTab);
+                }
+            }
+
+            Settings.Default.Reload();
+            Settings.Default.OneClick = FGUIDD.SelectedIndex;
+            Settings.Default.Save();
         }
 
         /// <summary>
@@ -618,7 +753,7 @@ namespace FrameGUI
 
                 IwantDD.Visible = true;
                 IwantLabel.Visible = true;
-                InputFPSNUD.Visible = true;
+                FPSLabel.Visible = true;
                 InputFPSLabel.Visible = true;
                 OutFPSLabel.Visible = true;
                 OutFPSNUD.Visible = true;
@@ -638,7 +773,7 @@ namespace FrameGUI
 
                 IwantDD.Visible = false;
                 IwantLabel.Visible = false;
-                InputFPSNUD.Visible = false;
+                FPSLabel.Visible = false;
                 InputFPSLabel.Visible = false;
                 OutFPSLabel.Visible = false;
                 OutFPSNUD.Visible = false;
@@ -699,7 +834,6 @@ namespace FrameGUI
             Settings.Default.NoobCB = NoobCB.Checked;
             Settings.Default.Format = FormatDD.SelectedIndex;
             Settings.Default.GPUCB = UseGPUCB.Checked;
-            Settings.Default.InFPS = (int)InputFPSNUD.Value;
             Settings.Default.OutFPS = (int)OutFPSNUD.Value;
             Settings.Default.CRF = (int)crfNUD.Value;
             Settings.Default.ChangeRes = ChangeResCB.Checked;
@@ -733,6 +867,7 @@ namespace FrameGUI
             NotificationCB.Checked = Settings.Default.Not;
             IwantDD.SelectedIndex = Settings.Default.iWant;
             FrameRNUD.Value = Settings.Default.FrameRate;
+            FGUIDD.SelectedIndex = Settings.Default.OneClick;
 
             if (Settings.Default.ChangeRes)
             {
@@ -762,7 +897,6 @@ namespace FrameGUI
             IwantDD.SelectedIndex = Settings.Default.iWant;
             NoobCB.Checked = Settings.Default.NoobCB;
             UseGPUCB.Checked = Settings.Default.GPUCB;
-            InputFPSNUD.Value = Settings.Default.InFPS;
             OutFPSNUD.Value = Settings.Default.OutFPS;
             crfNUD.Value = Settings.Default.CRF;
             SharpenCB.Checked = Settings.Default.SharpenCB;
@@ -776,8 +910,6 @@ namespace FrameGUI
                 SharpenValNUD.Value = 0;
                 SharpenValNUD.Enabled = false;
             }
-            
-            OutFPSNUD.Minimum = InputFPSNUD.Value;
         }
 
         /// <summary>
@@ -791,6 +923,8 @@ namespace FrameGUI
 
             FFWorker.DoWork += new DoWorkEventHandler(DoWork);
             FFWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(WorkCompleted);
+            FPSGrabber.DoWork += new DoWorkEventHandler(DoShortWork);
+            FPSGrabber.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ShortWorkComplete);
             FormClosing += new FormClosingEventHandler(FrameGUIClosing);
             HelpRequested += FrameGUI_HelpRequested;
             FormatDD.TextChanged += new EventHandler(FormatDD_TabIndexChanged);

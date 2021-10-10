@@ -40,7 +40,7 @@ namespace FrameGUI
         /// <param name="iWantIdx">Noob parameter selectedindex for smoothness.</param>
         /// <param name="gpu">Bool of UseGPU checked.</param>
         internal static void NoobHelper(BackgroundWorker worker, FFLoaderBase ffl, bool useCB, Button cancel, int maxMem, 
-            int threads, string input, string output, double outFps, double inFps, int iWantIdx, bool gpu)
+            int threads, string input, string output, double outFps, double inFps, int iWantIdx, bool gpu, int oneClick)
         {
             var smooth = new StringBuilder();
             string super, analyse;
@@ -48,42 +48,67 @@ namespace FrameGUI
             int outFPS = (int)Math.Round(outFps);
             int inFPS = (int)Math.Round(inFps);
 
-            int findLCM = FindLCM(outFPS, inFPS);
-
-            int denominator = findLCM / outFPS;
-            int numerator = findLCM / inFPS;
-
-            smooth.Append(@"{{rate:{{num:");
-            smooth.Append(numerator);
-            smooth.Append(",den:");
-            smooth.Append(denominator);
-
-            if (iWantIdx == 0)
+            if (inFPS >= outFPS)
             {
-                smooth.Append(@"}},algo:21,mask:{{area:0}},scene:{{mode:0}}}}");
-            }
-            else if (iWantIdx == 1)
-            {
-                smooth.Append(@"}},algo:23,mask:{{area:75}},scene:{{mode:3,blend:true}}}}");
+                MessageBox.Show($"The input framerate ({inFPS}fps) is equal or greater than the output framerate ({outFPS}fps). " +
+                    $"If you are using the one-click method for conversion, only use input videos that are less than 60fps. Else, " +
+                    $"change the output frame rate in the SVPFlow tab.", "Frame rate selection error", MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error);
+
+                FrameGUI.EncodePB.ProgressText = string.Empty;
+                cancel.Visible = false;
             }
             else
             {
-                smooth.Append(@"}},algo:13,mask:{{area:150}},scene:{{mode:3,blend:true}}}}");
-            }
+                int findLCM = FindLCM(outFPS, inFPS);
 
-            if (gpu)
-            {
-                analyse = @"{{vectors:3,block:{{w:8,h:8,overlap:2}},main:{{search:{{distance:0,coarse:{{distance:-10,bad:{{sad:2000}}}}}}}},refine:[{{thsad:250}}]}}";
-                super = @"{{scale:{{up:2}},gpu:1}}";
-            }
-            else
-            {
-                analyse = @"{{main:{{search:{{coarse:{{distance:0}},type:4}}}},refine:[{{thsad:250}}]}}";
-                super = @"{{scale:{{up:2}},gpu:0}}";
-            }
+                int denominator = findLCM / outFPS;
+                int numerator = findLCM / inFPS;
 
-            AvsGenerate(worker, ffl, useCB, cancel, maxMem, threads, input, super.Replace("{{", "{").Replace("}}", "}"), 
-                analyse.Replace("{{", "{").Replace("}}", "}"), smooth.ToString().Replace("{{", "{").Replace("}}", "}"), output);
+                smooth.Append(@"{{rate:{{num:");
+                smooth.Append(numerator);
+                smooth.Append(",den:");
+                smooth.Append(denominator);
+
+                if (oneClick == 0)
+                {
+                    if (iWantIdx == 0)
+                    {
+                        smooth.Append(@"}},algo:21,mask:{{area:0}},scene:{{mode:0}}}}");
+                    }
+                    else if (iWantIdx == 1)
+                    {
+                        smooth.Append(@"}},algo:23,mask:{{area:75}},scene:{{mode:3,blend:true}}}}");
+                    }
+                    else
+                    {
+                        smooth.Append(@"}},algo:13,mask:{{area:150}},scene:{{mode:3,blend:true}}}}");
+                    }
+
+                    if (gpu)
+                    {
+                        analyse = @"{{vectors:3,block:{{w:8,h:8,overlap:2}},main:{{search:{{distance:0,coarse:{{distance:-10,bad:{{sad:2000}}}}}}}},refine:[{{thsad:250}}]}}";
+                        super = @"{{scale:{{up:2}},gpu:1}}";
+                    }
+                    else
+                    {
+                        analyse = @"{{main:{{search:{{coarse:{{distance:0}},type:4}}}},refine:[{{thsad:250}}]}}";
+                        super = @"{{scale:{{up:2}},gpu:0}}";
+                    }
+
+                    AvsGenerate(worker, ffl, useCB, cancel, maxMem, threads, input, super.Replace("{{", "{").Replace("}}", "}"),
+                    analyse.Replace("{{", "{").Replace("}}", "}"), smooth.ToString().Replace("{{", "{").Replace("}}", "}"), output, oneClick);
+                }
+                else
+                {
+                    smooth.Append("}},algo:13,mask:{{area:0}},scene:{{mode:0,blend:true}}}}");
+                    super = "{{pel:1,gpu:1}}";
+                    analyse = "{{block:{{w:16,h:16,overlap:2}},main:{{search:{{distance:-1}}}},penalty:{{lambda:10.0,plevel:4,lsad:16000,pnew:100,pglobal:50,pzero:75,pnbour:100,prev:0}}}}";
+
+                    AvsGenerate(worker, ffl, useCB, cancel, maxMem, threads, input, super.Replace("{{", "{").Replace("}}", "}"),
+                    analyse.Replace("{{", "{").Replace("}}", "}"), smooth.ToString().Replace("{{", "{").Replace("}}", "}"), output, oneClick);
+                }
+            }
         }
 
         /// <summary>
@@ -101,12 +126,12 @@ namespace FrameGUI
         /// <param name="smooth">SVSmooth params.</param>
         /// <param name="output">Output video file path.</param>
         internal static void AvsGenerate(BackgroundWorker worker, FFLoaderBase ffl, bool useCB, Button cancel, int maxMem, int threads, string input, 
-            string super, string analyse, string smooth, string output)
+            string super, string analyse, string smooth, string output, int oneClick)
         {
             //File path for AviSynth+ script.
             string fileOutPath = Path.GetTempPath() + @"FrameGUI\aviscript.avs";
 
-            if (useCB)
+            if (useCB || oneClick == 1)
             {
                 if (File.Exists(fileOutPath))
                 {
@@ -152,14 +177,14 @@ namespace FrameGUI
                 }
                 else
                 {
-                    Encoder.BeginEncode(worker, ffl, useCB, input, output);
+                    Encoder.BeginEncode(worker, ffl, useCB, input, output, oneClick);
                 }
             }
 
             //Skip directly to encoder if AviSynth isn't used.
             else
             {
-                Encoder.BeginEncode(worker, ffl, useCB, input, output);
+                Encoder.BeginEncode(worker, ffl, useCB, input, output, oneClick);
             }
         }
 
