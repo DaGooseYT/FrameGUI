@@ -6,7 +6,7 @@ namespace FFLoader.Arguments
     internal class ArgsBuilder
     {
         internal static StringBuilder _args;
-        
+
         /// <summary>
         /// Builds arguments that will be later passed to ffmpeg.
         /// </summary>
@@ -23,6 +23,9 @@ namespace FFLoader.Arguments
         /// <param name="vWidth">The adjusted width of the video.</param>
         /// <param name="resizeAlgo">The resize algorithm to use if resizing.</param>
         /// <param name="sampleRate">The audio sample rate.</param>
+        /// <param name="sharpen">The sharpening value.</param>
+        /// <param name="version">The verison of FrameGUI.</param>
+        /// <param name="mute">Mutes the video audio.</param>
         /// <returns>The arguments in one string.</returns>
         internal static string ArgumentBuilder(string inputVideo, string outputVideo, string avisynthScript, string vCodec, string tune, string mode, double vBitrate, double crf, string preset, string aCodec,
             string aBitrate, double fps, double bFrame, double vheight, double vWidth, string resizeAlgo, string sampleRate, float sharpen, string version, bool mute)
@@ -121,7 +124,41 @@ namespace FFLoader.Arguments
             
             _args.Append(EncoderAppArgs.EncoderApp(version));
 
-            _args.Append(string.Format($@" ""{outputVideo}"""));
+            _args.Append(string.Format($@" ""{outputVideo}""", CultureInfo.InvariantCulture));
+
+            return _args.ToString();
+        }
+
+        /// <summary>
+        /// Arguments to be passed to the FFMpeg process for the one-click method.
+        /// </summary>
+        /// <param name="input">The input file path for the about-to-be encoded video.</param>
+        /// <param name="output">The output file path of the encoded video.</param>
+        /// <param name="avsScript">The path to the AviSynth+ script.</param>
+        /// <param name="vCodec">The video codec to use in a string format.</param>
+        /// <param name="version">The version of FrameGUI in a string format.</param>
+        /// <returns>The arguments in a string representation.</returns>
+        internal static string OneCArguments(string input, string output, string avsScript, string vCodec, string version)
+        {
+            if (_args != null)
+            {
+                _args.Clear();
+                _args = null;
+            }
+
+            _args = new StringBuilder();
+
+            _args.Append(string.Format("-y", CultureInfo.InvariantCulture));
+            _args.Append(string.Format($@" -i ""{avsScript}""", CultureInfo.InvariantCulture));
+            _args.Append(string.Format($@" -i ""{input}""", CultureInfo.InvariantCulture));
+            _args.Append(MapArgs.MapVideo());
+
+            _args.Append(CodecArgs.VideoCodecs(vCodec));
+
+            _args.Append(string.Format(" -preset slow -crf 17 -b:a 320k", CultureInfo.InvariantCulture));
+
+            _args.Append(EncoderAppArgs.EncoderApp(version + " One-Click"));
+            _args.Append(string.Format($@" ""{output}""", CultureInfo.InvariantCulture));
 
             return _args.ToString();
         }
