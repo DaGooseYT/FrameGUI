@@ -45,3 +45,12 @@ Known issues:
 
 - Fixed the conversion progress issue: When selecting "Mute audio" checkbox in the "Audio" tab and starting an encode, towards the end of the process, the conversion progress info will display as incomplete even though the process is truly complete. This issue was also present on normal processes.
 ===========================================================================================
+
+===========================================================================================
+[10/10/2021]: FrameGUI v1.2
+
+- Added the all new One-click encoding method in FrameGUI. Users only have to define the input video path and the output and click `Start Encode`.
+- The input frame rate in the noob helper in the SVPFlow tab is now automatically detected.
+- Fixed an issue where the output fps of the video won't change even if the user uses SVPFlow.
+- Idiot protection for if the user doesn't use the SVPFlow method for frame interpolation but uses the regular frame rate adjustment option in the `Video (x264)` tab.
+===========================================================================================
