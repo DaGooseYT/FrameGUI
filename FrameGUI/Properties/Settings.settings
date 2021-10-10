@@ -68,9 +68,6 @@
     <Setting Name="Colors" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="InFPS" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">24</Value>
-    </Setting>
     <Setting Name="OutFPS" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">60</Value>
     </Setting>
@@ -91,6 +88,9 @@
     </Setting>
     <Setting Name="Not" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="OneClick" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>
