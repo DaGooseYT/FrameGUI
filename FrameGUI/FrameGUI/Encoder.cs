@@ -62,11 +62,6 @@ namespace FrameGUI
         private static ProgressBarLabel EncodePB { get; set; }
 
         /// <summary>
-        /// 
-        /// </summary>
-        private static ComboBox FMode { get; set; }
-
-        /// <summary>
         /// Configuration for FFLoader.
         /// </summary>
         /// <param name="worker">Instance of FFWorker.</param>
@@ -178,6 +173,11 @@ namespace FrameGUI
                     MessageBox.Show($"Encoding process complete after (hh:mm:ss) {TimeElapsed}", "Encoding Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+            else if (!ffLoader.FixPercentage())
+            {
+                pb.Value = 100;
+                pb.ProgressText = "Encoding process cancelled";
+            }
 
             //Unsubscribe from events
             ffLoader.FFConversionProgress -= UpdateProgress;
@@ -218,11 +218,7 @@ namespace FrameGUI
                 EncodePB.ProgressText = "Process exited with AviSynth+ error.";
             }));
 
-            if (EncodePB.Value >= 1)
-            {
-                EncodePB.ProgressColor = Brushes.OrangeRed;
-            }
-            else
+            if (EncodePB.Value == 0)
             {
                 EncodePB.TextColor = Color.Red;
             }

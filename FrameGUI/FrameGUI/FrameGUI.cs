@@ -180,7 +180,6 @@ namespace FrameGUI
                         "Cancel encode confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                     {
                         CancelBttn.Visible = false;
-                        EncodePB.ProgressColor = Brushes.OrangeRed;
 
                         FFWorker.CancelAsync();
                         _ffloader.StopFFMpegProcess();
@@ -235,7 +234,6 @@ namespace FrameGUI
                         }
 
                         EncodePB.TextColor = Color.Black;
-                        EncodePB.ProgressColor = Brushes.LimeGreen;
                         EncodePB.ProgressText = Initialize;
                         EncodePB.Value = 0;
                         CancelBttn.Visible = true;
@@ -261,12 +259,12 @@ namespace FrameGUI
                        
                         if (UseCB.Checked && NoobCB.Checked && FGUIDD.SelectedIndex == 0)
                         {
-                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text, SaveOutTxtBox.Text,
+                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, this, UseCB.Checked, CancelBttn, (int)MaxMemNUD.Value, (int)ThreadsNUD.Value, InTxtBox.Text, SaveOutTxtBox.Text,
                                 (int)OutFPSNUD.Value, InputVideoFPS, IwantDD.SelectedIndex, UseGPUCB.Checked, FGUIDD.SelectedIndex);
                         }
                         else if (FGUIDD.SelectedIndex == 1)
                         {
-                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, UseCB.Checked, CancelBttn, 2048, 16, InTxtBox.Text, SaveOutTxtBox.Text,
+                            ScriptGenerator.NoobHelper(FFWorker, _ffloader, this, UseCB.Checked, CancelBttn, 2048, 16, InTxtBox.Text, SaveOutTxtBox.Text,
                             60, InputVideoFPS, IwantDD.SelectedIndex, UseGPUCB.Checked, FGUIDD.SelectedIndex);
                         }
                         else
@@ -488,7 +486,28 @@ namespace FrameGUI
         {
             if (!File.Exists(_ffloader.AvisynthDllPath) || !Directory.Exists(_ffloader.AvisynthPlusPath))
             {
-                return false;
+                if (!File.Exists(@"F:\Windows\System32\AviSynth.dll") || !Directory.Exists(@"F:\Program Files (x86)\AviSynth+\"))
+                {
+                    if (!File.Exists(@"E:\Windows\System32\AviSynth.dll") || !Directory.Exists(@"E:\Program Files (x86)\AviSynth+\"))
+                    {
+                        if (!File.Exists(@"D:\Windows\System32\AviSynth.dll") || !Directory.Exists(@"D:\Program Files (x86)\AviSynth+\"))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
             {

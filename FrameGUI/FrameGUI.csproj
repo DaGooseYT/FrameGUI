@@ -91,14 +91,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EncodeProg, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EncodeProg\bin\x64\Release\EncodeProg.dll</HintPath>
-    </Reference>
-    <Reference Include="FFLoader, Version=1.0.1.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\FFLoader\bin\x64\Release\netstandard2.0\FFLoader.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -164,6 +156,16 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EncodeProg\EncodeProg.csproj">
+      <Project>{ed40b686-1396-4d0c-a72e-6a65aab3681d}</Project>
+      <Name>EncodeProg</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FFLoader\FFLoader.csproj">
+      <Project>{79afb019-5be7-4226-be65-b4fc678b88a6}</Project>
+      <Name>FFLoader</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

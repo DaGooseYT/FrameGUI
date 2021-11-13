@@ -39,7 +39,7 @@ namespace FrameGUI
         /// <param name="inFps">The selected input video FPS.</param>
         /// <param name="iWantIdx">Noob parameter selectedindex for smoothness.</param>
         /// <param name="gpu">Bool of UseGPU checked.</param>
-        internal static void NoobHelper(BackgroundWorker worker, FFLoaderBase ffl, bool useCB, Button cancel, int maxMem, 
+        internal static void NoobHelper(BackgroundWorker worker, FFLoaderBase ffl, FrameGUI gui, bool useCB, Button cancel, int maxMem, 
             int threads, string input, string output, double outFps, double inFps, int iWantIdx, bool gpu, int oneClick)
         {
             var smooth = new StringBuilder();
@@ -55,7 +55,7 @@ namespace FrameGUI
                     $"change the output frame rate in the SVPFlow tab.", "Frame rate selection error", MessageBoxButtons.OK, 
                     MessageBoxIcon.Error);
 
-                FrameGUI.EncodePB.ProgressText = string.Empty;
+                gui.EncodePB.ProgressText = string.Empty;
                 cancel.Visible = false;
             }
             else

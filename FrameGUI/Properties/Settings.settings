@@ -57,7 +57,7 @@
       <Value Profile="(Default)">9</Value>
     </Setting>
     <Setting Name="BFrames" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">8</Value>
     </Setting>
     <Setting Name="NoobCB" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

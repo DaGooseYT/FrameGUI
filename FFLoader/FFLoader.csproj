@@ -4,10 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Company>DaGoose</Company>
     <Authors>DaGoose</Authors>
-    <Description>Converts media files using FFMpeg and VapourSynth.</Description>
+    <Description>Converts media files using FFMpeg and AviSynth+.</Description>
     <Copyright>© 2021 DaGoose</Copyright>
     <Platforms>AnyCPU;x64</Platforms>
-    <Version>1.2.0</Version>
+    <Version>1.2.3</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

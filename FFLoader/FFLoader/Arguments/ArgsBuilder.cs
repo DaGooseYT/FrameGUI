@@ -38,7 +38,7 @@ namespace FFLoader.Arguments
 
             _args = new StringBuilder();
 
-            _args.Append(string.Format("-y", CultureInfo.InvariantCulture));
+            _args.Append(string.Format("-y -noautorotate", CultureInfo.InvariantCulture));
 
             if (!string.IsNullOrEmpty(avisynthScript))
             {
@@ -148,14 +148,14 @@ namespace FFLoader.Arguments
 
             _args = new StringBuilder();
 
-            _args.Append(string.Format("-y", CultureInfo.InvariantCulture));
+            _args.Append(string.Format("-y -noautorotate", CultureInfo.InvariantCulture));
             _args.Append(string.Format($@" -i ""{avsScript}""", CultureInfo.InvariantCulture));
             _args.Append(string.Format($@" -i ""{input}""", CultureInfo.InvariantCulture));
             _args.Append(MapArgs.MapVideo());
 
             _args.Append(CodecArgs.VideoCodecs(vCodec));
 
-            _args.Append(string.Format(" -preset slow -crf 17 -b:a 320k", CultureInfo.InvariantCulture));
+            _args.Append(string.Format(" -preset slow -bf 8 -crf 17 -b:a 320k", CultureInfo.InvariantCulture));
 
             _args.Append(EncoderAppArgs.EncoderApp(version + " One-Click"));
             _args.Append(string.Format($@" ""{output}""", CultureInfo.InvariantCulture));

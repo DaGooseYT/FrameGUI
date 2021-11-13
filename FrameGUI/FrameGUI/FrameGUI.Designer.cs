@@ -126,6 +126,7 @@ namespace FrameGUI
             this.SaveSettingBttn = new System.Windows.Forms.Button();
             this.OtherSettingLabel = new System.Windows.Forms.Label();
             this.SettingsGB = new System.Windows.Forms.GroupBox();
+            this.FPSLabel = new System.Windows.Forms.Label();
             this.ArtefactLabel = new System.Windows.Forms.Label();
             this.UseGPUCB = new System.Windows.Forms.CheckBox();
             this.IwantDD = new System.Windows.Forms.ComboBox();
@@ -146,9 +147,8 @@ namespace FrameGUI
             this.ScriptsLabel = new System.Windows.Forms.Label();
             this.FormatDD = new System.Windows.Forms.ComboBox();
             this.FFWorker = new System.ComponentModel.BackgroundWorker();
-            EncodePB = new EncodeProg.ProgressBarLabel();
             this.FPSGrabber = new System.ComponentModel.BackgroundWorker();
-            this.FPSLabel = new System.Windows.Forms.Label();
+            this.EncodePB = new EncodeProg.ProgressBarLabel();
             this.AboutTab.SuspendLayout();
             this.SupportGB.SuspendLayout();
             this.AboutAuthGB.SuspendLayout();
@@ -199,7 +199,8 @@ namespace FrameGUI
             // SaveOutBttn
             // 
             this.SaveOutBttn.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.SaveOutBttn.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SaveOutBttn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.SaveOutBttn.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveOutBttn.Location = new System.Drawing.Point(514, 330);
             this.SaveOutBttn.Name = "SaveOutBttn";
             this.SaveOutBttn.Size = new System.Drawing.Size(107, 26);
@@ -230,7 +231,7 @@ namespace FrameGUI
             this.AboutTab.Padding = new System.Windows.Forms.Padding(3);
             this.AboutTab.Size = new System.Drawing.Size(604, 293);
             this.AboutTab.TabIndex = 3;
-            this.AboutTab.Text = "About/Support";
+            this.AboutTab.Text = " About / Support ";
             this.AboutTab.UseVisualStyleBackColor = true;
             // 
             // SupportGB
@@ -250,15 +251,16 @@ namespace FrameGUI
             this.SupportLabel.BackColor = System.Drawing.Color.White;
             this.SupportLabel.Location = new System.Drawing.Point(124, 0);
             this.SupportLabel.Name = "SupportLabel";
-            this.SupportLabel.Size = new System.Drawing.Size(57, 16);
+            this.SupportLabel.Size = new System.Drawing.Size(58, 16);
             this.SupportLabel.TabIndex = 5;
             this.SupportLabel.Text = "Support";
             // 
             // OffDocButton
             // 
+            this.OffDocButton.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.OffDocButton.Location = new System.Drawing.Point(66, 31);
             this.OffDocButton.Name = "OffDocButton";
-            this.OffDocButton.Size = new System.Drawing.Size(219, 24);
+            this.OffDocButton.Size = new System.Drawing.Size(219, 25);
             this.OffDocButton.TabIndex = 3;
             this.OffDocButton.Text = "Official documentation";
             this.OffDocButton.UseVisualStyleBackColor = true;
@@ -333,7 +335,7 @@ namespace FrameGUI
             this.AboutAuthDesc.Location = new System.Drawing.Point(46, 31);
             this.AboutAuthDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AboutAuthDesc.Name = "AboutAuthDesc";
-            this.AboutAuthDesc.Size = new System.Drawing.Size(219, 96);
+            this.AboutAuthDesc.Size = new System.Drawing.Size(246, 96);
             this.AboutAuthDesc.TabIndex = 5;
             this.AboutAuthDesc.Text = "The creator behind FrameGUI is \r\nDaGoose. Help support DaGoose\r\nto encourage futu" +
     "re development\r\nof FrameGUI and other tools by \r\nfollowing his social media page" +
@@ -354,9 +356,9 @@ namespace FrameGUI
             // 
             this.AboutAuthLabel.AutoSize = true;
             this.AboutAuthLabel.BackColor = System.Drawing.Color.White;
-            this.AboutAuthLabel.Location = new System.Drawing.Point(129, 0);
+            this.AboutAuthLabel.Location = new System.Drawing.Point(133, 0);
             this.AboutAuthLabel.Name = "AboutAuthLabel";
-            this.AboutAuthLabel.Size = new System.Drawing.Size(49, 16);
+            this.AboutAuthLabel.Size = new System.Drawing.Size(50, 16);
             this.AboutAuthLabel.TabIndex = 0;
             this.AboutAuthLabel.Text = "Author";
             // 
@@ -390,7 +392,7 @@ namespace FrameGUI
             this.AboutGUIDesc.Location = new System.Drawing.Point(24, 43);
             this.AboutGUIDesc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.AboutGUIDesc.Name = "AboutGUIDesc";
-            this.AboutGUIDesc.Size = new System.Drawing.Size(233, 160);
+            this.AboutGUIDesc.Size = new System.Drawing.Size(253, 160);
             this.AboutGUIDesc.TabIndex = 3;
             this.AboutGUIDesc.Text = resources.GetString("AboutGUIDesc.Text");
             this.AboutGUIDesc.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -409,9 +411,9 @@ namespace FrameGUI
             // 
             this.AboutGUILabel.AutoSize = true;
             this.AboutGUILabel.BackColor = System.Drawing.Color.White;
-            this.AboutGUILabel.Location = new System.Drawing.Point(81, 0);
+            this.AboutGUILabel.Location = new System.Drawing.Point(84, 0);
             this.AboutGUILabel.Name = "AboutGUILabel";
-            this.AboutGUILabel.Size = new System.Drawing.Size(112, 16);
+            this.AboutGUILabel.Size = new System.Drawing.Size(113, 16);
             this.AboutGUILabel.TabIndex = 0;
             this.AboutGUILabel.Text = "About FrameGUI";
             // 
@@ -428,7 +430,7 @@ namespace FrameGUI
             this.MainTab.Padding = new System.Windows.Forms.Padding(3);
             this.MainTab.Size = new System.Drawing.Size(604, 293);
             this.MainTab.TabIndex = 0;
-            this.MainTab.Text = "Main";
+            this.MainTab.Text = " Main ";
             this.MainTab.UseVisualStyleBackColor = true;
             // 
             // FGUIGB
@@ -448,7 +450,7 @@ namespace FrameGUI
             this.FGUILabel.BackColor = System.Drawing.Color.White;
             this.FGUILabel.Location = new System.Drawing.Point(79, 0);
             this.FGUILabel.Name = "FGUILabel";
-            this.FGUILabel.Size = new System.Drawing.Size(71, 16);
+            this.FGUILabel.Size = new System.Drawing.Size(72, 16);
             this.FGUILabel.TabIndex = 9;
             this.FGUILabel.Text = "FrameGUI";
             // 
@@ -470,7 +472,7 @@ namespace FrameGUI
             this.ModeLabel.AutoSize = true;
             this.ModeLabel.Location = new System.Drawing.Point(38, 30);
             this.ModeLabel.Name = "ModeLabel";
-            this.ModeLabel.Size = new System.Drawing.Size(46, 16);
+            this.ModeLabel.Size = new System.Drawing.Size(47, 16);
             this.ModeLabel.TabIndex = 6;
             this.ModeLabel.Text = "Mode:";
             // 
@@ -500,7 +502,8 @@ namespace FrameGUI
             // 
             // SetInputBttn
             // 
-            this.SetInputBttn.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SetInputBttn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.SetInputBttn.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetInputBttn.Location = new System.Drawing.Point(487, 7);
             this.SetInputBttn.Name = "SetInputBttn";
             this.SetInputBttn.Size = new System.Drawing.Size(111, 24);
@@ -524,7 +527,7 @@ namespace FrameGUI
             this.Tabs.Controls.Add(this.MainTab);
             this.Tabs.Controls.Add(this.SettingsTab);
             this.Tabs.Controls.Add(this.AboutTab);
-            this.Tabs.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Tabs.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Tabs.Location = new System.Drawing.Point(10, 3);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
@@ -540,7 +543,7 @@ namespace FrameGUI
             this.SettingsTab.Padding = new System.Windows.Forms.Padding(3);
             this.SettingsTab.Size = new System.Drawing.Size(604, 293);
             this.SettingsTab.TabIndex = 4;
-            this.SettingsTab.Text = "Encoder Settings";
+            this.SettingsTab.Text = " Encoder Settings ";
             this.SettingsTab.UseVisualStyleBackColor = true;
             // 
             // SettingsTabs
@@ -564,7 +567,7 @@ namespace FrameGUI
             this.VideoTab.Padding = new System.Windows.Forms.Padding(3);
             this.VideoTab.Size = new System.Drawing.Size(589, 257);
             this.VideoTab.TabIndex = 0;
-            this.VideoTab.Text = "Video (x264)";
+            this.VideoTab.Text = " Video (x264) ";
             this.VideoTab.UseVisualStyleBackColor = true;
             // 
             // SizeGB
@@ -661,10 +664,10 @@ namespace FrameGUI
             // ChangeResCB
             // 
             this.ChangeResCB.AutoSize = true;
-            this.ChangeResCB.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeResCB.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ChangeResCB.Location = new System.Drawing.Point(47, 39);
             this.ChangeResCB.Name = "ChangeResCB";
-            this.ChangeResCB.Size = new System.Drawing.Size(78, 20);
+            this.ChangeResCB.Size = new System.Drawing.Size(80, 20);
             this.ChangeResCB.TabIndex = 10;
             this.ChangeResCB.Text = "Change";
             this.ChangeResCB.UseVisualStyleBackColor = true;
@@ -676,7 +679,7 @@ namespace FrameGUI
             this.SizeLabel.BackColor = System.Drawing.Color.White;
             this.SizeLabel.Location = new System.Drawing.Point(68, 0);
             this.SizeLabel.Name = "SizeLabel";
-            this.SizeLabel.Size = new System.Drawing.Size(35, 16);
+            this.SizeLabel.Size = new System.Drawing.Size(34, 16);
             this.SizeLabel.TabIndex = 0;
             this.SizeLabel.Text = "Size";
             // 
@@ -729,7 +732,7 @@ namespace FrameGUI
             this.SharpenCB.AutoSize = true;
             this.SharpenCB.Location = new System.Drawing.Point(10, 74);
             this.SharpenCB.Name = "SharpenCB";
-            this.SharpenCB.Size = new System.Drawing.Size(87, 20);
+            this.SharpenCB.Size = new System.Drawing.Size(88, 20);
             this.SharpenCB.TabIndex = 3;
             this.SharpenCB.Text = "Sharpen:";
             this.SharpenCB.UseVisualStyleBackColor = true;
@@ -753,7 +756,7 @@ namespace FrameGUI
             this.ColorsLabel.BackColor = System.Drawing.Color.White;
             this.ColorsLabel.Location = new System.Drawing.Point(58, 2);
             this.ColorsLabel.Name = "ColorsLabel";
-            this.ColorsLabel.Size = new System.Drawing.Size(47, 16);
+            this.ColorsLabel.Size = new System.Drawing.Size(49, 16);
             this.ColorsLabel.TabIndex = 0;
             this.ColorsLabel.Text = "Colors";
             // 
@@ -776,7 +779,7 @@ namespace FrameGUI
             this.FrameLabel.BackColor = System.Drawing.Color.White;
             this.FrameLabel.Location = new System.Drawing.Point(53, 0);
             this.FrameLabel.Name = "FrameLabel";
-            this.FrameLabel.Size = new System.Drawing.Size(48, 16);
+            this.FrameLabel.Size = new System.Drawing.Size(49, 16);
             this.FrameLabel.TabIndex = 18;
             this.FrameLabel.Text = "Frame";
             // 
@@ -785,7 +788,7 @@ namespace FrameGUI
             this.FRLabel.AutoSize = true;
             this.FRLabel.Location = new System.Drawing.Point(7, 31);
             this.FRLabel.Name = "FRLabel";
-            this.FRLabel.Size = new System.Drawing.Size(77, 16);
+            this.FRLabel.Size = new System.Drawing.Size(78, 16);
             this.FRLabel.TabIndex = 16;
             this.FRLabel.Text = "Framerate:";
             // 
@@ -806,7 +809,7 @@ namespace FrameGUI
             this.bframeLabel.AutoSize = true;
             this.bframeLabel.Location = new System.Drawing.Point(11, 75);
             this.bframeLabel.Name = "bframeLabel";
-            this.bframeLabel.Size = new System.Drawing.Size(67, 16);
+            this.bframeLabel.Size = new System.Drawing.Size(69, 16);
             this.bframeLabel.TabIndex = 7;
             this.bframeLabel.Text = "B-frames:";
             // 
@@ -821,6 +824,11 @@ namespace FrameGUI
             this.BframeValue.Name = "BframeValue";
             this.BframeValue.Size = new System.Drawing.Size(50, 22);
             this.BframeValue.TabIndex = 2;
+            this.BframeValue.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
             // 
             // ModeGB
             // 
@@ -857,7 +865,7 @@ namespace FrameGUI
             this.crfValueLabel.AutoSize = true;
             this.crfValueLabel.Location = new System.Drawing.Point(46, 25);
             this.crfValueLabel.Name = "crfValueLabel";
-            this.crfValueLabel.Size = new System.Drawing.Size(76, 16);
+            this.crfValueLabel.Size = new System.Drawing.Size(79, 16);
             this.crfValueLabel.TabIndex = 9;
             this.crfValueLabel.Text = "CRF value:";
             // 
@@ -867,7 +875,7 @@ namespace FrameGUI
             this.EModeSettingLabel.BackColor = System.Drawing.Color.White;
             this.EModeSettingLabel.Location = new System.Drawing.Point(39, 0);
             this.EModeSettingLabel.Name = "EModeSettingLabel";
-            this.EModeSettingLabel.Size = new System.Drawing.Size(160, 16);
+            this.EModeSettingLabel.Size = new System.Drawing.Size(161, 16);
             this.EModeSettingLabel.TabIndex = 9;
             this.EModeSettingLabel.Text = "Encoding Mode Settings";
             // 
@@ -894,7 +902,7 @@ namespace FrameGUI
             this.BitrateLabel.AutoSize = true;
             this.BitrateLabel.Location = new System.Drawing.Point(38, 25);
             this.BitrateLabel.Name = "BitrateLabel";
-            this.BitrateLabel.Size = new System.Drawing.Size(90, 16);
+            this.BitrateLabel.Size = new System.Drawing.Size(93, 16);
             this.BitrateLabel.TabIndex = 9;
             this.BitrateLabel.Text = "Bitrate (kb/s):";
             this.BitrateLabel.Visible = false;
@@ -904,7 +912,7 @@ namespace FrameGUI
             this.UseCB2.AutoSize = true;
             this.UseCB2.Location = new System.Drawing.Point(339, 152);
             this.UseCB2.Name = "UseCB2";
-            this.UseCB2.Size = new System.Drawing.Size(52, 20);
+            this.UseCB2.Size = new System.Drawing.Size(54, 20);
             this.UseCB2.TabIndex = 6;
             this.UseCB2.Text = "Use";
             this.UseCB2.UseVisualStyleBackColor = true;
@@ -935,7 +943,7 @@ namespace FrameGUI
             this.TuneLabel.AutoSize = true;
             this.TuneLabel.Location = new System.Drawing.Point(179, 152);
             this.TuneLabel.Name = "TuneLabel";
-            this.TuneLabel.Size = new System.Drawing.Size(42, 16);
+            this.TuneLabel.Size = new System.Drawing.Size(44, 16);
             this.TuneLabel.TabIndex = 12;
             this.TuneLabel.Text = "Tune:";
             // 
@@ -958,7 +966,7 @@ namespace FrameGUI
             this.EncodeModeLabel.AutoSize = true;
             this.EncodeModeLabel.Location = new System.Drawing.Point(164, 32);
             this.EncodeModeLabel.Name = "EncodeModeLabel";
-            this.EncodeModeLabel.Size = new System.Drawing.Size(46, 16);
+            this.EncodeModeLabel.Size = new System.Drawing.Size(47, 16);
             this.EncodeModeLabel.TabIndex = 5;
             this.EncodeModeLabel.Text = "Mode:";
             // 
@@ -987,7 +995,7 @@ namespace FrameGUI
             this.CPUPreLabel.AutoSize = true;
             this.CPUPreLabel.Location = new System.Drawing.Point(180, 204);
             this.CPUPreLabel.Name = "CPUPreLabel";
-            this.CPUPreLabel.Size = new System.Drawing.Size(82, 16);
+            this.CPUPreLabel.Size = new System.Drawing.Size(85, 16);
             this.CPUPreLabel.TabIndex = 3;
             this.CPUPreLabel.Text = "CPU Preset:";
             // 
@@ -997,7 +1005,7 @@ namespace FrameGUI
             this.EncodeLabel.BackColor = System.Drawing.Color.White;
             this.EncodeLabel.Location = new System.Drawing.Point(161, 0);
             this.EncodeLabel.Name = "EncodeLabel";
-            this.EncodeLabel.Size = new System.Drawing.Size(66, 16);
+            this.EncodeLabel.Size = new System.Drawing.Size(67, 16);
             this.EncodeLabel.TabIndex = 0;
             this.EncodeLabel.Text = "Encoding";
             // 
@@ -1009,7 +1017,7 @@ namespace FrameGUI
             this.AudioTab.Padding = new System.Windows.Forms.Padding(3);
             this.AudioTab.Size = new System.Drawing.Size(589, 257);
             this.AudioTab.TabIndex = 1;
-            this.AudioTab.Text = "Audio";
+            this.AudioTab.Text = " Audio ";
             this.AudioTab.UseVisualStyleBackColor = true;
             // 
             // AudioSetGB
@@ -1056,7 +1064,7 @@ namespace FrameGUI
             this.AudNote.AutoSize = true;
             this.AudNote.Location = new System.Drawing.Point(35, 216);
             this.AudNote.Name = "AudNote";
-            this.AudNote.Size = new System.Drawing.Size(512, 16);
+            this.AudNote.Size = new System.Drawing.Size(506, 16);
             this.AudNote.TabIndex = 3;
             this.AudNote.Text = "Note: Any settings set here will only apply to the FIRST audio track in the video" +
     ".";
@@ -1066,7 +1074,7 @@ namespace FrameGUI
             this.AudioSRLabel.AutoSize = true;
             this.AudioSRLabel.Location = new System.Drawing.Point(133, 156);
             this.AudioSRLabel.Name = "AudioSRLabel";
-            this.AudioSRLabel.Size = new System.Drawing.Size(121, 16);
+            this.AudioSRLabel.Size = new System.Drawing.Size(122, 16);
             this.AudioSRLabel.TabIndex = 6;
             this.AudioSRLabel.Text = "Sample Rate (Hz):";
             // 
@@ -1075,7 +1083,7 @@ namespace FrameGUI
             this.AudioBitLabel.AutoSize = true;
             this.AudioBitLabel.Location = new System.Drawing.Point(182, 101);
             this.AudioBitLabel.Name = "AudioBitLabel";
-            this.AudioBitLabel.Size = new System.Drawing.Size(131, 16);
+            this.AudioBitLabel.Size = new System.Drawing.Size(133, 16);
             this.AudioBitLabel.TabIndex = 4;
             this.AudioBitLabel.Text = "Audio Bitrate (kb/s):";
             // 
@@ -1138,7 +1146,7 @@ namespace FrameGUI
             this.ScriptOtherTab.Name = "ScriptOtherTab";
             this.ScriptOtherTab.Size = new System.Drawing.Size(589, 257);
             this.ScriptOtherTab.TabIndex = 2;
-            this.ScriptOtherTab.Text = "SVPFlow/AviSynth+/Other";
+            this.ScriptOtherTab.Text = " SVPFlow / AviSynth+ / Other ";
             this.ScriptOtherTab.UseVisualStyleBackColor = true;
             // 
             // vsSettingLabel
@@ -1159,7 +1167,7 @@ namespace FrameGUI
             this.MaxMemLabel.AutoSize = true;
             this.MaxMemLabel.Location = new System.Drawing.Point(10, 68);
             this.MaxMemLabel.Name = "MaxMemLabel";
-            this.MaxMemLabel.Size = new System.Drawing.Size(130, 16);
+            this.MaxMemLabel.Size = new System.Drawing.Size(129, 16);
             this.MaxMemLabel.TabIndex = 4;
             this.MaxMemLabel.Text = "Max. memory (MB):";
             // 
@@ -1194,7 +1202,7 @@ namespace FrameGUI
             this.ThreadsLabel.AutoSize = true;
             this.ThreadsLabel.Location = new System.Drawing.Point(16, 36);
             this.ThreadsLabel.Name = "ThreadsLabel";
-            this.ThreadsLabel.Size = new System.Drawing.Size(131, 16);
+            this.ThreadsLabel.Size = new System.Drawing.Size(134, 16);
             this.ThreadsLabel.TabIndex = 1;
             this.ThreadsLabel.Text = "Processing threads:";
             // 
@@ -1223,6 +1231,7 @@ namespace FrameGUI
             // 
             // LogsBttn
             // 
+            this.LogsBttn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.LogsBttn.Location = new System.Drawing.Point(18, 52);
             this.LogsBttn.Name = "LogsBttn";
             this.LogsBttn.Size = new System.Drawing.Size(129, 26);
@@ -1238,13 +1247,14 @@ namespace FrameGUI
             this.NotificationCB.CheckState = System.Windows.Forms.CheckState.Checked;
             this.NotificationCB.Location = new System.Drawing.Point(19, 82);
             this.NotificationCB.Name = "NotificationCB";
-            this.NotificationCB.Size = new System.Drawing.Size(315, 20);
+            this.NotificationCB.Size = new System.Drawing.Size(310, 20);
             this.NotificationCB.TabIndex = 3;
             this.NotificationCB.Text = "Show message box upon encoding complete";
             this.NotificationCB.UseVisualStyleBackColor = true;
             // 
             // CopyCommandBttn
             // 
+            this.CopyCommandBttn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.CopyCommandBttn.Location = new System.Drawing.Point(18, 20);
             this.CopyCommandBttn.Name = "CopyCommandBttn";
             this.CopyCommandBttn.Size = new System.Drawing.Size(311, 26);
@@ -1255,6 +1265,7 @@ namespace FrameGUI
             // 
             // SaveSettingBttn
             // 
+            this.SaveSettingBttn.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.SaveSettingBttn.Location = new System.Drawing.Point(153, 52);
             this.SaveSettingBttn.Name = "SaveSettingBttn";
             this.SaveSettingBttn.Size = new System.Drawing.Size(176, 26);
@@ -1269,7 +1280,7 @@ namespace FrameGUI
             this.OtherSettingLabel.BackColor = System.Drawing.Color.White;
             this.OtherSettingLabel.Location = new System.Drawing.Point(123, 0);
             this.OtherSettingLabel.Name = "OtherSettingLabel";
-            this.OtherSettingLabel.Size = new System.Drawing.Size(97, 16);
+            this.OtherSettingLabel.Size = new System.Drawing.Size(99, 16);
             this.OtherSettingLabel.TabIndex = 0;
             this.OtherSettingLabel.Text = "Other Settings";
             // 
@@ -1300,14 +1311,25 @@ namespace FrameGUI
             this.SettingsGB.TabIndex = 1;
             this.SettingsGB.TabStop = false;
             // 
+            // FPSLabel
+            // 
+            this.FPSLabel.AutoSize = true;
+            this.FPSLabel.ForeColor = System.Drawing.Color.ForestGreen;
+            this.FPSLabel.Location = new System.Drawing.Point(148, 38);
+            this.FPSLabel.Name = "FPSLabel";
+            this.FPSLabel.Size = new System.Drawing.Size(16, 16);
+            this.FPSLabel.TabIndex = 20;
+            this.FPSLabel.Text = "0";
+            this.FPSLabel.Visible = false;
+            // 
             // ArtefactLabel
             // 
             this.ArtefactLabel.AutoSize = true;
-            this.ArtefactLabel.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ArtefactLabel.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ArtefactLabel.ForeColor = System.Drawing.Color.Red;
             this.ArtefactLabel.Location = new System.Drawing.Point(64, 116);
             this.ArtefactLabel.Name = "ArtefactLabel";
-            this.ArtefactLabel.Size = new System.Drawing.Size(431, 16);
+            this.ArtefactLabel.Size = new System.Drawing.Size(429, 16);
             this.ArtefactLabel.TabIndex = 18;
             this.ArtefactLabel.Text = "Note: artefacts (glitches) can\'t be fully removed in the output video.";
             this.ArtefactLabel.Visible = false;
@@ -1318,7 +1340,7 @@ namespace FrameGUI
             this.UseGPUCB.Enabled = false;
             this.UseGPUCB.Location = new System.Drawing.Point(413, 38);
             this.UseGPUCB.Name = "UseGPUCB";
-            this.UseGPUCB.Size = new System.Drawing.Size(92, 20);
+            this.UseGPUCB.Size = new System.Drawing.Size(95, 20);
             this.UseGPUCB.TabIndex = 8;
             this.UseGPUCB.Text = "Use GPU?";
             this.UseGPUCB.UseVisualStyleBackColor = true;
@@ -1344,7 +1366,7 @@ namespace FrameGUI
             this.IwantLabel.AutoSize = true;
             this.IwantLabel.Location = new System.Drawing.Point(45, 78);
             this.IwantLabel.Name = "IwantLabel";
-            this.IwantLabel.Size = new System.Drawing.Size(50, 16);
+            this.IwantLabel.Size = new System.Drawing.Size(48, 16);
             this.IwantLabel.TabIndex = 15;
             this.IwantLabel.Text = "I want:";
             this.IwantLabel.Visible = false;
@@ -1373,7 +1395,7 @@ namespace FrameGUI
             this.OutFPSLabel.AutoSize = true;
             this.OutFPSLabel.Location = new System.Drawing.Point(230, 38);
             this.OutFPSLabel.Name = "OutFPSLabel";
-            this.OutFPSLabel.Size = new System.Drawing.Size(83, 16);
+            this.OutFPSLabel.Size = new System.Drawing.Size(86, 16);
             this.OutFPSLabel.TabIndex = 13;
             this.OutFPSLabel.Text = "Output FPS:";
             this.OutFPSLabel.Visible = false;
@@ -1383,7 +1405,7 @@ namespace FrameGUI
             this.InputFPSLabel.AutoSize = true;
             this.InputFPSLabel.Location = new System.Drawing.Point(73, 38);
             this.InputFPSLabel.Name = "InputFPSLabel";
-            this.InputFPSLabel.Size = new System.Drawing.Size(73, 16);
+            this.InputFPSLabel.Size = new System.Drawing.Size(74, 16);
             this.InputFPSLabel.TabIndex = 11;
             this.InputFPSLabel.Text = "Input FPS:";
             this.InputFPSLabel.Visible = false;
@@ -1393,7 +1415,7 @@ namespace FrameGUI
             this.NoobCB.AutoSize = true;
             this.NoobCB.Location = new System.Drawing.Point(507, 115);
             this.NoobCB.Name = "NoobCB";
-            this.NoobCB.Size = new System.Drawing.Size(70, 20);
+            this.NoobCB.Size = new System.Drawing.Size(71, 20);
             this.NoobCB.TabIndex = 2;
             this.NoobCB.Text = "Noob?";
             this.NoobCB.UseVisualStyleBackColor = true;
@@ -1404,7 +1426,7 @@ namespace FrameGUI
             this.UseCB.AutoSize = true;
             this.UseCB.Location = new System.Drawing.Point(6, 115);
             this.UseCB.Name = "UseCB";
-            this.UseCB.Size = new System.Drawing.Size(52, 20);
+            this.UseCB.Size = new System.Drawing.Size(54, 20);
             this.UseCB.TabIndex = 1;
             this.UseCB.Text = "Use";
             this.UseCB.UseVisualStyleBackColor = true;
@@ -1415,7 +1437,7 @@ namespace FrameGUI
             this.StuckLink.AutoSize = true;
             this.StuckLink.Location = new System.Drawing.Point(142, 116);
             this.StuckLink.Name = "StuckLink";
-            this.StuckLink.Size = new System.Drawing.Size(36, 16);
+            this.StuckLink.Size = new System.Drawing.Size(37, 16);
             this.StuckLink.TabIndex = 10;
             this.StuckLink.TabStop = true;
             this.StuckLink.Text = "here";
@@ -1443,7 +1465,7 @@ namespace FrameGUI
             this.AnalyseLabel.AutoSize = true;
             this.AnalyseLabel.Location = new System.Drawing.Point(7, 85);
             this.AnalyseLabel.Name = "AnalyseLabel";
-            this.AnalyseLabel.Size = new System.Drawing.Size(61, 16);
+            this.AnalyseLabel.Size = new System.Drawing.Size(62, 16);
             this.AnalyseLabel.TabIndex = 5;
             this.AnalyseLabel.Text = "Analyse:";
             // 
@@ -1468,7 +1490,7 @@ namespace FrameGUI
             this.SuperLabel.AutoSize = true;
             this.SuperLabel.Location = new System.Drawing.Point(7, 55);
             this.SuperLabel.Name = "SuperLabel";
-            this.SuperLabel.Size = new System.Drawing.Size(49, 16);
+            this.SuperLabel.Size = new System.Drawing.Size(50, 16);
             this.SuperLabel.TabIndex = 2;
             this.SuperLabel.Text = "Super:";
             // 
@@ -1487,14 +1509,14 @@ namespace FrameGUI
             this.ScriptsLabel.BackColor = System.Drawing.Color.White;
             this.ScriptsLabel.Location = new System.Drawing.Point(255, -1);
             this.ScriptsLabel.Name = "ScriptsLabel";
-            this.ScriptsLabel.Size = new System.Drawing.Size(65, 16);
+            this.ScriptsLabel.Size = new System.Drawing.Size(64, 16);
             this.ScriptsLabel.TabIndex = 0;
             this.ScriptsLabel.Text = "SVPFlow";
             // 
             // FormatDD
             // 
             this.FormatDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.FormatDD.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormatDD.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormatDD.FormattingEnabled = true;
             this.FormatDD.ItemHeight = 16;
             this.FormatDD.Items.AddRange(new object[] {
@@ -1514,41 +1536,29 @@ namespace FrameGUI
             // 
             // EncodePB
             // 
-            EncodePB.Location = new System.Drawing.Point(10, 362);
-            EncodePB.Name = "EncodePB";
-            EncodePB.ProgressColor = null;
-            EncodePB.ProgressText = null;
-            EncodePB.Size = new System.Drawing.Size(610, 25);
-            EncodePB.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            EncodePB.TabIndex = 42;
-            EncodePB.TextColor = System.Drawing.Color.Empty;
-            // 
-            // FPSLabel
-            // 
-            this.FPSLabel.AutoSize = true;
-            this.FPSLabel.ForeColor = System.Drawing.Color.ForestGreen;
-            this.FPSLabel.Location = new System.Drawing.Point(148, 38);
-            this.FPSLabel.Name = "FPSLabel";
-            this.FPSLabel.Size = new System.Drawing.Size(14, 16);
-            this.FPSLabel.TabIndex = 20;
-            this.FPSLabel.Text = "0";
-            this.FPSLabel.Visible = false;
+            this.EncodePB.Location = new System.Drawing.Point(10, 362);
+            this.EncodePB.Name = "EncodePB";
+            this.EncodePB.ProgressText = null;
+            this.EncodePB.Size = new System.Drawing.Size(610, 25);
+            this.EncodePB.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.EncodePB.TabIndex = 42;
+            this.EncodePB.TextColor = System.Drawing.Color.Empty;
             // 
             // FrameGUI
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(632, 398);
-            this.Controls.Add(EncodePB);
+            this.Controls.Add(this.EncodePB);
             this.Controls.Add(this.FormatDD);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.SaveOutBttn);
             this.Controls.Add(this.SaveOutTxtBox);
-            this.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForeColor = System.Drawing.Color.Black;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.HelpButton = true;
@@ -1557,7 +1567,7 @@ namespace FrameGUI
             this.Name = "FrameGUI";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FrameGUI v1.2";
+            this.Text = "FrameGUI v1.2.3";
             this.AboutTab.ResumeLayout(false);
             this.SupportGB.ResumeLayout(false);
             this.SupportGB.PerformLayout();
@@ -1721,7 +1731,6 @@ namespace FrameGUI
         internal Label HelpLabel;
         internal Button LogsBttn;
         internal CheckBox MuteAudCB;
-        static internal ProgressBarLabel EncodePB;
         internal GroupBox SupportGB;
         internal Label SupportLabel;
         internal ComboBox FGUIDD;
@@ -1730,5 +1739,6 @@ namespace FrameGUI
         internal Label FGUILabel;
         internal BackgroundWorker FPSGrabber;
         internal Label FPSLabel;
+        internal ProgressBarLabel EncodePB;
     }
 }

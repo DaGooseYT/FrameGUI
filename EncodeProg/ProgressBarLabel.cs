@@ -17,11 +17,6 @@ namespace EncodeProg
         public Color TextColor { get; set; }
 
         /// <summary>
-        /// The color of the ProgressBar chunks.
-        /// </summary>
-        public Brush ProgressColor { get; set; }
-
-        /// <summary>
         /// The text to write to the ProgressBar.
         /// </summary>
         public string ProgressText
@@ -68,11 +63,11 @@ namespace EncodeProg
         {
             if (!string.IsNullOrEmpty(ProgressText))
             {
-                var font = new Font("Arial", 8.25F, FontStyle.Bold,
+                var font = new Font("Arial", 8.25F, FontStyle.Regular,
                             GraphicsUnit.Point, 0);
 
                 var size = graphics.MeasureString(ProgressText, font);
-                var point = new PointF(Width / 2 - size.Width / 2.0F, Height / 2 - size.Height / 2.0F + 2);
+                var point = new PointF(Width / 2 - size.Width / 2.0F, Height / 2 - size.Height / 2.0F + 1);
 
                 graphics.DrawString(ProgressText, font, new SolidBrush(TextColor), point);
             }
@@ -93,35 +88,12 @@ namespace EncodeProg
         }
 
         /// <summary>
-        /// Draws the progress bar and the chunks.
-        /// </summary>
-        /// <param name="pe">Instance of PaintEventArgs.</param>
-        protected override void OnPaint(PaintEventArgs pe)
-        {
-            Rectangle rectangle = ClientRectangle;
-            Graphics graphics = pe.Graphics;
-
-            ProgressBarRenderer.DrawHorizontalBar(graphics, rectangle);
-            rectangle.Inflate(-2, -2);
-
-            if (Value > 0)
-            {
-                Rectangle progress = new Rectangle(rectangle.X, rectangle.Y, (int)Math.Floor((decimal)Value / Maximum * rectangle.Width), rectangle.Height);
-
-                ProgressBarRenderer.DrawHorizontalChunks(graphics, progress);
-
-                graphics.FillRectangle(ProgressColor, progress);
-            }
-        }
-
-        /// <summary>
         /// Configuration.
         /// </summary>
         public ProgressBarLabel()
         {
             InitializeComponent();
-            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
-            Style = ProgressBarStyle.Marquee;
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
         }
     }
 }
