@@ -54,3 +54,13 @@ Known issues:
 - Fixed an issue where the output fps of the video won't change even if the user uses SVPFlow.
 - Idiot protection for if the user doesn't use the SVPFlow method for frame interpolation but uses the regular frame rate adjustment option in the `Video (x264)` tab.
 ===========================================================================================
+
+===========================================================================================
+[11/12/2021]: FrameGUI v1.2.3
+
+- Fixed the icon quality (initially blurry on high DPI profile)
+- Fixed an issue where a video recorded in portrait mode would automatically rotate to landscape
+- The progress bar is now animated in accordance with the native windows progress bar style
+- Removed the bold font on most controls
+- FrameGUI will now check for AviSynth+ installation on drives D, E, and F even if Windows is installed on a different drive other than C.
+===========================================================================================
