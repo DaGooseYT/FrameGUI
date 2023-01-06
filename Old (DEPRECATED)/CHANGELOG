@@ -1,0 +1,66 @@
+===========================================================================================
+[08/28/2021]: FrameGUI v1.0
+
+Initial release.
+===========================================================================================
+
+===========================================================================================
+[08/30/2021]: FrameGUI v1.0.2
+
+- Fixed an issue where an FFMpeg error would be thrown if a user quickly cancels the encoding process. A message box will show instead prompting the users to wait for the process to initialize before canceling the process.
+- Fixed an issue where the computer will go to sleep (if enabled) while an encoding process is running. While a process is running in FrameGUI, sleep mode will be temporarily disabled until that process is finished or canceled.
+- Extended the maximum output fps selection in the SVPFlow noob helper. The maximum output fps a user can select is 140fps.
+- Extended the maximum thread count for AviSynth+. The maximum thread count you can define for AviSynth+ is 25, this is for better performance with larger videos (i.e. 4K)
+===========================================================================================
+
+===========================================================================================
+[08/31/2021]: FrameGUI v1.0.3
+
+- Fixed an issue where an "AviSynth+ is missing" error would be thrown if the user didn't use AviSynth+ (i.e. when it's not required).
+- Added the option to open FrameGUI's log path on a button click so that the user doesn't have to use file explorer manually to navigate to the files. See the "Open Logs Path" button in Other Settings section.
+===========================================================================================
+
+===========================================================================================
+[09/01/2021]: FrameGUI v1.0.5
+
+- Fixed an issue where an FFMpeg error would be thrown if SVPFlow was used and there was no audio track in the video.
+- Added the option to mute the audio in the video. See the "Mute audio" checkbox in the "Audio" tab.
+===========================================================================================
+
+===========================================================================================
+[09/09/2021]: FrameGUI v1.1
+
+- Completely redesigned the conversion progress info and progress bar by implementing a custom progress bar control with text. The progress bar will change colors based on the process state (green: running, red: cancelled/error).
+- "Duration left" conversion progress info property was replaced with a "Time left" conversion progress info property. Accuracy is within 2% based on multiple tests.
+- "Time elapsed" conversion progress info property added. This property will also be displayed in the encoding complete message box.
+- The progress percentage in the conversion progress info will now display up to two decimal places.
+- FrameGUI now supports DPI-awareness. With this change, FRAMEGUI WILL NOW ONLY WORK ON WINDOWS 10 (CREATOR UPDATE) AND ABOVE. If you aren't using Windows 10 then don't update to v1.1! The DPI-awareness allows the controls to be clearer and appear as higher quality.
+
+Known issues:
+- When selecting "Mute audio" checkbox in the "Audio" tab and starting an encode, towards the end of the process, the conversion progress info will display as incomplete even though the process is truly complete.
+===========================================================================================
+
+===========================================================================================
+[9/13/2021]: FrameGUI v1.1.2
+
+- Fixed the conversion progress issue: When selecting "Mute audio" checkbox in the "Audio" tab and starting an encode, towards the end of the process, the conversion progress info will display as incomplete even though the process is truly complete. This issue was also present on normal processes.
+===========================================================================================
+
+===========================================================================================
+[10/10/2021]: FrameGUI v1.2
+
+- Added the all new One-click encoding method in FrameGUI. Users only have to define the input video path and the output and click `Start Encode`.
+- The input frame rate in the noob helper in the SVPFlow tab is now automatically detected.
+- Fixed an issue where the output fps of the video won't change even if the user uses SVPFlow.
+- Idiot protection for if the user doesn't use the SVPFlow method for frame interpolation but uses the regular frame rate adjustment option in the `Video (x264)` tab.
+===========================================================================================
+
+===========================================================================================
+[11/12/2021]: FrameGUI v1.2.3
+
+- Fixed the icon quality (initially blurry on high DPI profile)
+- Fixed an issue where a video recorded in portrait mode would automatically rotate to landscape
+- The progress bar is now animated in accordance with the native windows progress bar style
+- Removed the bold font on most controls
+- FrameGUI will now check for AviSynth+ installation on drives D, E, and F even if Windows is installed on a different drive other than C.
+===========================================================================================
