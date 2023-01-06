@@ -1,3 +1,4 @@
+*.c linguist-language=C
 *.cs linguist-language=C#
 *.json linguist-language=JavaScript
 *.config linguist-language=XML
