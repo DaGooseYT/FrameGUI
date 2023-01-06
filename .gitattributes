@@ -1,4 +1,5 @@
 *.h linguist-language=C
 *.cs linguist-language=C#
+*.cpp linguist-language=C++
 *.json linguist-language=JavaScript
 *.config linguist-language=XML
