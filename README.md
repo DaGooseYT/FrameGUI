@@ -1,14 +1,14 @@
 # FrameGUI (NEW v2.0.0+)
-![alt text][fgui]
+![alt-text-1](https://github.com/DaGooseYT/FrameGUI/tree/blob/main/New/fgui.png "Windows") ![alt-text-2]([image2.png](https://github.com/DaGooseYT/FrameGUI/tree/blob/main/New/fgui_mos.png) "MacOS")
 
-[fgui]: https://github.com/DaGooseYT/FrameGUI/blob/main/New/fgui.png "FrameGUI"
-
-FrameGUI (frame-gooey) is a free, very easy to use encoding utility featuring AI filters, based on the more comprehensive [EncodeGUI](https://github.com/DaGooseYT/EncodeGUI) encoding tool.
+FrameGUI (frame-gooey) is a free cross-platform, very easy to use encoding utility featuring AI filters, based on the more comprehensive [EncodeGUI](https://github.com/DaGooseYT/EncodeGUI) encoding tool.<br />
+FrameGUI is now the first RIFE GUI app to run 100% natively on Apple Silicon.
 
 This repository only consists of the source code; no builds are hosted here. See https://encodegui.com/downloads for the latest builds.
 
 # Features
 Below is a list of key features in FrameGUI:
+- 100% native Apple Scilicon support for the FrameGUI app itself and ALL its dependencies.
 - Supports nearly any video as an input.
 - Extreamly lightweight with a total installation size of around 150MB (MacOS).
 - Advanced job queue with status indicators and an advanced control set.
