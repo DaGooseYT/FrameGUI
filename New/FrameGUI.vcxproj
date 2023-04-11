@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BFB1F5DA-BCC6-4569-B623-4C9B29D7F584}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>6.2.4</QtInstall>
+    <QtModules>core;gui;network;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="assets\qrc_FrameGUI.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\arguments\argument.cpp" />
+    <ClCompile Include="src\checks\files.cpp" />
+    <ClCompile Include="src\checks\process.cpp" />
+    <ClCompile Include="src\io\audioinfo.cpp" />
+    <ClCompile Include="src\io\processerror.cpp" />
+    <ClCompile Include="src\io\progressinfo.cpp" />
+    <ClCompile Include="src\io\subtitleinfo.cpp" />
+    <ClCompile Include="src\io\videoinfo.cpp" />
+    <ClCompile Include="src\io\videoinfolist.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\process\ffloader.cpp" />
+    <ClCompile Include="src\process\mediaconfig.cpp" />
+    <ClCompile Include="src\process\processworker.cpp" />
+    <ClCompile Include="src\process\scriptbuilder.cpp" />
+    <ClCompile Include="src\regex\audiosubinforegex.cpp" />
+    <ClCompile Include="src\regex\processerrorregex.cpp" />
+    <ClCompile Include="src\regex\progressinforegex.cpp" />
+    <ClCompile Include="src\regex\videoinforegex.cpp" />
+    <ClCompile Include="src\ui\config.cpp" />
+    <ClCompile Include="src\ui\framegui.cpp" />
+    <ClCompile Include="src\ui\jobs.cpp" />
+    <ClCompile Include="src\ui\msgbox.cpp" />
+    <ClCompile Include="src\ui\script.cpp" />
+    <ClCompile Include="src\ui\settings.cpp" />
+    <ClCompile Include="src\ui\update.cpp" />
+    <ClCompile Include="src\vs\colors.cpp" />
+    <ClCompile Include="src\vs\rife.cpp" />
+    <ClCompile Include="src\vs\srmd.cpp" />
+    <ClCompile Include="src\vs\svpflow.cpp" />
+    <ClCompile Include="src\vs\vapoursynth.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\argument.hpp" />
+    <ClInclude Include="include\audioinfo.hpp" />
+    <ClInclude Include="include\audiosubinforegex.hpp" />
+    <ClInclude Include="include\checks.hpp" />
+    <ClInclude Include="include\mediaconfig.hpp" />
+    <ClInclude Include="include\processerror.hpp" />
+    <ClInclude Include="include\processerrorregex.hpp" />
+    <ClInclude Include="include\progressinfo.hpp" />
+    <ClInclude Include="include\progressinforegex.hpp" />
+    <ClInclude Include="include\scriptbuilder.hpp" />
+    <ClInclude Include="include\subtitleinfo.hpp" />
+    <ClInclude Include="include\update.hpp" />
+    <ClInclude Include="include\vapoursynth.hpp" />
+    <ClInclude Include="include\videoinfo.hpp" />
+    <ClInclude Include="include\videoinfolist.hpp" />
+    <ClInclude Include="include\videoinforegex.hpp" />
+    <QtMoc Include="include\framegui.hpp" />
+    <QtMoc Include="include\ffloader.hpp" />
+    <ClInclude Include="x64\Release\uic\ui_framegui.hpp" />
+    <ClInclude Include="x64\Release\uic\ui_update.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="assets\FrameGUI.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="assets\FrameGUI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\ui\framegui.ui" />
+    <QtUic Include="src\ui\update.ui" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,41 @@
+#pragma once
+
+#ifndef AUDIOSUBINFOREGEX_H
+#define AUDIOSUBINFOREGEX_H
+
+#include "audioinfo.hpp"
+#include "subtitleinfo.hpp"
+
+#include <QtCore/QRegularExpression>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QWidget>
+#include <QtCore/QString>
+#include <QtCore/QList>
+
+class AudioSubInfoRegex {
+public:
+	static void audioInfoRegex(QString output);
+	static void subInfoRegex(QString output);
+
+private:
+	enum GetInfo {
+		Audio = 0,
+		Subtitle = 1
+	};
+
+	static QString _audioCodec;
+	static QString _audioLanguage;
+	static QString _sampleRate;
+	static QString _channels;
+	static QString _audioStreams;
+
+	static QString _subCodec;
+	static QString _subLanguage;
+	static QString _subStreams;
+
+	static QList<QRegularExpression> _indexer;
+
+	static void setupPattern();
+};
+
+#endif // !AUDIOSUBINFOREGEX_H
