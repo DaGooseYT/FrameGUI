@@ -1,5 +1,5 @@
 # FrameGUI (NEW v2.0.0+)
-<img class="image-align-left" src="https://github.com/DaGooseYT/FrameGUI/blob/main/New/fgui.png" width="420"/><img class="image-align-left" src="https://github.com/DaGooseYT/FrameGUI/blob/main/New/fgui_mos.png" width="420"/>
+<img align="center" src="https://github.com/DaGooseYT/FrameGUI/blob/main/New/fgui.png" width="420"/><img align="center" src="https://github.com/DaGooseYT/FrameGUI/blob/main/New/fgui_mos.png" width="420"/>
 
 FrameGUI (frame-gooey) is a free cross-platform, very easy to use encoding utility featuring AI filters, based on the more comprehensive [EncodeGUI](https://github.com/DaGooseYT/EncodeGUI) encoding tool.<br />
 FrameGUI is now the first RIFE GUI app to run 100% natively on Apple Silicon.
