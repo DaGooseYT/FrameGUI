@@ -16,7 +16,6 @@ public:
 	static void setFps(QString fps);
 	static void setBitrate(QString bitrate);
 	static void setPercentage(double percentage);
-
 	static QTime getTimeLeft();
 	static QTime getTimeElapsed();
 	static int getProcessedFrames();
@@ -25,7 +24,6 @@ public:
 	static QString getFps();
 	static QString getBitrate();
 	static double getPercentage();
-
 	static void clearAll();
 
 private:

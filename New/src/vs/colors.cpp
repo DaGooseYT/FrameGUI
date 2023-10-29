@@ -8,7 +8,7 @@
 /// <param name="primaries">The input color primaries.</param>
 /// <returns>String representation of the argument.</returns>
 QString VapourSynth::rgb(QString matrix, QString transfer, QString primaries) {
-	return QString("clip = core.resize.Lanczos(clip, format=vs.RGBS, matrix_in_s=\"%1\", transfer_in_s=\"%2\", primaries_in_s=\"%3\")\n\n").arg(matrix).arg(transfer).arg(primaries);
+	return(QString("clip = core.resize.Lanczos(clip, format=vs.RGBS, matrix_in_s=\"%1\", transfer_in_s=\"%2\", primaries_in_s=\"%3\")\n\n").arg(matrix).arg(transfer).arg(primaries));
 }
 
 /// <summary>

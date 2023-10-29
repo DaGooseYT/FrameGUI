@@ -17,35 +17,34 @@
 
 #include "ffloader.hpp"
 
-QElapsedTimer _timer;
-QTime _pauseTime;
-
-int _currentJob;
-
-void FFLoader::encode(QString ffmpeg, QString vsArgs) {
+void FFLoader::encode(QStringList args, QStringList vsArgs, QString ffmpeg, QString vsPipe) {
 	_encode = new QProcess();
 
 	connector(_encode, ProcessType::Encode);
 	connector(_encode, ProcessType::EncodeFinish);
-	_timer.restart();
+	_pauseTime = new QTime(0, 0, 0);
+	_timer = new QElapsedTimer();
+	_timer->restart();
 
+	#ifdef Q_OS_WINDOWS
 	if (!vsArgs.isEmpty()) {
 		_vs = new QProcess();
 		connector(_vs, ProcessType::VS);
 
 		_vs->setStandardOutputProcess(_encode);
-		newProcess(_vs, QStringList(), vsArgs);
+		newProcess(_vs, vsArgs, vsPipe);
 	}
+	#endif
 
-	newProcess(_encode, QStringList(), ffmpeg);
+	newProcess(_encode, args, ffmpeg);
 }
 
-void FFLoader::videoInfo(QString arguments) {
+void FFLoader::videoInfo(QStringList args, QString ffprobe) {
 	_video = new QProcess();
 
 	connector(_video, ProcessType::VideoInfo);
 	connector(_video, ProcessType::VideoFinish);
-	newProcess(_video, QStringList(), arguments);
+	newProcess(_video, args, ffprobe);
 }
 
 void FFLoader::outputDataVideo() {
@@ -56,9 +55,11 @@ void FFLoader::outputDataInfo() {
 	outputData(_encode, ProcessType::Encode);
 }
 
+#ifdef Q_OS_WINDOWS
 void FFLoader::outputDataVS() {
 	outputData(_vs, ProcessType::VS);
 }
+#endif
 
 void FFLoader::videoFinished() {
 	finisher(_video, ProcessType::VideoFinish);
@@ -68,7 +69,7 @@ void FFLoader::encodeFinished() {
 	finisher(_encode, ProcessType::EncodeFinish);
 }
 
-void FFLoader::outputData(QProcess* process, ProcessType type) {
+void FFLoader::outputData(QProcess *process, ProcessType type) {
 	process->setReadChannel(QProcess::StandardError);
 
 	QTextStream stream(process);
@@ -80,14 +81,16 @@ void FFLoader::outputData(QProcess* process, ProcessType type) {
 		if (type == ProcessType::Encode || type == ProcessType::VS) {
 			ProcessErrorRegex::errorRegex(output);
 
+			#ifdef Q_OS_WINDOWS
 			if (type == ProcessType::VS && !output.contains(QString("Creating lwi index file")))
 				emit logs(output);
+			#endif
 		}
 
 		switch (type) {
 		case ProcessType::Encode:
 			if (ProgressInfoRegex::progressRegex(output, VideoInfoList::getDuration(_currentJob), VideoInfoList::getFrameRate(_currentJob).trimmed().toDouble()
-				* QTime(0, 0, 0, 0).secsTo(VideoInfoList::getDuration(_currentJob)), _timer, _pauseTime))
+				* QTime(0, 0, 0, 0).secsTo(VideoInfoList::getDuration(_currentJob)), *_timer, *_pauseTime))
 				emit setProgress();
 			else
 				emit logs(output);
@@ -103,14 +106,16 @@ void FFLoader::outputData(QProcess* process, ProcessType type) {
 	}
 }
 
-void FFLoader::finisher(QProcess* process, ProcessType type) {
+void FFLoader::finisher(QProcess *process, ProcessType type) {
 	switch (type) {
 	case ProcessType::EncodeFinish:
 		disconnecter(process, ProcessType::EncodeFinish);
 		disconnecter(process, ProcessType::Encode);
 
+		#ifdef Q_OS_WINDOWS
 		if (_vs)
 			disconnecter(_vs, ProcessType::VS);
+		#endif
 
 		emit completed();
 		break;
@@ -124,7 +129,7 @@ void FFLoader::finisher(QProcess* process, ProcessType type) {
 	deconstruct(process);
 }
 
-void FFLoader::connector(QProcess* process, ProcessType type) {
+void FFLoader::connector(QProcess *process, ProcessType type) {
 	switch (type) {
 	case ProcessType::Encode:
 		process->connect(process, &QProcess::readyReadStandardError, this, &FFLoader::outputDataInfo);
@@ -132,9 +137,13 @@ void FFLoader::connector(QProcess* process, ProcessType type) {
 	case ProcessType::VideoInfo:
 		process->connect(process, &QProcess::readyReadStandardError, this, &FFLoader::outputDataVideo);
 		break;
+
+	#ifdef Q_OS_WINDOWS
 	case ProcessType::VS:
 		process->connect(process, &QProcess::readyReadStandardError, this, &FFLoader::outputDataVS);
 		break;
+	#endif
+
 	case ProcessType::VideoFinish:
 		process->connect(process, &QProcess::finished, this, &FFLoader::videoFinished);
 		break;
@@ -144,7 +153,7 @@ void FFLoader::connector(QProcess* process, ProcessType type) {
 	}
 }
 
-void FFLoader::disconnecter(QProcess* process, ProcessType type) {
+void FFLoader::disconnecter(QProcess *process, ProcessType type) {
 	switch (type) {
 	case ProcessType::Encode:
 		process->disconnect(process, &QProcess::readyReadStandardError, this, &FFLoader::outputDataInfo);
@@ -152,9 +161,13 @@ void FFLoader::disconnecter(QProcess* process, ProcessType type) {
 	case ProcessType::VideoInfo:
 		process->disconnect(process, &QProcess::readyReadStandardError, this, &FFLoader::outputDataVideo);
 		break;
+
+	#ifdef Q_OS_WINDOWS
 	case ProcessType::VS:
 		process->disconnect(process, &QProcess::readyReadStandardError, this, &FFLoader::outputDataVS);
 		break;
+	#endif 
+
 	case ProcessType::VideoFinish:
 		process->disconnect(process, &QProcess::finished, this, &FFLoader::videoFinished);
 		break;

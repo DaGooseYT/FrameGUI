@@ -1,53 +1,12 @@
 #include "checks.hpp"
 
 /// <summary>
-/// Ensures the path to FFMpeg exists.
-/// </summary>
-/// <param name="path">The file path.</param>
-/// <returns>True or false.</returns>
-bool Checks::checkFFMpeg(QString path) {
-	return(fileCheck(path));
-}
-
-/// <summary>
-/// Ensures the path to FFProbe exists.
-/// </summary>
-/// <param name="path">The file path.</param>
-/// <returns>True or false.</returns>
-bool Checks::checkFFProbe(QString path) {
-	return(fileCheck(path));
-}
-
-/// <summary>
-/// Ensures the path to VsPipe exists.
-/// </summary>
-/// <param name="path">The file path.</param>
-/// <returns>True or false.</returns>
-bool Checks::checkVsPipe(QString path) {
-	return(fileCheck(path));
-}
-
-/// <summary>
 /// Ensures the path to the VapourSynth script exists.
 /// </summary>
 /// <param name="path">The file path.</param>
 /// <returns>True or false.</returns>
 bool Checks::checkVsScript(QString path) {
 	return(fileCheck(path));
-}
-
-/// <summary>
-/// Ensures the path to VapourSynth directory exists.
-/// </summary>
-/// <param name="path">The directory path.</param>
-/// <returns>True or false.</returns>
-bool Checks::checkVapourSynth(QString path) {
-	QDir dir(path);
-
-	if (dir.exists())
-		return(true);
-	else
-		return(false);
 }
 
 /// <summary>
@@ -65,10 +24,12 @@ bool Checks::checkInputExists(QString path) {
 /// <param name="path">The file path.</param>
 /// <returns>True or false.</returns>
 bool Checks::checkInput(QString input) {
-	if (!input.isEmpty())
+	if (!input.isEmpty()) {
 		return(true);
-	else
+	}
+	else {
 		return(false);
+	}
 }
 
 /// <summary>

@@ -3,14 +3,14 @@
 #ifndef AUDIOSUBINFOREGEX_H
 #define AUDIOSUBINFOREGEX_H
 
-#include "audioinfo.hpp"
-#include "subtitleinfo.hpp"
-
 #include <QtCore/QRegularExpression>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QWidget>
 #include <QtCore/QString>
 #include <QtCore/QList>
+
+#include "audioinfo.hpp"
+#include "subtitleinfo.hpp"
 
 class AudioSubInfoRegex {
 public:
@@ -28,7 +28,6 @@ private:
 	static QString _sampleRate;
 	static QString _channels;
 	static QString _audioStreams;
-
 	static QString _subCodec;
 	static QString _subLanguage;
 	static QString _subStreams;

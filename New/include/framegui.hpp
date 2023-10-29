@@ -2,17 +2,21 @@
 
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QHttpMultiPart>
 #include <QtNetwork/QNetworkReply>
+#include <QtNetwork/QAuthenticator>
 #include <QtGui/QDesktopServices>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QCloseEvent>
 #include <QtCore/QSettings>
+#include <QtGui/QShortcut>
 #include <QtCore/QMimeData>
 #include <QtWidgets/QMenu>
 #include <QtCore/QProcess>
 #include <QtGui/QAction>
+#include <QtCore/QPoint>
 
 #include "scriptbuilder.hpp"
 #include "mediaconfig.hpp"
@@ -20,7 +24,18 @@
 #include "checks.hpp"
 #include "audioinfo.hpp"
 #include "subtitleinfo.hpp"
-#include "../x64/Release/uic/ui_framegui.h"
+
+#ifdef Q_OS_WINDOWS
+#include "windows/ui_framegui.hpp"
+#include "dxgi.h"
+#pragma comment(lib, "dxgi.lib")
+#endif
+#ifdef Q_OS_DARWIN
+#include "darwin/ui_framegui.hpp"
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <stdio.h>
+#endif
 #include "update.hpp"
 
 #define FOR_EACH(total) for (int i = 0; i < total; i++)
@@ -30,21 +45,23 @@
 #define SET_INVISIBLE(control) (control->setVisible(false))
 #define CHECKED(control) (control->isChecked())
 
-// msgbox
-#define ERROR 0
-#define WARNING 1
-#define INFO 2
-#define QUESTION 3
+#define VERSION (QString("2.2.0"))
+#define VSPIPEPATH (QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("\\vs\\vspipe.exe")))
+#define TEMPPATH_DAR (QDir::toNativeSeparators(QDir::homePath() + QString("/Library/Caches/TemporaryItems")))
+#define FFMPEGPATH_WIN (QDir::toNativeSeparators(QApplication::applicationDirPath() + QString("\\ffmpeg\\ffmpeg.exe")))
+#define FFMPEGPATH_DAR (QDir::toNativeSeparators(QApplication::applicationDirPath() + QString("/lib/ffmpeg")))
+#define LOGPATH_WIN (QDir::toNativeSeparators(QDir::homePath() + QString("\\AppData\\Local\\FrameGUI")))
+#define LOGPATH_DAR (QDir::toNativeSeparators(TEMPPATH_DAR + QString("/FrameGUI")))
 
-#define VERSION (QString("2.1.0"))
-
-class FrameGUI : public QMainWindow
-{
+class FrameGUI : public QMainWindow {
     Q_OBJECT
 
 public:
-    FrameGUI(QWidget* parent = Q_NULLPTR);
+    FrameGUI(QWidget *parent = Q_NULLPTR);
     ~FrameGUI();
+
+private:
+    Ui::FrameGUIClass *_ui;
 
     enum MessageType {
         Error = 0,
@@ -53,57 +70,71 @@ public:
         Question = 3
     };
 
-    QStringList _arguments;
-    QStringList _job;
-    QStringList _vapourScript;
-    QStringList _inputList;
-    QStringList _outputList;
-    QStringList _tempList;
-    QStringList _state;
+    QMessageBox::StandardButton msgBoxHelper(MessageType type, QString title, QString message, QMessageBox::StandardButton button1, QMessageBox::StandardButton button2, QMessageBox::StandardButton button3);
 
+    int _selectedJob;
+    bool _encodingAudio;
+
+    QVariantList _audioArgs;
+    QVariantList _arguments;
+    QStringList *_gpuNames;
+    QStringList *_job;
+    QStringList *_inputList;
+    QStringList *_outputList;
+    QStringList *_tempList;
+    QStringList *_state;
+
+    QVariantList _sAudioArgs;
     QVariantList _sArguments;
     QVariantList _sJob;
-    QVariantList _sVapourScript;
     QVariantList _sInputList;
     QVariantList _sOutputList;
     QVariantList _sTempList;
     QVariantList _sState;
     QVariantList _sDuration;
-    QVariantList _sAudioArgs;
     QVariantList _sFrameRate;
 
-    QMessageBox::StandardButton msgBoxHelper(MessageType type, QString title, QString message, QMessageBox::StandardButton button1, QMessageBox::StandardButton button2, QMessageBox::StandardButton button3);
+    #ifdef Q_OS_WINDOWS
+    QVariantList _vapourScript;
+    QVariantList _sVapourScript;
+    #endif
 
-private:
-    Ui::FrameGUIClass _ui;
-
-    int _selectedJob;
-
-    QStringList _fileStream;
-    QStringList _audioArgs;
+    QStringList *_fileStream;
+    QFile *_logFile;
     QString _version;
-    QFile _logFile; 
     
-    FFLoader* _ffloader;
-    Update* _update;
+    FFLoader *_ffloader;
+    Update *_update;
+
+    QList<QPushButton*> *_inputBttn;
+    QList<QPushButton*> *_outputBttn;
+    QList<QPushButton*> *_logsBttn;
     
-    void dragEnterEvent(QDragEnterEvent* d);
-    void paletter(QLabel* label);
-    void dropEvent(QDropEvent* d);
+    void dragEnterEvent(QDragEnterEvent *d);
+    void paletter(QLabel *label);
+    void dropEvent(QDropEvent *d);
     void getVideoInfo(QString input, QString ffprobe);
     void loadSysSetting();
     void saveSettings();
     void setJobSetting();
+    void reIndexBttns();
+    void openLogs();
     void setupQueue();
+    void bttns();
     void newJob();
     void newTask();
+    void gpuFinished();
     void setState();
     void updater();
 
-    QString configureVS(QString id);
+    #ifdef Q_OS_WINDOWS
+    QStringList configureVS(QString id);
+    #endif
+
     QString buildScript(int width, int height, QString jobID);
-    QString configureAudioPT(int stream, QString id, QString container);
-    QString configureArgs(QString container, QString id);
+    QStringList configureAudioPT(int stream, QString id, QString container);
+    QStringList configureArgs(QString container, QString id, QString vsScript);
+    QString checkEnviornment();
 
     int decimalCounter(QString value);
 
@@ -111,27 +142,31 @@ private slots:
     void updaterFinished();
     void inputBttn();
     void donateDaGoose();
-    void patreonClick();
     void cancelClick();
     void pauseClick();
     void createJob();
     void cancelMain();
     void clearFinished();
-    void openOutput();
+    void licenseBttn();
     void upscaleSet();
     void convertSet();
     void outBttn();
-    void openJobLogs();
     void youClick();
     void disClick();
     void igClick();
     void removeJob();
     void inputClick();
+    void outputClick();
+    void openOutput();
+    void openJobLogs();
     void start();
     void skip();
     void goToUpdate();
     void later();
     void resetJob();
+    void jobBttn();
+    void jobBttn2();
+    void clearBttn();
     void regexFinished();
     void cancelAllClick();
     void updateProgress();
@@ -140,5 +175,6 @@ private slots:
     void jobContext(QPoint);
 
 protected:
-    void closeEvent(QCloseEvent* event);
+    void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *event);
 };

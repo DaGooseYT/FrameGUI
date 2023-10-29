@@ -9,12 +9,10 @@ public:
 	static void setVkMemoryError(bool vkMemoryError);
 	static void setVkQueueError(bool vkQueueError);
 	static void setNcnnError(bool ncnnError);
-
 	static bool getPipeError();
 	static bool getVkMemoryError();
 	static bool getVkQueueError();
 	static bool getNcnnError();
-
 	static void clearAll();
 	static void setError(bool error);
 	static bool error();

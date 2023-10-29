@@ -22,10 +22,10 @@ void ProcessErrorRegex::errorRegex(QString output) {
 		for (int i = 0; i < _indexerRegex.count(); i++)
 			_indexerBool << false;
 
-	QRegularExpressionMatch matchPipeError = _indexerRegex.at(GetError::Pipe).match(output);
-	QRegularExpressionMatch matchVkMemoryError = _indexerRegex.at(GetError::Memory).match(output);
-	QRegularExpressionMatch matchVkQueueError = _indexerRegex.at(GetError::Queue).match(output);
-	QRegularExpressionMatch matchNcnnError = _indexerRegex.at(GetError::Ncnn).match(output);
+	QRegularExpressionMatch matchPipeError(_indexerRegex.at(GetError::Pipe).match(output));
+	QRegularExpressionMatch matchVkMemoryError(_indexerRegex.at(GetError::Memory).match(output));
+	QRegularExpressionMatch matchVkQueueError(_indexerRegex.at(GetError::Queue).match(output));
+	QRegularExpressionMatch matchNcnnError(_indexerRegex.at(GetError::Ncnn).match(output));
 
 	if (matchPipeError.hasMatch())
 		_indexerBool.replace(GetError::Pipe, true);

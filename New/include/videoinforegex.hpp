@@ -3,14 +3,14 @@
 #ifndef VIDEOINFOREGEX_H
 #define VIDEOINFOREGEX_H
 
-#include "videoinfolist.hpp"
-#include "videoinfo.hpp"
-
 #include <QtCore/QRegularExpression>
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QString>
 #include <QtCore/QList>
 #include <QtCore/QTime>
+
+#include "videoinfolist.hpp"
+#include "videoinfo.hpp"
 
 class VideoInfoRegex {
 public:

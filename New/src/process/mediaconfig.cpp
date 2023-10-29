@@ -1,79 +1,94 @@
 #include "mediaconfig.hpp"
 
-QString MediaConfig::_argumentList;
+QStringList MediaConfig::_argumentList;
+
+void MediaConfig::setVideoCodec(QString codec) {
+	foreach(QString argument, splitSpace(Argument::videoCodec(codec)))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setAudioCodec(QString codec) {
+	foreach(QString argument, splitSpace(Argument::audioCodec(codec)))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setSubtitleCodec(QString codec) {
+	foreach(QString argument, splitSpace(Argument::subtitleCodec(codec)))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setMapAll(QString type, QString s1) {
+	foreach(QString argument, splitSpace(Argument::mapAll(type, s1)))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setConstantRateFactor(int crf) {
+	foreach(QString argument, splitSpace(Argument::constantRateFactor(crf)))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setInput() {
+	_argumentList.append(Argument::input());
+}
+
+void MediaConfig::setAppleTag() {
+	foreach(QString argument, splitSpace(Argument::appleTag()))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setVs() {
+	foreach(QString argument, splitSpace(Argument::vs()))
+		_argumentList.append(argument);
+}
+
+void MediaConfig::setVideoResolution(int width, int height) {
+	foreach(QString argument, splitSpace(Argument::videoResolution(width, height)))
+		_argumentList.append(argument);
+}
 
 void MediaConfig::append(QString string) {
 	_argumentList.append(string);
 }
 
-void MediaConfig::setVideoCodec(QString codec) {
-	_argumentList.append(Argument::videoCodec(codec));
+void MediaConfig::setMetaData1() {
+	_argumentList.append(Argument::metaData1());
 }
 
-void MediaConfig::setAudioCodec(QString codec) {
-	_argumentList.append(Argument::audioCodec(codec));
-}
-
-void MediaConfig::setMap(QString type, QString s1, int s2) {
-	_argumentList.append(Argument::mapVideo(type, s1, s2));
-}
-
-void MediaConfig::setMapAll(QString type, QString s1) {
-	_argumentList.append(Argument::mapAll(type, s1));
-}
-
-void MediaConfig::setConstantRateFactor(int crf) {
-	_argumentList.append(Argument::constantRateFactor(crf));
-}
-
-void MediaConfig::setVideoResolution(int width, int height) {
-	_argumentList.append(Argument::videoResolution(width, height));
+void MediaConfig::setMetaData2(QString str) {
+	_argumentList.append(Argument::metaData2(str));
 }
 
 void MediaConfig::setNoAutoRotate() {
 	_argumentList.append(Argument::noAutoRotate());
 }
 
-void MediaConfig::setVSPipe(QString vspipe, QString vsscript) {
-	_argumentList.append(Argument::vsPipe(vspipe, vsscript));
+#ifdef Q_OS_WINDOWS
+void MediaConfig::setVsPipe1() {
+	_argumentList.append(Argument::vsPipe1());
 }
 
-void MediaConfig::setFFMpeg(QString path) {
-	_argumentList.append(Argument::ffmpeg(path));
+void MediaConfig::setVsPipe2() {
+	_argumentList.append(Argument::vsPipe2());
 }
-
-void MediaConfig::setInput(QString path) {
-	_argumentList.append(Argument::input(path));
-}
+#endif
 
 void MediaConfig::setOverride() {
 	_argumentList.append(Argument::override());
 }
 
 void MediaConfig::setOutput(QString path) {
-	_argumentList.append(Argument::output(path));
-}
-
-void MediaConfig::setComma() {
-	_argumentList.append(Argument::addComma());
-}
-
-void MediaConfig::setColin() {
-	_argumentList.append(Argument::addColin());
-}
-
-void MediaConfig::setFilters() {
-	_argumentList.append(Argument::enableFilters());
-}
-
-void MediaConfig::setConcludeFilters() {
-	_argumentList.append(Argument::concludeFilters());
+	_argumentList.append(path);
 }
 
 void MediaConfig::resetArguments() {
 	_argumentList.clear();
 }
 
-QString MediaConfig::getArguments() {
+QStringList MediaConfig::splitSpace(QString args) {
+	QStringList arg(args.split(QString(" ")));
+	return(arg);
+}
+
+QStringList MediaConfig::getArguments() {
 	return(_argumentList);
 }

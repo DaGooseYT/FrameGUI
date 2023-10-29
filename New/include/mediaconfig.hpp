@@ -3,33 +3,38 @@
 #ifndef MEDIACONFIG_H
 #define MEDIACONFIG_H
 
-#include "argument.hpp"
 #include <QtCore/QStringList>
+#include "argument.hpp"
 
 class MediaConfig : protected Argument {
 public:
-	static QString getArguments();
+	static QStringList getArguments();
 	static void append(QString string);
 	static void setVideoCodec(QString codec);
 	static void setAudioCodec(QString codec);
-	static void setMap(QString type, QString s1, int s2);
+	static void setSubtitleCodec(QString codec);
 	static void setMapAll(QString type, QString s1);
 	static void setConstantRateFactor(int crf);
 	static void setVideoResolution(int width, int height);
+	static void setMetaData1();
+	static void setMetaData2(QString str);
 	static void setNoAutoRotate();
-	static void setVSPipe(QString vspipe, QString vsscript);
-	static void setFFMpeg(QString path);
 	static void setOverride();
-	static void setInput(QString path);
+	static void setInput();
 	static void setOutput(QString path);
-	static void setComma();
-	static void setColin();
-	static void setFilters();
-	static void setConcludeFilters();
+	static void setAppleTag();
+	static void setVs();
 	static void resetArguments();
 
+	#ifdef Q_OS_WINDOWS
+	static void setVsPipe1();
+	static void setVsPipe2();
+	#endif
+
 private:
-	static QString _argumentList;
+	static QStringList _argumentList;
+
+	static QStringList splitSpace(QString args);
 };
 
 #endif // !MEDIACONFIG_H

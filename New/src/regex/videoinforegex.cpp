@@ -4,7 +4,7 @@ QList<QRegularExpression> VideoInfoRegex::_indexer;
 QString VideoInfoRegex::_durationLine;
 
 void VideoInfoRegex::setupPatterns() {
-	_indexer << QRegularExpression(QString("(\\s*?Duration:\\s[0-9]*:[0-9]*:[^\\.]*\\.[^,]*,\\s?start:\\s?[0-9]*\\.[^,]*,\\s?bitrate:\\s?[0-9]*\\s?kb/s)")); // duration/bitrate
+	_indexer << QRegularExpression(QString("(\\s*?Duration:\\s[0-9]*:[0-9]*:[^\\.]*\\.[^,]*,\\s?start:\\s?-?[0-9]*\\.[^,]*,\\s?bitrate:\\s?[0-9]*\\s?kb/s)")); // duration/bitrate
 	_indexer << QRegularExpression(QString("Stream\\s#0:[0-9]*[^V]*Video:\\s*([^,]*)[^(]*\\(?([^)]*)\\)?,\\s?[^\\s]*[^,]*?,?\\s?[^\\s]*")); // video info line
 	_indexer << QRegularExpression(QString("\\s?([0-9]*)\\s?kb/s")); // bitrate
 	_indexer << QRegularExpression(QString("([0-9]*):([0-9]*):([0-9]*)\\.([^,]*)")); // duration
@@ -37,7 +37,7 @@ void VideoInfoRegex::videoInfoerRegex(QString output) {
 
 	QRegularExpressionMatch matchVideoInfo(_indexer.at(GetInfo::VideoInfo).match(output));
 
-	QString videoCodec, durationStrng, colors, matrix, transfer, primaries, frameRate;
+	QString durationStrng, colors, matrix, transfer, primaries, frameRate;
 	QTime duration;
 	int width, height;
 
@@ -45,7 +45,7 @@ void VideoInfoRegex::videoInfoerRegex(QString output) {
 		return;
 	else {
 		QString remove(_indexer.at(GetInfo::VideoInfoPart).match(output).captured(1));
-		videoCodec = _indexer.at(GetInfo::Codec).match(matchVideoInfo.captured(1)).captured(1);
+		QString videoCodec(_indexer.at(GetInfo::Codec).match(matchVideoInfo.captured(1)).captured(1));
 
 		if (!_durationLine.isEmpty()) {
 			durationStrng = QString("%1:%2:%3.%4").arg(_indexer.at(GetInfo::Duration).match(_durationLine).captured(1)).arg(_indexer.at(GetInfo::Duration).match(_durationLine).captured(2)).
@@ -55,8 +55,8 @@ void VideoInfoRegex::videoInfoerRegex(QString output) {
 		}
 
 		if (!_indexer.at(GetInfo::PixFormat).match(output).captured(2).isEmpty()) {
-			colors = _indexer.at(GetInfo::PixFormat).match(output).captured(2) + QString(":") + _indexer.at(GetInfo::PixFormat).match(output).captured(3) +
-				QString(":") + _indexer.at(GetInfo::PixFormat).match(output).captured(4) + QString("/");
+			colors = _indexer.at(GetInfo::PixFormat).match(output).captured(2) + QString(':') + _indexer.at(GetInfo::PixFormat).match(output).captured(3) +
+				QString(':') + _indexer.at(GetInfo::PixFormat).match(output).captured(4) + QString('/');
 
 			if (_indexer.at(GetInfo::PixFormat).match(output).captured(5).isEmpty())
 				colors += QString("8-bit");
@@ -94,8 +94,8 @@ void VideoInfoRegex::videoInfoerRegex(QString output) {
 		if (videoCodec.isEmpty())
 			videoCodec = QString("?");
 
-		transfer.remove(QString(","));
-		videoCodec.remove(QString(","));
+		transfer.remove(QString(','));
+		videoCodec.remove(QString(','));
 
 		if (videoCodec.contains(QString("h264")))
 			videoCodec = QString("AVC");

@@ -66,31 +66,45 @@ QString FrameGUI::buildScript(int width, int height, QString jobID) {
 		format = QString("YUV420P8");
 
 	ScriptBuilder::setInclude();
-	ScriptBuilder::setPlugin(QDir::toNativeSeparators(QDir::currentPath() + QString("\\vs\\plugins\\liblsmashsource.dll")));
 
-	if (CHECKED(_ui.UpscaleSetGB))
-		ScriptBuilder::setPlugin(QDir::toNativeSeparators(QDir::currentPath() + QString("\\vs\\plugins\\libsrmdnv.dll")));
+	#ifdef Q_OS_WINDOWS
+	ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("\\vs\\plugins\\liblsmashsource.dll")));
 
-	if (CHECKED(_ui.InterpSetGB)) {
-		if (CHECKED(_ui.USeAICB))
-			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QDir::currentPath() + QString("\\vs\\plugins\\librife.dll")));
+	if (CHECKED(_ui->UpscaleSetGB))
+		ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("\\vs\\plugins\\libsrmdnv.dll")));
+
+	if (CHECKED(_ui->InterpSetGB)) {
+		if (CHECKED(_ui->USeAICB))
+			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("\\vs\\plugins\\librife.dll")));
 		else {
-			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QDir::currentPath() + QString("\\vs\\plugins\\libsvpflow.1.dll")));
-			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QDir::currentPath() + QString("\\vs\\plugins\\libsvpflow.2.dll")));
+			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("\\vs\\plugins\\libsvpflow.1.dll")));
+			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("\\vs\\plugins\\libsvpflow.2.dll")));
 		}
 	}
+	#endif
+	#ifdef Q_OS_DARWIN
+	ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("/plugins/libffms2.dylib")));
+	ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("/plugins/libscdetect.dylib")));
 
-	ScriptBuilder::setInput(_ui.SelectInTxtBox->text(), jobID);
+	if (CHECKED(_ui->UpscaleSetGB))
+		ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("/plugins/libsrmdnv.dylib")));
 
-	if (CHECKED(_ui.InterpSetGB)) {
+	if (CHECKED(_ui->InterpSetGB))
+			ScriptBuilder::setPlugin(QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QString("/plugins/librife.dylib")));
+	#endif
+
+	ScriptBuilder::setInput(_ui->SelectInTxtBox->text(), jobID);
+
+	if (CHECKED(_ui->InterpSetGB)) {
 		double inFPS = VideoInfo::getFrameRate().toDouble();
-		double outFPS = _ui.OutFPSDD->currentText().toDouble();
+		double outFPS = _ui->OutFPSDD->currentText().toDouble();
 
-		if (CHECKED(_ui.USeAICB)) {
+		#ifdef Q_OS_WINDOWS
+		if (CHECKED(_ui->USeAICB)) {
 			if (inFPS != outFPS) {
 				ScriptBuilder::setRGB(matrix_in, transfer_in, primaries_in);
-				ScriptBuilder::setSCDetect(QString("0.14"));
-				ScriptBuilder::setRIFE(_ui.OutFPSDD->currentText().toInt(), 0, 2, QString("False"), QString("False"), QString("True"));
+				ScriptBuilder::setSCDetect(QString("0.13"));
+				ScriptBuilder::setRIFE(_ui->OutFPSDD->currentText().toInt(), 0, 2, QString("False"), QString("False"), QString("True"));
 				ScriptBuilder::setColorsOut(format, matrix_in, transfer_in, primaries_in);
 			}
 		}
@@ -99,18 +113,25 @@ QString FrameGUI::buildScript(int width, int height, QString jobID) {
 				ScriptBuilder::setColorsInOut(QString("YUV420P8"), matrix_in, transfer_in, primaries_in, QString("709"), QString("709"), QString("709"));
 				
 				if ((int)outFPS % (int)inFPS != 0)
-					ScriptBuilder::setSVPFlow(_ui.OutFPSDD->currentText().toInt(), 1, 0);
+					ScriptBuilder::setSVPFlow(_ui->OutFPSDD->currentText().toInt(), 1, 0);
 				else
-					ScriptBuilder::setSVPFlow(_ui.OutFPSDD->currentText().toInt(), 1, 1);
+					ScriptBuilder::setSVPFlow(_ui->OutFPSDD->currentText().toInt(), 1, 1);
 
 				ScriptBuilder::setColorsOut(format, matrix_in, transfer_in, primaries_in);
 			}
 		}
+		#endif
+		#ifdef Q_OS_DARWIN
+		if (inFPS != outFPS) {
+			ScriptBuilder::setRGB(matrix_in, transfer_in, primaries_in);
+			ScriptBuilder::setSCDetect(QString("0.13"));
+			ScriptBuilder::setRIFE(_ui->OutFPSDD->currentText().toInt(), 0, 2, QString("False"), QString("False"), QString("True"));
+			ScriptBuilder::setColorsOut(format, matrix_in, transfer_in, primaries_in);
+		}
+		#endif
 	}
-	else if (CHECKED(_ui.UpscaleSetGB)) {
-		int scale = 2;
-		int outH = _ui.OutputResDD->currentText().remove(QString("(")).remove(QString(")")).remove(QString("p")).remove(QString("HD")).remove(QString("F")).remove(QString("Q")).remove(QString("U")).remove(QString("4K")).remove(QString(" ")).toInt();
-		int outW = 0;
+	else if (CHECKED(_ui->UpscaleSetGB)) {
+		int scale = 2, outW = 0, outH = _ui->OutputResDD->currentText().remove(QString("(")).remove(QString(")")).remove(QString("p")).remove(QString("HD")).remove(QString("F")).remove(QString("Q")).remove(QString("U")).remove(QString("4K")).remove(QString(" ")).toInt();
 
 		switch (outH) {
 		case 720:
@@ -139,13 +160,10 @@ QString FrameGUI::buildScript(int width, int height, QString jobID) {
 	}
 
 	ScriptBuilder::setConcludeClip();
-
 	return(ScriptBuilder::getScript());
 }
 
 int FrameGUI::decimalCounter(QString value) {
-	int index = value.indexOf(QString("."));
-	int count = value.remove(QString(".")).length();
-
+	int index = value.indexOf(QString(".")), count = value.remove(QString(".")).length();
 	return(count - index);
 }

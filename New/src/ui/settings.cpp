@@ -1,46 +1,46 @@
 #include "framegui.hpp"
 
 void FrameGUI::loadSysSetting() {
-	QSettings* sys(new QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")));
+	QSettings sys(QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")));
 
-	foreach(QVariant arg, sys->value(QString("arguments"), QVariantList()).toList())
-		_arguments << arg.toString();
+	_arguments = sys.value(QString("arguments"), QVariantList()).toList();
+	_audioArgs = sys.value(QString("audargs"), QVariantList()).toList();
 
-	foreach(QVariant id, sys->value(QString("jobid"), QVariantList()).toList())
-		_job << id.toString();
+	#ifdef Q_OS_WINDOWS
+	_vapourScript = sys.value(QString("vs"), QVariantList()).toList();
+	#endif
 
-	foreach(QVariant vs, sys->value(QString("vs"), QVariantList()).toList())
-		_vapourScript << vs.toString();
+	foreach(QVariant id, sys.value(QString("jobid"), QVariantList()).toList())
+		*_job << id.toString();
+	
+	foreach(QVariant in, sys.value(QString("input"), QVariantList()).toList())
+		*_inputList << in.toString();
 
-	foreach(QVariant in, sys->value(QString("input"), QVariantList()).toList())
-		_inputList << in.toString();
+	foreach(QVariant out, sys.value(QString("output"), QVariantList()).toList())
+		*_outputList << out.toString();
 
-	foreach(QVariant out, sys->value(QString("output"), QVariantList()).toList())
-		_outputList << out.toString();
+	foreach(QVariant tmp, sys.value(QString("temp"), QVariantList()).toList())
+		*_tempList << tmp.toString();
 
-	foreach(QVariant tmp, sys->value(QString("temp"), QVariantList()).toList())
-		_tempList << tmp.toString();
+	foreach(QVariant sta, sys.value(QString("state"), QVariantList()).toList())
+		*_state << sta.toString();
 
-	foreach(QVariant aArgs, sys->value(QString("audargs"), QVariantList()).toList())
-		_audioArgs << aArgs.toString();
-
-	foreach(QVariant sta, sys->value(QString("state"), QVariantList()).toList())
-		_state << sta.toString();
-
-	foreach(QVariant dur, sys->value(QString("dur"), QVariantList()).toList())
+	foreach(QVariant dur, sys.value(QString("dur"), QVariantList()).toList())
 		VideoInfoList::setDuration(dur.toTime());
 
-	foreach(QVariant fr, sys->value(QString("fr"), QVariantList()).toList())
+	foreach(QVariant fr, sys.value(QString("fr"), QVariantList()).toList())
 		VideoInfoList::setFrameRate(fr.toString());
-
-	sys->~QSettings();
 }
 
 void FrameGUI::saveSettings() {
 	_sArguments.clear();
 	_sJob.clear();
 	_sState.clear();
+
+	#ifdef Q_OS_WINDOWS
 	_sVapourScript.clear();
+	#endif
+
 	_sInputList.clear();
 	_sOutputList.clear();
 	_sTempList.clear();
@@ -48,41 +48,43 @@ void FrameGUI::saveSettings() {
 	_sAudioArgs.clear();
 	_sFrameRate.clear();
 
-	foreach(QString arg, _arguments)
-		_sArguments << arg;
+	_sArguments = _arguments;
+	_sAudioArgs = _audioArgs;
 
-	foreach(QString id, _job)
-		_sJob << id;
+	#ifdef Q_OS_WINDOWS
+	_sVapourScript = _vapourScript;
+	#endif
 
-	foreach(QString sta, _state)
-		_sState << sta;
+	foreach(QString id, *_job)
+		_sJob.append(id);
 
-	foreach(QString vs, _vapourScript)
-		_sVapourScript << vs;
+	foreach(QString sta, *_state)
+		_sState.append(sta);
 
-	foreach(QString in, _inputList)
-		_sInputList << in;
+	foreach(QString in, *_inputList)
+		_sInputList.append(in);
 
-	foreach(QString out, _outputList)
-		_sOutputList << out;
+	foreach(QString out, *_outputList)
+		_sOutputList.append(out);
 
-	foreach(QString temp, _tempList)
-		_sTempList << temp;
-
-	foreach(QString audarg, _audioArgs)
-		_sAudioArgs << audarg;
+	foreach(QString temp, *_tempList)
+		_sTempList.append(temp);
 
 	FOR_EACH(_arguments.count())
-		_sDuration << VideoInfoList::getDuration(i);
+		_sDuration.append(VideoInfoList::getDuration(i));
 
 	FOR_EACH(_arguments.count())
-		_sFrameRate << VideoInfoList::getFrameRate(i);
+		_sFrameRate.append(VideoInfoList::getFrameRate(i));
 }
 
 void FrameGUI::setJobSetting() {
 	QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")).setValue(QString("arguments"), _sArguments);
 	QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")).setValue(QString("jobid"), _sJob);
+
+	#ifdef Q_OS_WINDOWS
 	QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")).setValue(QString("vs"), _sVapourScript);
+	#endif
+
 	QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")).setValue(QString("input"), _sInputList);
 	QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")).setValue(QString("output"), _sOutputList);
 	QSettings(QSettings::NativeFormat, QSettings::UserScope, QString("DaGoose"), QString("FrameGUI")).setValue(QString("temp"), _sTempList);

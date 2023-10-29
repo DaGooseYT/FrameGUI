@@ -102,28 +102,20 @@ bool Checks::checkAudioCompatability(int format, QString container) {
 bool Checks::checkSubtitleCompatability(QString format, QString container) {
 	bool result = false;
 
-	if ((format.contains(QString("subrip")) || format.contains(QString("srt"))) && container.contains(QString(".mkv"))) {
+	if ((format.contains(QString("subrip")) || format.contains(QString("srt"))) && container.contains(QString(".mkv")))
 		result = true;
-		return result;
-	}
 	else
 		result = false;
-	if (format.contains(QString("webvtt")) && container.contains(QString(".mkv"))) {
+	if (format.contains(QString("webvtt")) && container.contains(QString(".mkv")))
 		result = true;
-		return result;
-	}
 	else
 		result = false;
-	if ((format.contains(QString("ass")) || format.contains(QString("ssa"))) && container.contains(QString(".mkv"))) {
+	if ((format.contains(QString("ass")) || format.contains(QString("ssa"))) && container.contains(QString(".mkv")))
 		result = true;
-		return result;
-	}
 	else
 		result = false;
-	if (format.contains(QString("mov_text")) && (container.contains(QString(".mp4")) || container.contains(QString(".mov")))) {
+	if (format.contains(QString("mov_text")) && (container.contains(QString(".mp4")) || container.contains(QString(".mov"))))
 		result = true;
-		return result;
-	}
 	else
 		result = false;
 

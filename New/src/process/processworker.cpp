@@ -1,7 +1,4 @@
 #include "ffloader.hpp"
-#include "Windows.h"
-
-QProcess* video, *encode, *vs, *vk;
 
 void ProcessWorker::newProcess(QProcess* process, QStringList arguments, QString program) {
 	if (!arguments.isEmpty())
@@ -11,10 +8,22 @@ void ProcessWorker::newProcess(QProcess* process, QStringList arguments, QString
 }
 
 void ProcessWorker::pauseProcess(QProcess* process, bool pause) {
-	if (pause)
+	if (pause) {
+	#ifdef Q_OS_WINDOWS
 		DebugActiveProcess(process->processId());
-	else
+	#endif
+	#ifdef Q_OS_DARWIN
+		kill(process->processId(), SIGSTOP);
+	#endif
+	}
+	else {
+	#ifdef Q_OS_WINDOWS
 		DebugActiveProcessStop(process->processId());
+	#endif
+	#ifdef Q_OS_DARWIN
+		kill(process->processId(), SIGCONT);
+	#endif
+	}
 }
 
 void ProcessWorker::closeProcess(QProcess* process) {

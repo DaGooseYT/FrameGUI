@@ -14,9 +14,11 @@ void ScriptBuilder::setRGB(QString matrix, QString transfer, QString primaries) 
 	_scriptList.append(VapourSynth::rgb(matrix, transfer, primaries));
 }
 
+#ifdef Q_OS_WINDOWS
 void ScriptBuilder::setSVPFlow(int num, int den, int mode) {
 	_scriptList.append(VapourSynth::svpflow(num, den, mode));
 }
+#endif
 
 void ScriptBuilder::setColorsInOut(QString format, QString matrix_in, QString transfer_in, QString primaries_in, QString matrix, QString transfer, QString primaries) {
 	_scriptList.append(VapourSynth::colorsInOut(format, matrix_in, transfer_in, primaries_in, matrix, transfer, primaries));

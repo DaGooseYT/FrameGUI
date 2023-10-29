@@ -9,7 +9,11 @@ class VapourSynth {
 protected:
 	static QString rife(int multi, int id, int thread, QString tta, QString uhd, QString sc);
 	static QString srmd(int scale, int noise, int id, int thread, QString tta);
+
+	#ifdef Q_OS_WINDOWS
 	static QString svpflow(int num, int den, int mode);
+	#endif
+
 	static QString rgb(QString matrix, QString transfer, QString primaries);
 	static QString colorsInOut(QString format, QString matrix_in, QString transfer_in, QString primaries_in, QString matrix, QString transfer, QString primaries);
 	static QString colorsOut(QString format, QString matrix, QString transfer, QString primaries);

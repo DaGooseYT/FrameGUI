@@ -3,10 +3,10 @@
 #ifndef PROCESSERRORREGEX_H
 #define PROCESSERRORREGEX_H
 
-#include "processerror.hpp"
-
 #include <QtCore/QRegularExpression>
 #include <QtCore/QList>
+
+#include "processerror.hpp"
 
 class ProcessErrorRegex {
 public:

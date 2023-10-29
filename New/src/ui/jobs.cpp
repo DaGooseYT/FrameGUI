@@ -1,58 +1,44 @@
 #include "framegui.hpp"
 
-QStringList _audioArgs;
-
-QStringList _arguments;
-QStringList _job;
-QStringList _vapourScript;
-QStringList _inputList;
-QStringList _outputList;
-QStringList _tempList;
-QStringList _state;
-
-QVariantList _sArguments;
-QVariantList _sJob;
-QVariantList _sVapourScript;
-QVariantList _sInputList;
-QVariantList _sOutputList;
-QVariantList _sTempList;
-QVariantList _sState;
-QVariantList _sAudioArgs;
-QVariantList _sDuration;
-QVariantList _sFrameRate;
-
 void FrameGUI::setupQueue() {
-    _ui.JobQueue->setColumnWidth(0, 100);
-    _ui.JobQueue->setColumnWidth(1, 80);
-    _ui.JobQueue->setColumnWidth(2, 70);
-    _ui.JobQueue->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-    _ui.JobQueue->horizontalHeader()->setSectionsClickable(false);
+    _ui->JobQueue->setColumnWidth(0, 80);
+    _ui->JobQueue->setColumnWidth(1, 85);
+    _ui->JobQueue->setColumnWidth(2, 85);
 
-    connect(_ui.JobQueue, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(jobContext(QPoint)));
+    #ifdef Q_OS_WINDOWS
+    _ui->JobQueue->setColumnWidth(3, 108);
+    _ui->JobQueue->setColumnWidth(4, 108);
+    #endif
+    #ifdef Q_OS_DARWIN
+    _ui->JobQueue->setColumnWidth(3, 110);
+    _ui->JobQueue->setColumnWidth(4, 110);
+    #endif
+
+    _ui->JobQueue->horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    _ui->JobQueue->horizontalHeader()->setSectionsClickable(false);
+
+    connect(_ui->JobQueue, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(jobContext(QPoint)));
 }
 
 void FrameGUI::jobContext(QPoint pos) {
-    QTableWidgetItem* item(_ui.JobQueue->itemAt(pos));
+    QTableWidgetItem* item(_ui->JobQueue->itemAt(pos));
 
-    if (item != nullptr) {
-        _ui.JobQueue->setSelectionMode(QAbstractItemView::SingleSelection);
+    if (item) {
+        _ui->JobQueue->setSelectionMode(QAbstractItemView::SingleSelection);
 
         int row = item->row();
-        _ui.JobQueue->selectRow(row);
-
+        _ui->JobQueue->selectRow(row);
         _selectedJob = row;
 
-        QMenu* m(new QMenu(this));
+        QMenu *m(new QMenu(this));
+        QAction *input(new QAction(QString("Open input directory"), this));
+        QAction *output(new QAction(QString("Open output directory"), this));
+        QAction *pause(new QAction(QString("Pause / Resume"), this));
+        QAction *cancel(new QAction(QString("Cancel"), this));
+        QAction *remove(new QAction(QString("Remove"), this));
+        QAction *reset(new QAction(QString("Reset"), this));
 
-        QAction* logs(new QAction(QString("Open logs path"), this));
-        QAction* input(new QAction(QString("Open source path"), this));
-        QAction* output(new QAction(QString("Open output path"), this));
-        QAction* pause(new QAction(QString("Pause / Resume"), this));
-        QAction* cancel(new QAction(QString("Cancel"), this));
-        QAction* remove(new QAction(QString("Remove"), this));
-        QAction* reset(new QAction(QString("Reset"), this));
-
-        if (_ui.JobQueue->item(row, 1)->text().contains(QString("Paused")) || _ui.JobQueue->item(row, 1)->text().contains(QString("Active"))) {
+        if (_ui->JobQueue->item(row, 1)->text().contains(QString("Paused")) || _ui->JobQueue->item(row, 1)->text().contains(QString("Active"))) {
             SET_DISABLED(reset);
             SET_DISABLED(remove);
             SET_ENABLED(cancel);
@@ -66,34 +52,33 @@ void FrameGUI::jobContext(QPoint pos) {
         }
 
         m->setFont(this->font());
-        m->addAction(logs);
         m->addAction(input);
         m->addAction(output);
         m->addAction(pause);
         m->addAction(cancel);
         m->addAction(remove);
         m->addAction(reset);
-        m->popup(_ui.JobQueue->viewport()->mapToGlobal(pos));
+        m->popup(_ui->JobQueue->viewport()->mapToGlobal(pos));
 
         connect(pause, SIGNAL(triggered()), this, SLOT(pauseClick()));
         connect(input, SIGNAL(triggered()), this, SLOT(inputClick()));
-        connect(output, SIGNAL(triggered()), this, SLOT(openOutput()));
-        connect(logs, SIGNAL(triggered()), this, SLOT(openJobLogs()));
+        connect(output, SIGNAL(triggered()), this, SLOT(outputClick()));
         connect(cancel, SIGNAL(triggered()), this, SLOT(cancelClick()));
         connect(remove, SIGNAL(triggered()), this, SLOT(removeJob()));
         connect(reset, SIGNAL(triggered()), this, SLOT(resetJob()));
-
         connect(m, &QMenu::aboutToHide, [this]() {
-            _ui.JobQueue->selectionModel()->clear();
-            _ui.JobQueue->setSelectionMode(QAbstractItemView::NoSelection);
+            _ui->JobQueue->selectionModel()->clear();
+            _ui->JobQueue->setSelectionMode(QAbstractItemView::NoSelection);
+
+            delete(sender());
         });
     }
 }
 
 void FrameGUI::createJob() {
-    if (Checks::checkInput(_ui.SelectInTxtBox->text())) {
-        if (Checks::checkInputExists(_ui.SelectInTxtBox->text())) {
-            if (Checks::checkOutput(_ui.SaveOutTxtBox->text())) {
+    if (Checks::checkInput(_ui->SelectInTxtBox->text())) {
+        if (Checks::checkInputExists(_ui->SelectInTxtBox->text())) {
+            if (Checks::checkOutput(_ui->SaveOutTxtBox->text())) {
                 if (_ffloader->_video->state() == QProcess::Running) {
                     msgBoxHelper(MessageType::Error, QString("FrameGUI error"), QString("Please wait for FrameGUI to gather media info before adding a job."), QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton);
                     return;
@@ -101,7 +86,7 @@ void FrameGUI::createJob() {
 
                 int index = 0;
 
-                QString container(_ui.OutContainerDD->currentText());
+                QString container(_ui->OutContainerDD->currentText());
 
                 FOR_EACH(AudioInfo::totalStreams()) {
                     if (AudioInfo::getCodec(i).contains(QString("AAC")))
@@ -151,13 +136,25 @@ void FrameGUI::createJob() {
                     }
                 }
 
-                if (_ui.OutContainerDD->currentIndex() == 3 && SubtitleInfo::totalStreams() > 0) {
+                if (QFile(_ui->SaveOutTxtBox->text() + container).exists()) {
+                    QMessageBox::StandardButton msg(msgBoxHelper(MessageType::Question, "Confirm overwrite", "The output file already exists. Creating and starting this job will automatically overwrite that output file. Continue?", QMessageBox::Yes, QMessageBox::No, QMessageBox::NoButton));
+                    
+                    if (msg == QMessageBox::No)
+                        return;
+                }
+
+                if (QString(_ui->SaveOutTxtBox->text() + container).contains(_ui->SelectInTxtBox->text()) && QString(_ui->SaveOutTxtBox->text() + container).length() == _ui->SelectInTxtBox->text().length() && !_ui->SaveOutTxtBox->text().isEmpty()) {
+                    msgBoxHelper(MessageType::Error, "EncodeGUI error", "The output destination path cannot be equivalent to the source file path. Change the output file destination to fix this.", QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton);
+                    return;
+                }
+
+                if (_ui->OutContainerDD->currentIndex() == 3 && SubtitleInfo::totalStreams() > 0) {
                     msgBoxHelper(MessageType::Error, QString("FrameGUI error"), QString(".avi output container does not support subtitles. Please select a compatible container such as .mkv."), QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton);
                     return;
                 }
 
-                if (CHECKED(_ui.UpscaleSetGB)) {
-                    int outH = _ui.OutputResDD->currentText().remove(QString("(")).remove(QString(")")).remove(QString("p")).remove(QString("HD")).remove(QString("F")).remove(QString("Q")).remove(QString("U")).remove(QString("4K")).remove(QString(" ")).toInt();
+                if (CHECKED(_ui->UpscaleSetGB)) {
+                    int outH = _ui->OutputResDD->currentText().remove(QString("(")).remove(QString(")")).remove(QString("p")).remove(QString("HD")).remove(QString("F")).remove(QString("Q")).remove(QString("U")).remove(QString("4K")).remove(QString(" ")).toInt();
                     int outW = 0;
 
                     switch (outH) {
@@ -181,80 +178,101 @@ void FrameGUI::createJob() {
                     }
                 }
 
-                if (CHECKED(_ui.InterpSetGB)) {
-                    if (VideoInfo::getFrameRate().toDouble() == _ui.OutFPSDD->currentText().toDouble()) {
-                        msgBoxHelper(MessageType::Error, QString("FrameGUI error"), QString("The selected output FPS (%1) for Convert FPS cannot be equal to the source video FPS (%2). Please select a different output FPS.").arg(_ui.OutFPSDD->currentText().toDouble()).arg(VideoInfo::getFrameRate()), QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton);
+                if (CHECKED(_ui->InterpSetGB)) {
+                    if (VideoInfo::getFrameRate().toDouble() == _ui->OutFPSDD->currentText().toDouble()) {
+                        msgBoxHelper(MessageType::Error, QString("FrameGUI error"), QString("The selected output FPS (%1) for Convert FPS cannot be equal to the source video FPS (%2). Please select a different output FPS.").arg(_ui->OutFPSDD->currentText().toDouble()).arg(VideoInfo::getFrameRate()), QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton);
                         return;
                     }
                 }
 
                 QDate date(QDate::currentDate());
-                QString id(QString(QTime::currentTime().toString().remove(QString(":"))) + QString("%1").arg(date.day())), audioArgs, subtitleArgs;
+                QString id(QString(QTime::currentTime().toString().remove(QString(":"))) + QString("%1").arg(date.day())), subtitleArgs;
+                QStringList audioArgs;
 
-                _ui.JobQueue->insertRow(_ui.JobQueue->rowCount());
-                _ui.JobQueue->setItem(_ui.JobQueue->rowCount() - 1, 0, new QTableWidgetItem(id));
-                _ui.JobQueue->setItem(_ui.JobQueue->rowCount() - 1, 1, new QTableWidgetItem(QString("Waiting")));
-                _ui.JobQueue->setItem(_ui.JobQueue->rowCount() - 1, 2, new QTableWidgetItem(QString("0%")));
-                _ui.JobQueue->setItem(_ui.JobQueue->rowCount() - 1, 3, new QTableWidgetItem(_ui.SaveOutTxtBox->text() + container));
+                _ui->JobQueue->insertRow(_ui->JobQueue->rowCount());
+                _ui->JobQueue->setItem(_ui->JobQueue->rowCount() - 1, 0, new QTableWidgetItem(id));
+                _ui->JobQueue->setItem(_ui->JobQueue->rowCount() - 1, 1, new QTableWidgetItem(QString("Waiting")));
+                _ui->JobQueue->setItem(_ui->JobQueue->rowCount() - 1, 2, new QTableWidgetItem(QString("0%")));
 
-                _state << QString("Waiting");
-                _sState << QString("Waiting");
+                bttns();
+
+                _state->append(QString("Waiting"));
+                _sState.append(QString("Waiting"));
 
                 for (int i = 0; i < 3; i++)
-                    _ui.JobQueue->item(_ui.JobQueue->rowCount() - 1, i)->setTextAlignment(Qt::AlignCenter);
+                    _ui->JobQueue->item(_ui->JobQueue->rowCount() - 1, i)->setTextAlignment(Qt::AlignCenter);
 
-                QString jobDir(QDir::toNativeSeparators(QDir::homePath() + QString("\\AppData\\Local\\FrameGUI\\job-%1").arg(id)));
+                #ifdef Q_OS_WINDOWS
+                QString jobDir(QDir::toNativeSeparators(LOGPATH_WIN + QString("\\job-%1").arg(id)));
+                #endif
+                #ifdef Q_OS_DARWIN
+                QString jobDir(QDir::toNativeSeparators(LOGPATH_DAR + QString("/job-%1").arg(id)));
+                #endif
+
                 QDir().mkpath(jobDir);
 
-                QFile script(QString("%1\\%2.vpy").arg(jobDir).arg(id));
+                #ifdef Q_OS_WINDOWS
+                QString vsScript(QDir::toNativeSeparators(QString("%1\\%2.vpy").arg(jobDir).arg(id)));
+                #endif
+                #ifdef Q_OS_DARWIN
+                QString vsScript(QDir::toNativeSeparators(QString("%1/%2.vpy").arg(jobDir).arg(id)));
+                #endif
+
+                QFile script(vsScript);
                 script.open(QIODevice::WriteOnly);
-
                 QTextStream stream(&script);
-
                 stream << buildScript(VideoInfo::getWidth(), VideoInfo::getHeight(), id);
-
                 script.close();
-                _vapourScript << configureVS(id); 
-                _sVapourScript << configureVS(id);
+
+                #ifdef Q_OS_WINDOWS
+                _vapourScript.append(configureVS(id));
+                _sVapourScript.append(configureVS(id));
+                #endif
 
                 QString tempFile(QString("%1.mkv").arg(id));
 
-                _job << id; 
-                _sJob << id;
+                _job->append(id);
+                _sJob.append(id);
 
-                _inputList << _ui.SelectInTxtBox->text(); 
-                _sInputList << _ui.SelectInTxtBox->text();
+                _inputList->append(_ui->SelectInTxtBox->text());
+                _sInputList.append(_ui->SelectInTxtBox->text());
 
-                _tempList << QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1").arg(tempFile)); 
-                _sTempList << QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1").arg(tempFile));
+                #ifdef Q_OS_WINDOWS
+                _tempList->append(QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1").arg(tempFile))); 
+                _sTempList.append(QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1").arg(tempFile)));
+                #endif
+                #ifdef Q_OS_DARWIN
+                _tempList->append(QDir::toNativeSeparators(TEMPPATH_DAR + QString("/%1").arg(tempFile)));
+                _sTempList.append(QDir::toNativeSeparators(TEMPPATH_DAR + QString("/%1").arg(tempFile)));
+                #endif
 
-                _outputList << _ui.SaveOutTxtBox->text() + container; 
-                _sOutputList << _ui.SaveOutTxtBox->text() + container;
+                _outputList->append(_ui->SaveOutTxtBox->text() + container);
+                _sOutputList.append(_ui->SaveOutTxtBox->text() + container);
 
                 if (AudioInfo::totalStreams() != 0) {
                     audioArgs.append(configureAudioPT(1, tempFile, container));
-                    _audioArgs << audioArgs; 
-                    _sAudioArgs << audioArgs;
+                    _audioArgs.append(audioArgs);
+                    _sAudioArgs.append(audioArgs);
                 }
                 else {
-                    _audioArgs << QString("noa");
-                    _sAudioArgs << QString("noa");
+                    _audioArgs.append(QString("noa"));
+                    _sAudioArgs.append(QString("noa"));
                 }
 
                 VideoInfoList::setDuration(VideoInfo::getDuration());
-                _sDuration << VideoInfo::getDuration();
+                _sDuration.append(VideoInfo::getDuration());
 
-                if (!CHECKED(_ui.InterpSetGB)) {
+                if (!CHECKED(_ui->InterpSetGB)) {
                     VideoInfoList::setFrameRate(VideoInfo::getFrameRate());
-                    _sFrameRate << VideoInfo::getFrameRate();
+                    _sFrameRate.append(VideoInfo::getFrameRate());
                 }
                 else {
-                    VideoInfoList::setFrameRate(_ui.OutFPSDD->currentText());
-                    _sFrameRate << _ui.OutFPSDD->currentText();
+                    VideoInfoList::setFrameRate(_ui->OutFPSDD->currentText());
+                    _sFrameRate.append(_ui->OutFPSDD->currentText());
                 }
 
-                _arguments << configureArgs(container, id); 
-                _sArguments << configureArgs(container, id);
+                _arguments.append(configureArgs(container, id, vsScript)); 
+                _sArguments.append(configureArgs(container, id, vsScript));
 
                 saveSettings();
                 setJobSetting();

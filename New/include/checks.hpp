@@ -7,7 +7,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-// Video
+// video
 #define AVC 0
 #define HEVC 1
 #define PRORES 2
@@ -17,7 +17,7 @@
 #define MPEG2 6
 #define MPEG4 7
 
-// Audio
+// audio
 #define AAC 0
 #define MP3 1
 #define AC3 2
@@ -34,11 +34,7 @@
 
 class Checks {
 public:
-	static bool checkFFMpeg(QString path);
-	static bool checkFFProbe(QString path);
-	static bool checkVsPipe(QString path);
 	static bool checkVsScript(QString path);
-	static bool checkVapourSynth(QString path);
 	static bool checkInputExists(QString path);
 	static bool checkInput(QString path);
 	static bool checkOutput(QString path);

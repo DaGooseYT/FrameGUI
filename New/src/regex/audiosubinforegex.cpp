@@ -4,7 +4,6 @@ QList<QRegularExpression> AudioSubInfoRegex::_indexer;
 
 QString AudioSubInfoRegex::_audioCodec;
 QString AudioSubInfoRegex::_audioStreams;
-
 QString AudioSubInfoRegex::_subCodec;
 QString AudioSubInfoRegex::_subStreams;
 
@@ -38,11 +37,11 @@ void AudioSubInfoRegex::audioInfoRegex(QString output) {
 		else
 			_audioCodec = _audioCodec.toUpper();
 
-#ifdef AUDIOINFO_H
+		#ifdef AUDIOINFO_H
 		AudioInfo::addStream();
 		AudioInfo::setCodec(_audioCodec);
 		AudioInfo::setStream(_audioStreams);
-#endif // AUDIOINFO_H
+		#endif // AUDIOINFO_H
 	}
 }
 
@@ -58,10 +57,10 @@ void AudioSubInfoRegex::subInfoRegex(QString output) {
 		_subStreams = matchSubtitleInfo.captured(1);
 		_subCodec = matchSubtitleInfo.captured(3);
 
-#ifdef SUBTITLEINFO_H
+		#ifdef SUBTITLEINFO_H
 		SubtitleInfo::addStreams();
 		SubtitleInfo::setStream(_subStreams);
 		SubtitleInfo::setCodec(_subCodec);
-#endif // SUBTITLEINFO_H
+		#endif // SUBTITLEINFO_H
 	}
 }

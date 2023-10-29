@@ -1,0 +1,1218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FrameGUIClass</class>
+ <widget class="QMainWindow" name="FrameGUIClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>410</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>600</width>
+    <height>410</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>600</width>
+    <height>410</height>
+   </size>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>FrameGUI v2.2.0</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../assets/FrameGUI.qrc">
+    <normaloff>:/FrameGUI/icon.ico</normaloff>:/FrameGUI/icon.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QTabWidget" name="Tabs">
+    <property name="geometry">
+     <rect>
+      <x>4</x>
+      <y>5</y>
+      <width>592</width>
+      <height>338</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="MainTab">
+     <attribute name="title">
+      <string>Main</string>
+     </attribute>
+     <widget class="QLabel" name="LogoLabel">
+      <property name="geometry">
+       <rect>
+        <x>64</x>
+        <y>178</y>
+        <width>454</width>
+        <height>119</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>FrameGUI :)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="../../assets/FrameGUI.qrc">:/FrameGUI/FrameGUI.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="CurrentProcessGB">
+      <property name="geometry">
+       <rect>
+        <x>151</x>
+        <y>49</y>
+        <width>289</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Current Process</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QPushButton" name="PauseBttn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>19</x>
+         <y>82</y>
+         <width>120</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Pauses the current running process.</string>
+       </property>
+       <property name="text">
+        <string>Pause</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="CancelBttn">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>151</x>
+         <y>82</y>
+         <width>118</width>
+         <height>32</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>Cancels the current running process.</string>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="JobIDLabel">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>31</y>
+         <width>41</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>ID:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="StatusLabel">
+       <property name="geometry">
+        <rect>
+         <x>21</x>
+         <y>56</y>
+         <width>49</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Status:</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="JobStatusValueLabel">
+       <property name="geometry">
+        <rect>
+         <x>167</x>
+         <y>56</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>13</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#008000;&quot;&gt;?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="JobIDValueLabel">
+       <property name="geometry">
+        <rect>
+         <x>187</x>
+         <y>31</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+         <pointsize>13</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#008000;&quot;&gt;?&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLineEdit" name="SelectInTxtBox">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>11</y>
+        <width>457</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>The source video file path.</string>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SelectInBttn">
+      <property name="geometry">
+       <rect>
+        <x>475</x>
+        <y>8</y>
+        <width>101</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="toolTip">
+       <string>Opens a dialog to select the source video.</string>
+      </property>
+      <property name="text">
+       <string>Select Input</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="SettingsTab">
+     <attribute name="title">
+      <string>Settings</string>
+     </attribute>
+     <widget class="QGroupBox" name="EncodeSetGB">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>6</y>
+        <width>559</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Encoding</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QComboBox" name="IWantDD">
+       <property name="geometry">
+        <rect>
+         <x>113</x>
+         <y>35</y>
+         <width>435</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <item>
+        <property name="text">
+         <string>High quality video with an AVERAGE file size (fast render - x264)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>High quality video with a SMALL file size (slow render - x265)</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="IWantLabel">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>35</y>
+         <width>49</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>I want a:</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="InterpSetGB">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>85</y>
+        <width>559</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Enables frame interpolation or reduction.</string>
+      </property>
+      <property name="title">
+       <string>Convert FPS (RIFE v4.6)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QLabel" name="OutFPSLabel">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>35</y>
+         <width>121</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Select output FPS:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="OutFPSDD">
+       <property name="geometry">
+        <rect>
+         <x>477</x>
+         <y>35</y>
+         <width>71</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>The output video frame rate.</string>
+       </property>
+       <property name="currentIndex">
+        <number>4</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>240</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>144</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>120</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>90</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>60</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>50</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>48</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>30</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>25</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>24</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>15</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="UpscaleSetGB">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>165</y>
+        <width>559</width>
+        <height>70</height>
+       </rect>
+      </property>
+      <property name="toolTip">
+       <string>Enables video resolution upscaling.</string>
+      </property>
+      <property name="title">
+       <string>Upscale (SRMD)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QLabel" name="OutputResLabel">
+       <property name="geometry">
+        <rect>
+         <x>18</x>
+         <y>35</y>
+         <width>161</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Select output resolution:</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="OutputResDD">
+       <property name="geometry">
+        <rect>
+         <x>397</x>
+         <y>35</y>
+         <width>151</width>
+         <height>22</height>
+        </rect>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="toolTip">
+        <string>The output video resolution/quality.</string>
+       </property>
+       <property name="currentIndex">
+        <number>3</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>4K UHD (2160p)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>QHD (1440p)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FHD (1080p)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HD (720p)</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="QueueTab">
+     <attribute name="title">
+      <string>Queue</string>
+     </attribute>
+     <widget class="QTableWidget" name="JobQueue">
+      <property name="geometry">
+       <rect>
+        <x>3</x>
+        <y>36</y>
+        <width>580</width>
+        <height>270</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::CustomContextMenu</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::NoSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="rowCount">
+       <number>0</number>
+      </property>
+      <property name="columnCount">
+       <number>6</number>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>50</number>
+      </attribute>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>100</number>
+      </attribute>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderMinimumSectionSize">
+       <number>30</number>
+      </attribute>
+      <attribute name="verticalHeaderDefaultSectionSize">
+       <number>30</number>
+      </attribute>
+      <attribute name="verticalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="verticalHeaderShowSortIndicator" stdset="0">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderStretchLastSection">
+       <bool>false</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Status</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Progress</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Input</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Output</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Logs</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QLabel" name="JobQueueLabel">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>6</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>18</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Job Queue</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="ClearJobsBttn">
+      <property name="geometry">
+       <rect>
+        <x>423</x>
+        <y>3</y>
+        <width>159</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>Clear All Finished Jobs</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="CancelQueueBttn">
+      <property name="geometry">
+       <rect>
+        <x>299</x>
+        <y>3</y>
+        <width>116</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>Cancel All Jobs</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="AboutTab">
+     <attribute name="title">
+      <string>About / Donate</string>
+     </attribute>
+     <widget class="QGroupBox" name="DonateGB">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>121</y>
+        <width>401</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Donate</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QLabel" name="DonateToDaGooseLabel">
+       <property name="geometry">
+        <rect>
+         <x>17</x>
+         <y>39</y>
+         <width>201</width>
+         <height>16</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700; color:#008000;&quot;&gt;Goose&lt;/span&gt;&lt;span style=&quot; font-weight:700;&quot;&gt; (developer &amp;amp; owner):&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="DonateToDaGooseBttn">
+       <property name="geometry">
+        <rect>
+         <x>282</x>
+         <y>25</y>
+         <width>103</width>
+         <height>45</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>32</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../assets/FrameGUI.qrc">
+         <normaloff>:/FrameGUI/pp_donate.png</normaloff>:/FrameGUI/pp_donate.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>90</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="AboutGUIGB">
+      <property name="geometry">
+       <rect>
+        <x>13</x>
+        <y>6</y>
+        <width>559</width>
+        <height>111</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>About FrameGUI</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QLabel" name="AboutGuiLabel">
+       <property name="geometry">
+        <rect>
+         <x>17</x>
+         <y>32</y>
+         <width>526</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;FrameGUI (frame-gooey) is the newest and most convenient encoding application ever made. Since v2.0.0, FrameGUI now features powerful AI tools to upscale and convert video FPS. It's so easy to use, ANYONE regardless of video encoding knowledge can use it!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::RichText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignHCenter|Qt::AlignTop</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="LinksGB">
+      <property name="geometry">
+       <rect>
+        <x>436</x>
+        <y>121</y>
+        <width>136</width>
+        <height>173</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>DaGoose's Links</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QPushButton" name="YoutubeBttn">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>28</y>
+         <width>105</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../assets/FrameGUI.qrc">
+         <normaloff>:/FrameGUI/yt_logo.png</normaloff>:/FrameGUI/yt_logo.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>90</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="DiscordBttn">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>74</y>
+         <width>105</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../assets/FrameGUI.qrc">
+         <normaloff>:/FrameGUI/discord_logo.png</normaloff>:/FrameGUI/discord_logo.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>90</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="InstaBttn">
+       <property name="geometry">
+        <rect>
+         <x>16</x>
+         <y>120</y>
+         <width>105</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>50</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../assets/FrameGUI.qrc">
+         <normaloff>:/FrameGUI/ig_logo.png</normaloff>:/FrameGUI/ig_logo.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>90</width>
+         <height>35</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="ClearBttn">
+      <property name="geometry">
+       <rect>
+        <x>12</x>
+        <y>268</y>
+        <width>281</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="text">
+       <string>Clear saved data</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="LicensesBttn">
+      <property name="geometry">
+       <rect>
+        <x>304</x>
+        <y>268</y>
+        <width>111</width>
+        <height>32</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Licenses</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QLineEdit" name="SaveOutTxtBox">
+    <property name="geometry">
+     <rect>
+      <x>4</x>
+      <y>349</y>
+      <width>289</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>The output destination path.</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="AddJobBttn">
+    <property name="geometry">
+     <rect>
+      <x>466</x>
+      <y>346</y>
+      <width>67</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>50</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>13</pointsize>
+      <stylestrategy>PreferDefault</stylestrategy>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Creates a job for the work queue using the current user defined settings.</string>
+    </property>
+    <property name="text">
+     <string>Add Job</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="EncodeProgress">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>393</y>
+      <width>590</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="textVisible">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="OutContainerDD">
+    <property name="geometry">
+     <rect>
+      <x>293</x>
+      <y>351</y>
+      <width>75</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>The output video container</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>.mp4</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>.mkv</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>.mov</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>.avi</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QPushButton" name="SaveOutBttn">
+    <property name="geometry">
+     <rect>
+      <x>368</x>
+      <y>346</y>
+      <width>92</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>50</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="tabletTracking">
+     <bool>false</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="toolTip">
+     <string>Opens a dialog to save the output video to a filename.</string>
+    </property>
+    <property name="text">
+     <string>Save Output</string>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="ProgressBarLabel">
+    <property name="geometry">
+     <rect>
+      <x>6</x>
+      <y>377</y>
+      <width>588</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>13</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="StartEncBttn">
+    <property name="geometry">
+     <rect>
+      <x>539</x>
+      <y>346</y>
+      <width>57</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="sizeIncrement">
+     <size>
+      <width>0</width>
+      <height>32</height>
+     </size>
+    </property>
+    <property name="font">
+     <font>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::NoFocus</enum>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>Tabs</tabstop>
+  <tabstop>SelectInTxtBox</tabstop>
+  <tabstop>SelectInBttn</tabstop>
+  <tabstop>PauseBttn</tabstop>
+  <tabstop>CancelBttn</tabstop>
+  <tabstop>SaveOutTxtBox</tabstop>
+  <tabstop>OutContainerDD</tabstop>
+  <tabstop>SaveOutBttn</tabstop>
+  <tabstop>AddJobBttn</tabstop>
+  <tabstop>IWantDD</tabstop>
+  <tabstop>InterpSetGB</tabstop>
+  <tabstop>OutFPSDD</tabstop>
+  <tabstop>UpscaleSetGB</tabstop>
+  <tabstop>OutputResDD</tabstop>
+  <tabstop>CancelQueueBttn</tabstop>
+  <tabstop>ClearJobsBttn</tabstop>
+  <tabstop>DonateToDaGooseBttn</tabstop>
+  <tabstop>YoutubeBttn</tabstop>
+  <tabstop>DiscordBttn</tabstop>
+  <tabstop>InstaBttn</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../../assets/FrameGUI.qrc"/>
+  <include location="../../../EncodeGUI/source/Assets/EncodeGUI.qrc"/>
+  <include location="../../assets/FrameGUI.qrc"/>
+  <include location="../../assets/FrameGUI.qrc"/>
+ </resources>
+ <connections/>
+</ui>

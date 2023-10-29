@@ -3,12 +3,12 @@
 #ifndef PROGRESSINFOREGEX_H
 #define PROGRESSINFOREGEX_H
 
-#include "progressinfo.hpp"
-
 #include <QtCore/QRegularExpression>
 #include <QtCore/QElapsedTimer>
 #include <QtCore/QTime>
 #include <QtCore/QList>
+
+#include "progressinfo.hpp"
 
 class ProgressInfoRegex {
 public:

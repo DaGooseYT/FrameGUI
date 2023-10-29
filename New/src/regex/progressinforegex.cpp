@@ -22,8 +22,8 @@ bool ProgressInfoRegex::progressRegex(QString output, QTime totalDuration, int t
 	QString fps, bitrate;
 	QTime timeProcessed;
 
-	if (!matchFrames.hasMatch() && !matchFps.hasMatch() && !matchBitrate.hasMatch() && !matchTimeProcessed.hasMatch())
-		return(false);
+	if (!matchFrames.hasMatch() || !matchFps.hasMatch() || !matchBitrate.hasMatch() || !matchTimeProcessed.hasMatch())
+		return false;
 	else {
 		frames = matchFrames.captured(1).toInt();
 		fps = matchFps.captured(1);
@@ -83,6 +83,6 @@ bool ProgressInfoRegex::progressRegex(QString output, QTime totalDuration, int t
 		ProgressInfo::setPercentage(percentage);
 #endif // PROGRESSINFO_H
 
-		return(true);
+		return true;
 	}
 }

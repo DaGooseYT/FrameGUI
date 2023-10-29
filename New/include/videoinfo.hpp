@@ -18,7 +18,6 @@ public:
 	static void setTransfer(QString transfer);
 	static void setPrimaries(QString primaries);
 	static void setFrameRate(QString frameRate);
-
 	static QString getVideoCodec();
 	static QTime getDuration();
 	static QString getDurationStrng();

@@ -1,22 +1,34 @@
 #include "framegui.hpp"
 
-QString FrameGUI::configureVS(QString id) {
+#ifdef Q_OS_WINDOWS
+QStringList FrameGUI::configureVS(QString id) {
 	MediaConfig::resetArguments();
 
-	MediaConfig::setVSPipe(QDir::toNativeSeparators(QDir::currentPath()) + QString("\\vs\\vspipe.exe"),
-		QDir::toNativeSeparators(QDir::homePath() + QString("\\AppData\\Local\\FrameGUI\\job-%1\\%1.vpy").arg(id)));
+	MediaConfig::setVsPipe1();
+	MediaConfig::setVsPipe2();
+	MediaConfig::append(QDir::toNativeSeparators(LOGPATH_WIN + QString("\\job-%1\\%1.vpy").arg(id)));
+	MediaConfig::append(QString("-"));
 
 	return(MediaConfig::getArguments());
 }
+#endif
 
-QString FrameGUI::configureAudioPT(int stream, QString id, QString container) {
+QStringList FrameGUI::configureAudioPT(int stream, QString id, QString container) {
 	MediaConfig::resetArguments();
 
 	if (stream == 1) {
-		MediaConfig::setFFMpeg(QDir::toNativeSeparators(QDir::currentPath()) + QString("\\ffmpeg\\ffmpeg.exe"));
 		MediaConfig::setOverride();
-		MediaConfig::setInput(QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1").arg(id)));
-		MediaConfig::setInput(_ui.SelectInTxtBox->text());
+		MediaConfig::setInput();
+
+		#ifdef Q_OS_WINDOWS
+		MediaConfig::append(QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1").arg(id)));
+		#endif
+		#ifdef Q_OS_DARWIN
+		MediaConfig::append(QDir::toNativeSeparators(TEMPPATH_DAR + QString("/%1").arg(id)));
+		#endif
+
+		MediaConfig::setInput();
+		MediaConfig::append(_ui->SelectInTxtBox->text());
 		MediaConfig::setMapAll(QString("v"), QString("0"));
 		MediaConfig::setVideoCodec(QString("copy"));
 	}
@@ -28,37 +40,48 @@ QString FrameGUI::configureAudioPT(int stream, QString id, QString container) {
 	MediaConfig::setMapAll(QString("s?"), QString("%1").arg(stream));
 
 	if (container.contains(QString(".mkv")))
-		MediaConfig::append(QString(" -c:s srt"));
+		MediaConfig::setSubtitleCodec("srt");
 	else if (container.contains(QString(".mov")) || container.contains(QString(".mp4")))
-		MediaConfig::append(QString(" -c:s mov_text"));
+		MediaConfig::setSubtitleCodec("mov_text");
 
 	if (stream == 1) {
-		MediaConfig::append(QString(" -metadata:g encoding_tool=\"FrameGUI v%1\"").arg(VERSION));
-		MediaConfig::setOutput(_ui.SaveOutTxtBox->text() + container);
+		MediaConfig::setMetaData1();
+		MediaConfig::setMetaData2(QString("\"FrameGUI v%1\"").arg(VERSION));
+		MediaConfig::setOutput(_ui->SaveOutTxtBox->text() + container);
 	}
 
-	return MediaConfig::getArguments();
+	return(MediaConfig::getArguments());
 }
 
-QString FrameGUI::configureArgs(QString container, QString id) {
+QStringList FrameGUI::configureArgs(QString container, QString id, QString vsScript) {
 	MediaConfig::resetArguments();
 
-	MediaConfig::setFFMpeg(QDir::toNativeSeparators(QDir::currentPath()) + QString("\\ffmpeg\\ffmpeg.exe"));
+	#ifdef Q_OS_DARWIN
+	MediaConfig::setVs();
+	#endif
+
 	MediaConfig::setOverride();
 	MediaConfig::setNoAutoRotate();
-	MediaConfig::append(QString(" -i -"));
+	MediaConfig::setInput();
 
-	if (_ui.IWantDD->currentIndex() == 0)
+	#ifdef Q_OS_WINDOWS
+	MediaConfig::append(QString("-"));
+	#endif
+	#ifdef Q_OS_DARWIN
+	MediaConfig::append(vsScript);
+	#endif
+
+	if (_ui->IWantDD->currentIndex() == 0)
 		MediaConfig::setVideoCodec(QString("libx264"));
 	else {
 		MediaConfig::setVideoCodec(QString("libx265"));
-		MediaConfig::append(QString(" -tag:v hvc1")); // apple compat
+		MediaConfig::setAppleTag();
 	}
 
 	MediaConfig::setConstantRateFactor(17);
 
-	if (_ui.UpscaleSetGB->isChecked()) {
-		int resH = _ui.OutputResDD->currentText().remove(QString("(")).remove(QString(")")).remove(QString("p")).remove(QString("HD")).remove(QString("F")).remove(QString("Q")).remove(QString("U")).remove(QString("4K")).remove(QString(" ")).toInt();
+	if (CHECKED(_ui->UpscaleSetGB)) {
+		int resH = _ui->OutputResDD->currentText().remove(QString("(")).remove(QString(")")).remove(QString("p")).remove(QString("HD")).remove(QString("F")).remove(QString("Q")).remove(QString("U")).remove(QString("4K")).remove(QString(" ")).toInt();
 		double factor = 0;
 		int outH = 0;
 		int outW = 0;
@@ -84,17 +107,22 @@ QString FrameGUI::configureArgs(QString container, QString id) {
 		if (outH % 2 != 0)
 			outH++;
 
-		MediaConfig::setFilters();
 		MediaConfig::setVideoResolution(outW, outH);
-		MediaConfig::setConcludeFilters();
 	}
 
-	MediaConfig::append(QString(" -metadata:g encoding_tool=\"FrameGUI v%1\"").arg(VERSION));
+	MediaConfig::setMetaData1();
+	MediaConfig::setMetaData2(QString("\"FrameGUI v%1\"").arg(VERSION));
 
 	if (AudioInfo::totalStreams() == 0 && SubtitleInfo::totalStreams() == 0)
-		MediaConfig::setOutput(_ui.SaveOutTxtBox->text() + container);
-	else
+		MediaConfig::setOutput(_ui->SaveOutTxtBox->text() + container);
+	else {
+		#ifdef Q_OS_WINDOWS
 		MediaConfig::setOutput(QDir::toNativeSeparators(QDir::tempPath() + QString("\\%1.mkv").arg(id)));
+		#endif
+		#ifdef Q_OS_DARWIN
+		MediaConfig::setOutput(QDir::toNativeSeparators(TEMPPATH_DAR + QString("/%1.mkv").arg(id)));
+		#endif
+	}
 
 	return(MediaConfig::getArguments());
 }

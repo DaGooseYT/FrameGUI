@@ -116,14 +116,11 @@
     <ClCompile Include="assets\qrc_FrameGUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ui\enviornment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="x64\Release\uic\ui_framegui.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="x64\Release\uic\ui_update.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\argument.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -172,6 +169,12 @@
     <ClInclude Include="include\videoinforegex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\windows\ui_framegui.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\windows\ui_update.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\ffloader.hpp">
@@ -192,10 +195,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="src\ui\framegui.ui">
+    <QtUic Include="include\windows\framegui.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="src\ui\update.ui">
+    <QtUic Include="include\windows\update.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

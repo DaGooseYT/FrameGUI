@@ -4,16 +4,16 @@ QMessageBox::StandardButton FrameGUI::msgBoxHelper(MessageType type, QString tit
 	QMessageBox::StandardButton msg;
 
 	switch (type) {
-	case ERROR:
+	case MessageType::Error:
 		msg = QMessageBox::critical(this, title, message, button1 | button2 | button3);
 		break;
-	case WARNING:
+	case MessageType::Warning:
 		msg = QMessageBox::warning(this, title, message, button1 | button2 | button3);
 		break;
-	case INFO:
+	case MessageType::Info:
 		msg = QMessageBox::information(this, title, message, button1 | button2 | button3);
 		break;
-	case QUESTION:
+	case MessageType::Question:
 		msg = QMessageBox::question(this, title, message, button1 | button2 | button3);
 		break;
 	}
